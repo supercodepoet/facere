@@ -1,0 +1,79 @@
+<div class="auth-form-container" data-controller="form-validation">
+  <h1 class="auth-form-title" style="text-align: center;">Set new password</h1>
+  <p class="auth-form-subtitle">Choose a strong password for your account</p>
+
+  <%= form_with url: password_path(params[:token]), method: :patch do |f| %>
+    <div class="auth-fields">
+      <div class="auth-field" data-controller="password-visibility">
+        <wa-input
+          label="New Password"
+          name="password"
+          type="password"
+          required
+          minlength="8"
+          autocomplete="new-password"
+          maxlength="72"
+          data-form-validation-target="password"
+          data-password-visibility-target="input"
+          data-action="wa-input->form-validation#validatePassword"
+        >
+          <wa-icon slot="start" name="lock" variant="thin" style="color: var(--color-zinc-400);"></wa-icon>
+          <wa-icon
+            slot="end"
+            name="eye-slash"
+            variant="thin"
+            data-action="click->password-visibility#toggle"
+            data-password-visibility-target="toggle"
+            style="color: var(--color-zinc-400); cursor: pointer; padding: 4px;"
+            role="button"
+            tabindex="0"
+            aria-label="Toggle password visibility"
+          ></wa-icon>
+        </wa-input>
+        <div class="password-requirements" data-form-validation-target="requirements">
+          <small data-req="length">At least 8 characters</small>
+          <small data-req="uppercase">One uppercase letter</small>
+          <small data-req="lowercase">One lowercase letter</small>
+          <small data-req="digit">One number</small>
+          <small data-req="special">One special character</small>
+        </div>
+      </div>
+
+      <div class="auth-field" data-controller="password-visibility">
+        <wa-input
+          label="Confirm Password"
+          name="password_confirmation"
+          type="password"
+          required
+          autocomplete="new-password"
+          maxlength="72"
+          data-form-validation-target="passwordConfirmation"
+          data-password-visibility-target="input"
+          data-action="wa-input->form-validation#validatePasswordConfirmation"
+        >
+          <wa-icon slot="start" name="lock" variant="thin" style="color: var(--color-zinc-400);"></wa-icon>
+          <wa-icon
+            slot="end"
+            name="eye-slash"
+            variant="thin"
+            data-action="click->password-visibility#toggle"
+            data-password-visibility-target="toggle"
+            style="color: var(--color-zinc-400); cursor: pointer; padding: 4px;"
+            role="button"
+            tabindex="0"
+            aria-label="Toggle password visibility"
+          ></wa-icon>
+        </wa-input>
+      </div>
+    </div>
+
+    <wa-button
+      variant="brand"
+      class="auth-primary-btn"
+      type="submit"
+      data-turbo-submits-with="Updating..."
+    >
+      Update Password
+    </wa-button>
+  <% end %>
+</div>

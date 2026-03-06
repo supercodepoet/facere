@@ -1,0 +1,17 @@
+<div class="auth-social-buttons" role="group" aria-label="Sign in with third-party providers">
+  <%= form_tag "/auth/google_oauth2", method: :post, data: { turbo: false, controller: "oauth" } do %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <wa-button variant="default" outline class="auth-social-btn" type="submit" data-oauth-target="button" data-action="click->oauth#loading" aria-label="Sign in with Google">
+      <wa-icon slot="start" name="google" family="brands"></wa-icon>
+      Google
+    </wa-button>
+  <% end %>
+
+  <%= form_tag "/auth/apple", method: :post, data: { turbo: false, controller: "oauth" } do %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <wa-button variant="default" outline class="auth-social-btn" type="submit" data-oauth-target="button" data-action="click->oauth#loading" aria-label="Sign in with Apple">
+      <wa-icon slot="start" name="apple" family="brands"></wa-icon>
+      Apple
+    </wa-button>
+  <% end %>
+</div>

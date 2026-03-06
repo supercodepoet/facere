@@ -1,0 +1,29 @@
+<div class="auth-form-container">
+  <h1 class="auth-form-title" style="text-align: center;">Account Recovery</h1>
+  <p class="auth-form-subtitle">Lost access to your authenticator and recovery codes?</p>
+
+  <div style="padding: 20px; background: var(--color-zinc-50, #fafafa); border-radius: 12px; margin-bottom: 24px;">
+    <h3 style="margin: 0 0 12px; font-size: 16px; font-weight: 600; color: var(--color-zinc-900);">What to do next</h3>
+    <ol style="margin: 0; padding-left: 20px; color: var(--color-zinc-600); font-size: 14px; line-height: 1.8;">
+      <li>Contact our support team for account recovery assistance</li>
+      <li>Be ready to verify your identity through alternative means</li>
+      <li>Recovery may take 1-3 business days for security purposes</li>
+    </ol>
+  </div>
+
+  <wa-button
+    variant="brand"
+    class="auth-primary-btn"
+    onclick="window.location.href='mailto:support@facere.app?subject=Account%20Recovery%20Request'"
+  >
+    <wa-icon slot="start" name="envelope" variant="thin"></wa-icon>
+    Contact Support
+  </wa-button>
+
+  <div class="auth-prompt" style="margin-top: 24px;">
+    <%= link_to sign_in_path, style: "color: var(--color-primary); font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;" do %>
+      <wa-icon name="arrow-left" variant="thin" style="font-size: 14px;"></wa-icon>
+      Back to Sign In
+    <% end %>
+  </div>
+</div>

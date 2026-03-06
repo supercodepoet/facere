@@ -1,0 +1,11 @@
+<h2>Reset your password</h2>
+
+<p>Hi <%= @user.name %>,</p>
+
+<p>We received a request to reset your Facere account password. Click the link below to set a new password:</p>
+
+<p><%= link_to "Reset Password", @reset_url %></p>
+
+<p>This link will expire in 2 hours.</p>
+
+<p>If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.</p>

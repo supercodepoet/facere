@@ -1,0 +1,9 @@
+<h2>Welcome to Facere, <%= @user.name %>!</h2>
+
+<p>Please verify your email address by clicking the link below:</p>
+
+<p><%= link_to "Verify Email Address", @verification_url %></p>
+
+<p>This link expires in 24 hours.</p>
+
+<p>If you didn't create a Facere account, you can safely ignore this email.</p>

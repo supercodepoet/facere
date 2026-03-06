@@ -1,0 +1,43 @@
+<div class="auth-form-container">
+  <h1 class="auth-form-title" style="text-align: center;">Enable Two-Factor Authentication</h1>
+  <p class="auth-form-subtitle">Scan the QR code with your authenticator app</p>
+
+  <div style="text-align: center; margin: 24px 0; padding: 20px; background: white; border-radius: 12px; border: 1px solid var(--color-zinc-200, #e4e4e7);">
+    <%= @qr_code.html_safe %>
+  </div>
+
+  <details style="margin-bottom: 20px;">
+    <summary style="cursor: pointer; font-size: 14px; color: var(--color-primary); font-weight: 500;">Can't scan the QR code?</summary>
+    <div style="margin-top: 8px; padding: 12px; background: var(--color-zinc-50, #fafafa); border-radius: 8px; font-family: monospace; font-size: 14px; word-break: break-all; text-align: center;">
+      <%= @secret %>
+    </div>
+  </details>
+
+  <%= form_with url: two_factor_path do |f| %>
+    <div class="auth-fields">
+      <div class="auth-field">
+        <wa-input
+          label="Verification Code"
+          name="code"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          maxlength="6"
+          required
+          autofocus
+          autocomplete="one-time-code"
+        >
+          <wa-icon slot="start" name="shield-halved" variant="thin" style="color: var(--color-zinc-400);"></wa-icon>
+        </wa-input>
+      </div>
+    </div>
+
+    <wa-button
+      variant="brand"
+      class="auth-primary-btn"
+      type="submit"
+      data-turbo-submits-with="Verifying..."
+    >
+      Verify & Enable
+    </wa-button>
+  <% end %>
+</div>
