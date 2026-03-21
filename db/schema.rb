@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_21_163506) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_21_180000) do
   create_table "oauth_identities", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "provider", null: false
@@ -60,7 +60,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_21_163506) do
     t.string "template", default: "blank", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
-    t.index ["user_id", "name"], name: "index_todo_lists_on_user_id_and_name", unique: true
+    t.index "user_id, lower(name)", name: "index_todo_lists_on_user_id_and_lower_name", unique: true
     t.index ["user_id"], name: "index_todo_lists_on_user_id"
   end
 

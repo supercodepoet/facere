@@ -23,7 +23,7 @@
             appearance="outlined"
             variant="neutral"
             class="icon-picker-btn <%= 'active' if todo_list.icon == icon_name %>"
-            data-action="icon-picker#select"
+            data-action="click->icon-picker#select"
             data-icon="<%= icon_name %>">
             <wa-icon name="<%= icon_name %>" variant="thin" label="<%= icon_name.humanize %>"></wa-icon>
           </wa-button>
@@ -33,7 +33,7 @@
           appearance="outlined"
           variant="neutral"
           class="icon-picker-btn"
-          data-action="icon-picker#toggle">
+          data-action="click->icon-picker#toggle">
           <wa-icon name="plus" variant="thin" label="More icons"></wa-icon>
         </wa-button>
       </div>
@@ -46,7 +46,7 @@
         <% TodoList::COLORS.each do |color| %>
           <button type="button"
             class="color-swatch <%= 'active' if (todo_list.color || TodoList::COLORS.first) == color %>"
-            data-action="color-picker#select"
+            data-action="click->color-picker#select"
             data-color="<%= color %>"
             aria-label="<%= color.capitalize %> color">
           </button>
@@ -75,7 +75,7 @@
           appearance="outlined"
           size="small"
           class="template-card <%= 'active' if (todo_list.template || 'blank') == tmpl.to_s %> <%= 'disabled' if local_assigns[:editing] %>"
-          data-action="template-picker#select"
+          data-action="click->template-picker#select"
           data-template="<%= tmpl %>"
           <%= 'disabled' if local_assigns[:editing] %>>
           <wa-icon slot="start" name="<%= icon %>" variant="thin"></wa-icon>

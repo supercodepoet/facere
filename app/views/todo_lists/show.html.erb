@@ -19,7 +19,7 @@
       </div>
 
       <div class="show-header-right">
-        <button class="show-action-btn" data-action="delete-confirmation#open" data-controller="delete-confirmation" data-delete-confirmation-dialog-value="delete-dialog-<%= @todo_list.id %>">
+        <button class="show-action-btn" data-action="click->delete-confirmation#open" data-controller="delete-confirmation" data-delete-confirmation-dialog-value="delete-dialog-<%= @todo_list.id %>">
           <wa-icon name="trash" variant="thin"></wa-icon>
           Delete
         </button>
@@ -57,14 +57,13 @@
     <% else %>
       <div class="show-content">
         <%# Items without section %>
-        <% unsectioned_items = @todo_list.todo_items.where(todo_section_id: nil) %>
-        <% if unsectioned_items.any? %>
+        <% if @unsectioned_items.present? %>
           <div class="section-group">
             <div class="section-header">
               <wa-icon name="list" variant="thin"></wa-icon>
               Items without section
             </div>
-            <% unsectioned_items.each do |item| %>
+            <% @unsectioned_items.each do |item| %>
               <div class="todo-item">
                 <wa-icon name="<%= item.completed? ? 'circle-check' : 'circle' %>" variant="thin"></wa-icon>
                 <span><%= item.name %></span>
@@ -80,7 +79,7 @@
               <wa-icon name="chevron-down" variant="thin"></wa-icon>
               <wa-icon name="layer-group" variant="thin" style="color: var(--list-color-<%= @todo_list.color %>);"></wa-icon>
               <%= section.name %>
-              <span class="section-badge"><%= section.todo_items.count %></span>
+              <span class="section-badge"><%= section.todo_items.size %></span>
             </div>
             <% section.todo_items.each do |item| %>
               <div class="todo-item">

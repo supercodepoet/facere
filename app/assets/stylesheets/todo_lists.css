@@ -518,6 +518,19 @@
   font-size: 17px;
   font-weight: 700;
   color: var(--color-zinc-900);
+  text-decoration: none;
+}
+
+.list-card-title:hover {
+  color: var(--color-primary);
+}
+
+.list-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
 }
 
 .list-card-menu {

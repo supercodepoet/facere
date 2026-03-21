@@ -1,7 +1,7 @@
 <aside class="sidebar" data-controller="list-search">
   <div class="sidebar-search">
     <wa-input placeholder="Search lists..." size="small" data-action="input->list-search#filter" data-list-search-target="input">
-      <wa-icon slot="prefix" name="magnifying-glass" variant="thin"></wa-icon>
+      <wa-icon slot="start" name="magnifying-glass" variant="thin"></wa-icon>
     </wa-input>
   </div>
 
@@ -14,7 +14,7 @@
           class: "sidebar-item #{'active' if local_assigns[:current_list] && current_list.id == list.id}" do %>
           <span class="sidebar-dot" style="background: var(--list-color-<%= list.color %>);"></span>
           <%= list.name %>
-          <span class="sidebar-item-count"><%= list.todo_items.count %></span>
+          <span class="sidebar-item-count"><%= list.todo_items.size %></span>
         <% end %>
       </li>
     <% end %>

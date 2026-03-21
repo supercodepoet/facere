@@ -30,6 +30,16 @@ class TodoListTest < ActiveSupport::TestCase
     assert_includes duplicate.errors[:name], "has already been taken"
   end
 
+  test "enforces case-insensitive uniqueness at database level" do
+    @user.todo_lists.create!(name: "Groceries", color: "purple", template: "blank")
+    duplicate = @user.todo_lists.build(name: "GROCERIES", color: "blue", template: "blank")
+    # Skip model validation to test DB constraint directly
+    duplicate.name = "GROCERIES"
+    assert_raises(ActiveRecord::StatementInvalid) do
+      duplicate.save(validate: false)
+    end
+  end
+
   test "allows same name for different users" do
     other_user = User.create!(
       name: "Other User",

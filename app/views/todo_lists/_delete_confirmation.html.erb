@@ -8,7 +8,7 @@
     <p>This will permanently delete all tasks in this list. You won't be able to undo this action.</p>
 
     <div class="delete-modal-actions">
-      <button class="delete-cancel-btn" data-action="click->delete-confirmation#close">
+      <button class="delete-cancel-btn" onclick="this.closest('wa-dialog').hide()">
         Cancel
       </button>
       <%= button_to todo_list_path(todo_list), method: :delete, class: "delete-confirm-btn" do %>

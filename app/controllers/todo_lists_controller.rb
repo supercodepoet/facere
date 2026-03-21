@@ -4,12 +4,13 @@ class TodoListsController < ApplicationController
   before_action :set_todo_list, only: %i[show edit update destroy]
 
   def index
-    @todo_lists = Current.user.todo_lists.recently_updated
+    @todo_lists = Current.user.todo_lists.includes(:todo_items).recently_updated
   end
 
   def show
-    @sidebar_lists = Current.user.todo_lists.recently_updated
+    @sidebar_lists = Current.user.todo_lists.includes(:todo_items).recently_updated
     @sections = @todo_list.todo_sections.includes(:todo_items)
+    @unsectioned_items = @todo_list.todo_items.where(todo_section_id: nil)
   end
 
   def new
