@@ -77,6 +77,9 @@ and MUST NOT feel generic or utilitarian.
 - MUST prioritize micro-interactions, animations, and visual polish
   that convey friendliness
 - MUST NOT ship generic, unstyled, or purely functional interfaces
+- MUST validate all UI implementation against `.pen` design file
+  screenshots — the design file is the source of truth for spacing,
+  fonts, colors, and component sizes
 
 ### IV. Clean Architecture & Domain-Driven Design
 
@@ -88,8 +91,13 @@ logic independent of framework specifics where practical.
   `ListOrganizer`) over generic names (`utils`, `helpers`, `common`)
 - MUST keep business logic out of controllers; controllers orchestrate,
   models and service objects encapsulate logic
-- MUST keep database queries out of controllers; use scopes, query
-  objects, or model methods
+- MUST keep database queries out of controllers AND views; use scopes,
+  query objects, or model methods. Views MUST only read instance
+  variables set by the controller — never issue queries directly
+- MUST eager-load associations (`.includes()`) when rendering
+  collections to prevent N+1 queries. Use `.size` (reads loaded
+  collection) instead of `.count` (forces SQL COUNT) on eager-loaded
+  associations
 - MUST maintain clear bounded contexts between application domains
 - Each module/class MUST have a single, clear purpose
 
@@ -104,6 +112,10 @@ explicitness over cleverness.
   decompose when exceeding these limits
 - MUST avoid code duplication through reusable methods and concerns
 - MUST handle errors properly with appropriate exception types
+- MUST wrap multi-record creation/update operations in `transaction`
+  blocks for all-or-nothing semantics
+- MUST produce valid HTML — never nest interactive elements (`<button>`
+  inside `<a>`, `<a>` inside `<button>`)
 - MUST NOT use generic naming patterns (`utils.rb`, `helpers/misc.rb`)
 - Components and methods that cannot be reused elsewhere MAY stay in
   the same file, but the file MUST still respect the 200-line limit
@@ -159,6 +171,30 @@ All technology choices MUST align with the Vanilla Rails First
 principle. Deviations require explicit justification in the relevant
 plan document's Complexity Tracking table.
 
+### Web Awesome Pro Integration Rules
+
+Learned through implementation of TODO Lists feature (002):
+
+- **No `wa-icon-button`**: This component does not exist. For icon-only
+  buttons, use `<wa-button>` with a `<wa-icon>` in the default slot
+- **Slots**: Use `slot="start"` and `slot="end"` for icons inside
+  `wa-button` and `wa-input` — NOT `slot="prefix"` or `slot="suffix"`
+- **Appearance**: Use `appearance="outlined"` attribute — NOT boolean
+  `outline` attribute
+- **Stimulus events on custom elements**: `wa-button` has NO default
+  Stimulus event. MUST use explicit `click->controller#method` syntax
+  on all `wa-button` data-action attributes. Omitting the event
+  silently fails
+- **`wa-input` styling**: Use the `pill` attribute for rounded corners.
+  Style via CSS custom properties (`--wa-input-height-medium`,
+  `--wa-input-spacing-medium`), NOT `::part(base)` padding overrides
+  which clip placeholder text
+- **`wa-input` in system tests**: Shadow DOM prevents Capybara from
+  using `fill_in`. Use `find()` to wait for element presence, then
+  `execute_script` to set `.value` and dispatch `wa-change` event.
+  Never use top-level `await` in `execute_script`
+- **Reference**: https://webawesome.com/docs/components/button/
+
 ## Development Workflow & Quality Gates
 
 - **Convention over Configuration**: Follow Rails conventions for file
@@ -173,7 +209,16 @@ plan document's Complexity Tracking table.
   full-page reloads for in-app navigation
 - **Security**: Follow Rails security best practices (CSRF protection,
   parameterized queries, Content Security Policy); validate at system
-  boundaries only
+  boundaries only. All controller actions MUST scope queries to the
+  current user (`Current.user.association`) for authorization. Return
+  404 (not 403) for unauthorized resource access to avoid revealing
+  resource existence. Strong params MUST exclude `user_id` and other
+  ownership fields. Enforce uniqueness constraints at both model AND
+  database level (e.g., case-insensitive unique indexes for SQLite)
+- **Test Coverage — Security**: Every controller MUST have tests for
+  authentication (unauthenticated redirects) and authorization (other
+  user's resources return 404) on all actions. Parameter injection
+  tests MUST verify ownership fields cannot be overridden via params
 - **Commit Discipline**: Commit after each logical unit of work with
   clear, descriptive messages
 
@@ -188,6 +233,9 @@ complete. Zero errors across all checks:
 4. **Unit & Integration Tests**: `bin/rails test` — zero failures
 5. **System Tests**: `bin/rails test:system` — zero failures
 6. **JS Dependency Audit**: `bin/importmap audit` — zero vulnerabilities
+7. **CI Secrets**: `RAILS_MASTER_KEY` MUST be stored as a GitHub secret.
+   Active Record encryption test keys MUST be configured in
+   `config/environments/test.rb` as a fallback
 
 ### Feature Completion Checklist
 
@@ -220,4 +268,4 @@ implementation plans MUST verify compliance with these principles.
   (generated from `agent-file-template.md`) for day-to-day development
   reference
 
-**Version**: 1.1.0 | **Ratified**: 2026-03-05 | **Last Amended**: 2026-03-21
+**Version**: 1.2.0 | **Ratified**: 2026-03-05 | **Last Amended**: 2026-03-21

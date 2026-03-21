@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Facere" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Facere">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <script src="https://kit.webawesome.com/a7eedeb8ff694353.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "todo_lists", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="app-body">
+    <header class="app-nav" role="banner">
+      <div class="app-nav-left">
+        <%= link_to todo_lists_path, class: "app-logo-link" do %>
+          <wa-icon name="circle-check" variant="thin" class="app-logo-icon"></wa-icon>
+          <span class="app-logo-text">Facere</span>
+        <% end %>
+      </div>
+
+      <div class="app-nav-center">
+        <div class="app-search-bar">
+          <wa-icon name="magnifying-glass" variant="thin" class="app-search-icon"></wa-icon>
+          <input type="text" placeholder="Search lists..." class="app-search-input" aria-label="Search lists">
+        </div>
+      </div>
+
+      <div class="app-nav-right">
+        <button class="app-nav-icon-btn" aria-label="Notifications">
+          <wa-icon name="bell" variant="thin"></wa-icon>
+        </button>
+        <div class="app-user-avatar" aria-label="User menu">
+          <span><%= Current.user&.name&.first(2)&.upcase %></span>
+        </div>
+      </div>
+    </header>
+
+    <div class="app-nav-divider"></div>
+
+    <main class="app-main" id="main-content" role="main">
+      <%= yield %>
+    </main>
+  </body>
+</html>

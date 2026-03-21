@@ -1,0 +1,31 @@
+<div class="form-page">
+  <div class="form-card">
+    <% if flash[:alert] %>
+      <div class="form-error-banner">
+        <wa-icon name="triangle-exclamation" variant="thin" class="form-error-banner-icon"></wa-icon>
+        <span class="form-error-banner-text"><%= flash[:alert] %></span>
+        <wa-button size="small" appearance="plain" class="form-error-banner-close" onclick="this.closest('.form-error-banner').remove()">
+          <wa-icon name="xmark" variant="thin" label="Dismiss"></wa-icon>
+        </wa-button>
+      </div>
+    <% end %>
+
+    <div class="form-card-header">
+      <wa-icon name="pen-to-square" variant="thin"></wa-icon>
+      <h1>Edit list</h1>
+      <p>Update your list's name, icon, color, and description</p>
+    </div>
+
+    <%= form_with(model: @todo_list) do |form| %>
+      <%= render "form", todo_list: @todo_list, form: form, editing: true %>
+
+      <div class="form-actions">
+        <wa-button variant="neutral" appearance="outlined" size="medium" class="form-cancel-btn" href="<%= todo_list_path(@todo_list) %>">Cancel</wa-button>
+        <wa-button variant="brand" size="medium" type="submit" class="form-submit-btn">
+          <wa-icon slot="start" name="check" variant="thin"></wa-icon>
+          Save Changes
+        </wa-button>
+      </div>
+    <% end %>
+  </div>
+</div>
