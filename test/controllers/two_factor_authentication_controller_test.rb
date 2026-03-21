@@ -12,23 +12,21 @@ class TwoFactorAuthenticationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "POST two_factor with valid code enables 2FA" do
-    secret = ROTP::Base32.random
-
-    # Simulate setup flow - store secret in session via GET
+    # GET new generates a secret and stores it in the session
     get new_two_factor_path
-    # Manually set pending secret by re-posting with correct code
-    # We need to override the session, so let's use the actual flow
+    assert_response :success
+
+    # Extract the secret displayed on the setup page for manual entry
+    secret = response.body.match(/([A-Z2-7]{32})/)[1]
     totp = ROTP::TOTP.new(secret, issuer: "Facere")
 
-    # Start fresh setup
-    get new_two_factor_path
-    # The controller generates a random secret, we need the one stored in session
-    # Use a different approach: directly test with a known secret
-
-    # Create credential directly for enable test
-    assert_difference "TwoFactorCredential.count", 0 do
-      # Can't easily test full flow due to session secret
+    assert_difference "TwoFactorCredential.count", 1 do
+      post two_factor_path, params: { code: totp.now }
     end
+
+    assert @user.reload.two_factor_enabled?
+    assert_response :success
+    assert_includes response.body, "Save Your Recovery Codes"
   end
 
   test "GET two_factor/verify renders code entry form" do

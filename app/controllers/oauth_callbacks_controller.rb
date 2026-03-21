@@ -36,6 +36,11 @@ class OAuthCallbacksController < ApplicationController
     oauth_data = session.delete(:oauth_data)
     return redirect_to sign_in_path, alert: "OAuth session expired. Please try again." unless oauth_data
 
+    unless params[:terms_accepted] == "1"
+      session[:oauth_data] = oauth_data
+      return redirect_to auth_terms_path, alert: "You must accept the Terms of Service and Privacy Policy."
+    end
+
     user = User.new(
       name: oauth_data["name"],
       email_address: oauth_data["email"],

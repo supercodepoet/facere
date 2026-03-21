@@ -42,10 +42,27 @@ export default class extends Controller {
     navigator.clipboard.writeText(codes).then(() => {
       const button = this.element.querySelector("[data-action*='copyCodes']")
       if (button) {
-        const originalText = button.textContent
-        button.textContent = "Copied!"
-        setTimeout(() => { button.textContent = originalText }, 2000)
+        const textNode = Array.from(button.childNodes).find(
+          node => node.nodeType === Node.TEXT_NODE && node.textContent.trim()
+        )
+        const originalText = textNode ? textNode.textContent : button.textContent
+
+        if (textNode) {
+          textNode.textContent = " Copied!"
+        } else {
+          button.setAttribute("aria-label", "Copied!")
+        }
+
+        setTimeout(() => {
+          if (textNode) {
+            textNode.textContent = originalText
+          } else {
+            button.removeAttribute("aria-label")
+          }
+        }, 2000)
       }
+    }).catch(error => {
+      console.error("Failed to copy recovery codes:", error)
     })
   }
 }

@@ -49,7 +49,7 @@ class OAuthCallbacksControllerTest < ActionDispatch::IntegrationTest
     set_oauth_session("google_oauth2", "new-uid-terms", "Google User", "newterms@example.com")
 
     assert_difference [ "User.count", "OAuthIdentity.count" ], 1 do
-      post auth_terms_path
+      post auth_terms_path, params: { terms_accepted: "1" }
     end
 
     user = User.find_by(email_address: "newterms@example.com")
