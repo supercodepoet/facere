@@ -1,0 +1,21 @@
+<% password_digest = BCrypt::Password.create("Password1!") %>
+
+one:
+  name: Alice Example
+  email_address: one@example.com
+  password_digest: <%= password_digest %>
+  terms_accepted_at: <%= 1.day.ago %>
+  email_verified_at: <%= 1.day.ago %>
+
+two:
+  name: Bob Example
+  email_address: two@example.com
+  password_digest: <%= password_digest %>
+  terms_accepted_at: <%= 1.day.ago %>
+
+unverified:
+  name: Charlie Unverified
+  email_address: unverified@example.com
+  password_digest: <%= password_digest %>
+  terms_accepted_at: <%= 1.day.ago %>
+  email_verification_grace_expires_at: <%= 24.hours.from_now %>

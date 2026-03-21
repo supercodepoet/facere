@@ -1,0 +1,46 @@
+<div class="auth-form-container">
+  <h1 class="auth-form-title" style="text-align: center;">Link your account</h1>
+  <p class="auth-form-subtitle">An account already exists with <strong><%= @oauth_data["email"] %></strong>. Enter your password to link your <%= @oauth_data["provider"].titleize %> account.</p>
+
+  <%= form_with url: auth_link_path do |f| %>
+    <div class="auth-fields">
+      <div class="auth-field" data-controller="password-visibility">
+        <wa-input
+          label="Password"
+          name="password"
+          type="password"
+          required
+          autofocus
+          autocomplete="current-password"
+          data-password-visibility-target="input"
+        >
+          <wa-icon slot="start" name="lock" variant="thin" style="color: var(--color-zinc-400);"></wa-icon>
+          <wa-icon
+            slot="end"
+            name="eye-slash"
+            variant="thin"
+            data-action="click->password-visibility#toggle"
+            data-password-visibility-target="toggle"
+            style="color: var(--color-zinc-400); cursor: pointer; padding: 4px;"
+            role="button"
+            tabindex="0"
+            aria-label="Toggle password visibility"
+          ></wa-icon>
+        </wa-input>
+      </div>
+    </div>
+
+    <wa-button
+      variant="brand"
+      class="auth-primary-btn"
+      type="submit"
+      data-turbo-submits-with="Linking account..."
+    >
+      Link Account & Sign In
+    </wa-button>
+  <% end %>
+
+  <div class="auth-prompt" style="margin-top: 24px;">
+    <span><%= link_to "Sign in with email instead", sign_in_path, style: "color: var(--color-primary); font-weight: 500; text-decoration: none;" %></span>
+  </div>
+</div>

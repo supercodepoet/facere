@@ -89,3 +89,27 @@ extensability.
 - Avoid deep nesting (max 3 levels)
 - Keep functions focused and under 50 lines when possible
 - Keep files focused and under 200 lines of code when possible
+
+## Development Workflow & Quality Gates
+
+### CI Pipeline Requirements
+
+Every feature MUST pass the full CI pipeline before being considered complete. After implementation, the following checks MUST all pass with zero errors:
+
+1. **Lint** (`bin/rubocop`): Zero offenses. All code MUST conform to the rubocop-rails-omakase style guide.
+2. **Security Scan** (`bin/brakeman --no-pager`): Zero warnings. No unresolved security vulnerabilities in application code.
+3. **Dependency Audit** (`bin/bundler-audit`): Zero advisories. All gem dependencies MUST be free of known vulnerabilities.
+4. **Unit & Integration Tests** (`bin/rails test`): Zero failures, zero errors. All model, controller, and mailer tests MUST pass.
+5. **System Tests** (`bin/rails test:system`): Zero failures, zero errors. All end-to-end Capybara/Selenium tests MUST pass.
+6. **JS Dependency Audit** (`bin/importmap audit`): Zero vulnerabilities in JavaScript dependencies.
+
+### Feature Completion Checklist
+
+A feature is NOT complete until:
+
+- [ ] All implementation tasks are marked done
+- [ ] `bin/rubocop` passes with zero offenses
+- [ ] `bin/brakeman --no-pager` passes with zero warnings
+- [ ] `bin/rails test` passes with zero failures
+- [ ] `bin/rails test:system` passes with zero failures
+- [ ] Spec documents (spec.md, plan.md, tasks.md) are updated with implementation learnings

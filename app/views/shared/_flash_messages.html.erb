@@ -1,0 +1,16 @@
+<div aria-live="polite" aria-atomic="true">
+<% flash.each do |type, message| %>
+  <%
+    variant = case type.to_s
+              when "notice", "success" then "success"
+              when "alert", "error"   then "danger"
+              when "warning"          then "warning"
+              else "primary"
+              end
+  %>
+  <wa-callout variant="<%= variant %>" open closable duration="8000" style="margin-bottom: 16px;">
+    <wa-icon slot="icon" name="<%= variant == 'success' ? 'circle-check' : variant == 'danger' ? 'circle-exclamation' : 'triangle-exclamation' %>" variant="thin"></wa-icon>
+    <%= message %>
+  </wa-callout>
+<% end %>
+</div>

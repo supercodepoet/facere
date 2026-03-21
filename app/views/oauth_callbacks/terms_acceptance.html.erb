@@ -1,0 +1,32 @@
+<div class="auth-form-container">
+  <h1 class="auth-form-title" style="text-align: center;">Almost there!</h1>
+  <p class="auth-form-subtitle">Complete your <%= @oauth_data["provider"].titleize %> sign up</p>
+
+  <div style="text-align: center; margin-bottom: 24px; padding: 16px; background: var(--color-zinc-50, #fafafa); border-radius: 12px;">
+    <p style="margin: 0; font-weight: 600; color: var(--color-zinc-900);"><%= @oauth_data["name"] %></p>
+    <p style="margin: 4px 0 0; font-size: 14px; color: var(--color-zinc-500);"><%= @oauth_data["email"] %></p>
+  </div>
+
+  <%= form_with url: auth_terms_path do |f| %>
+    <div class="auth-fields">
+      <div class="auth-checkbox-row">
+        <wa-checkbox name="terms_accepted" value="1" required>
+          I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+        </wa-checkbox>
+      </div>
+    </div>
+
+    <wa-button
+      variant="brand"
+      class="auth-primary-btn"
+      type="submit"
+      data-turbo-submits-with="Creating account..."
+    >
+      Complete Sign Up
+    </wa-button>
+  <% end %>
+
+  <div class="auth-prompt" style="margin-top: 24px;">
+    <span><%= link_to "Cancel and return to Sign In", sign_in_path, style: "color: var(--color-primary); font-weight: 500; text-decoration: none;" %></span>
+  </div>
+</div>

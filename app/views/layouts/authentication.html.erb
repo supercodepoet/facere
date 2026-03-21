@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Facere" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Facere">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <script src="https://kit.webawesome.com/a7eedeb8ff694353.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "authentication", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="auth-body">
+    <a href="#main-content" class="auth-skip-link">Skip to main content</a>
+    <div class="auth-container">
+      <%# Branded left panel (desktop) / top panel (mobile) %>
+      <div class="auth-brand-panel" aria-hidden="true">
+        <div class="brand-deco-circle brand-deco-1"></div>
+        <div class="brand-deco-circle brand-deco-2"></div>
+        <div class="brand-deco-circle brand-deco-3"></div>
+        <div class="brand-deco-circle brand-deco-4"></div>
+        <div class="brand-deco-circle brand-deco-5"></div>
+
+        <div class="brand-content">
+          <div class="brand-logo-row">
+            <div class="brand-logo-icon">
+              <wa-icon name="circle-check" variant="thin"></wa-icon>
+            </div>
+            <span class="brand-logo-text">Facere</span>
+          </div>
+          <p class="brand-tagline">Your tasks, your way</p>
+          <p class="brand-tagline-sub">Organize, prioritize, and accomplish<br>more with a smile.</p>
+        </div>
+
+        <div class="brand-float-cards">
+          <div class="brand-float-card">
+            <div class="brand-float-check" style="background: var(--color-teal);">
+              <wa-icon name="check" variant="thin" style="font-size: 12px; color: #fff;"></wa-icon>
+            </div>
+            <span>Design mockups</span>
+          </div>
+          <div class="brand-float-card brand-float-card-2">
+            <div class="brand-float-check" style="background: var(--color-pink);">
+              <wa-icon name="star" variant="thin" style="font-size: 12px; color: #fff;"></wa-icon>
+            </div>
+            <span>Ship new features</span>
+          </div>
+          <div class="brand-float-card brand-float-card-3">
+            <div class="brand-float-check" style="background: var(--color-amber);">
+              <wa-icon name="bolt" variant="thin" style="font-size: 12px; color: #fff;"></wa-icon>
+            </div>
+            <span>Stay productive</span>
+          </div>
+        </div>
+
+        <wa-icon name="sparkles" variant="thin" class="brand-deco-sparkle"></wa-icon>
+        <wa-icon name="heart" variant="thin" class="brand-deco-heart"></wa-icon>
+      </div>
+
+      <%# Form panel %>
+      <div class="auth-form-panel" id="main-content" role="main">
+        <%= render "shared/flash_messages" if flash.any? %>
+        <%= yield %>
+      </div>
+    </div>
+  </body>
+</html>

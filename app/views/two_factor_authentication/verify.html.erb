@@ -1,0 +1,42 @@
+<div class="auth-form-container" data-controller="two-factor">
+  <h1 class="auth-form-title" style="text-align: center;">Two-Factor Verification</h1>
+  <p class="auth-form-subtitle">Enter the code from your authenticator app</p>
+
+  <%= form_with url: confirm_two_factor_path do |f| %>
+    <div class="auth-fields">
+      <div class="auth-field">
+        <wa-input
+          label="Verification Code"
+          name="code"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          maxlength="6"
+          required
+          autofocus
+          autocomplete="one-time-code"
+          data-two-factor-target="codeInput"
+          data-action="wa-input->two-factor#checkCode"
+        >
+          <wa-icon slot="start" name="shield-halved" variant="thin" style="color: var(--color-zinc-400);"></wa-icon>
+        </wa-input>
+      </div>
+    </div>
+
+    <wa-button
+      variant="brand"
+      class="auth-primary-btn"
+      type="submit"
+      data-turbo-submits-with="Verifying..."
+    >
+      Verify
+    </wa-button>
+  <% end %>
+
+  <div class="auth-prompt" style="margin-top: 16px;">
+    <span><%= link_to "Use a recovery code instead", verify_two_factor_path, style: "color: var(--color-primary); font-weight: 500; text-decoration: none;", data: { action: "click->two-factor#toggleRecovery" } %></span>
+  </div>
+
+  <div class="auth-prompt" style="margin-top: 8px;">
+    <span><%= link_to "Lost your device and recovery codes?", two_factor_recovery_help_path, style: "color: var(--color-zinc-400); font-size: 13px; text-decoration: none;" %></span>
+  </div>
+</div>

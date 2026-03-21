@@ -1,0 +1,136 @@
+<%= turbo_frame_tag "auth_form" do %>
+<div class="auth-form-container auth-form-signup" data-controller="form-validation">
+  <h1 class="auth-form-title" style="text-align: center;">Create your account</h1>
+  <p class="auth-form-subtitle">Start your productivity journey today</p>
+
+  <div class="auth-segmented-control">
+    <%= link_to "Sign In", sign_in_path, data: { turbo_frame: "auth_form" } %>
+    <%= link_to "Sign Up", sign_up_path, class: "active", data: { turbo_frame: "auth_form" } %>
+  </div>
+
+  <%= form_with model: @user, url: sign_up_path, data: { action: "submit->form-validation#validateForm", turbo_frame: "_top" } do |f| %>
+    <div class="auth-fields">
+      <div class="auth-field">
+        <wa-input
+          label="Name"
+          name="user[name]"
+          value="<%= @user.name %>"
+          required
+          data-form-validation-target="name"
+          data-action="wa-input->form-validation#clearError"
+        >
+          <wa-icon slot="start" name="user" variant="thin" style="color: var(--color-zinc-400);"></wa-icon>
+        </wa-input>
+      </div>
+
+      <div class="auth-field">
+        <wa-input
+          label="Email address"
+          name="user[email_address]"
+          type="email"
+          value="<%= @user.email_address %>"
+          required
+          data-form-validation-target="email"
+          data-action="wa-input->form-validation#validateEmail"
+        >
+          <wa-icon slot="start" name="envelope" variant="thin" style="color: var(--color-zinc-400);"></wa-icon>
+        </wa-input>
+      </div>
+
+      <div class="auth-field" data-controller="password-visibility">
+        <wa-input
+          label="Password"
+          name="user[password]"
+          type="password"
+          required
+          minlength="8"
+          data-form-validation-target="password"
+          data-password-visibility-target="input"
+          data-action="wa-input->form-validation#validatePassword"
+        >
+          <wa-icon slot="start" name="lock" variant="thin" style="color: var(--color-zinc-400);"></wa-icon>
+          <wa-icon
+            slot="end"
+            name="eye-slash"
+            variant="thin"
+            data-action="click->password-visibility#toggle"
+            data-password-visibility-target="toggle"
+            style="color: var(--color-zinc-400); cursor: pointer; padding: 4px;"
+            role="button"
+            tabindex="0"
+            aria-label="Toggle password visibility"
+          ></wa-icon>
+        </wa-input>
+      </div>
+
+      <div class="auth-field" data-controller="password-visibility">
+        <wa-input
+          label="Confirm Password"
+          name="user[password_confirmation]"
+          type="password"
+          required
+          data-form-validation-target="passwordConfirmation"
+          data-password-visibility-target="input"
+          data-action="wa-input->form-validation#validatePasswordConfirmation"
+        >
+          <wa-icon slot="start" name="lock" variant="thin" style="color: var(--color-zinc-400);"></wa-icon>
+          <wa-icon
+            slot="end"
+            name="eye-slash"
+            variant="thin"
+            data-action="click->password-visibility#toggle"
+            data-password-visibility-target="toggle"
+            style="color: var(--color-zinc-400); cursor: pointer; padding: 4px;"
+            role="button"
+            tabindex="0"
+            aria-label="Toggle password visibility"
+          ></wa-icon>
+        </wa-input>
+      </div>
+
+    </div>
+
+    <div class="auth-checkbox-row">
+      <wa-checkbox
+        name="user[terms_accepted]"
+        value="1"
+        required
+        data-form-validation-target="terms"
+      >
+        I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+      </wa-checkbox>
+    </div>
+
+    <% if @user.errors.any? %>
+      <wa-callout variant="danger" open>
+        <wa-icon slot="icon" name="circle-exclamation" variant="thin"></wa-icon>
+        <% @user.errors.full_messages.each do |msg| %>
+          <div><%= msg %></div>
+        <% end %>
+      </wa-callout>
+    <% end %>
+
+    <wa-button
+      variant="brand"
+      class="auth-primary-btn"
+      type="submit"
+      data-turbo-submits-with="Creating account..."
+    >
+      Create Account
+    </wa-button>
+  <% end %>
+
+  <div class="auth-divider">
+    <div class="auth-divider-line"></div>
+    <span class="auth-divider-text">or</span>
+    <div class="auth-divider-line"></div>
+  </div>
+
+  <%= render "shared/oauth_buttons" %>
+
+  <div class="auth-prompt">
+    <span>Already have an account?</span>
+    <%= link_to "Sign In", sign_in_path, data: { turbo_frame: "auth_form" } %>
+  </div>
+</div>
+<% end %>

@@ -1,0 +1,19 @@
+<div class="auth-form-container" style="text-align: center;">
+  <wa-icon name="envelope" variant="thin" style="font-size: 48px; color: var(--color-primary); margin-bottom: 16px;"></wa-icon>
+  <h1 class="auth-form-title">Verify Your Email</h1>
+  <p class="auth-form-subtitle">
+    Your email address needs to be verified to continue using Facere.
+    Check your inbox or request a new verification email.
+  </p>
+
+  <%= form_with url: email_verification_path, method: :post do %>
+    <wa-button variant="brand" class="auth-primary-btn" type="submit" data-turbo-submits-with="Sending...">
+      Resend Verification Email
+    </wa-button>
+  <% end %>
+
+  <div class="auth-prompt" style="margin-top: 16px;">
+    <span>Wrong account?</span>
+    <%= link_to "Sign Out", sign_out_path, data: { turbo_method: :delete } %>
+  </div>
+</div>
