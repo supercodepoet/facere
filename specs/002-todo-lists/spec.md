@@ -2,7 +2,7 @@
 
 **Feature Branch**: `002-todo-lists`
 **Created**: 2026-03-21
-**Status**: In Progress — Core CRUD complete, design polish applied, security hardened
+**Status**: In Progress — Core CRUD complete, design polish applied, security hardened, Copilot code review resolved, CI green
 **Input**: User description: "Create screens for managing TODO Lists including blank slate listing, list listing, list creation with name/icon/color/description/template, and blank slate for new list items"
 
 ## Clarifications
@@ -26,6 +26,19 @@
 - Card design uses zinc-100 background (#F4F4F5) with a 4px left-only colored accent stripe, NOT white background with a full border. Corner radius is 24px.
 - The design has 5 color swatches but the app has 6 colors. Form card width was increased from 620px to 660px to accommodate all 6 colors on one row.
 - Color swatches are 26px (not 44px) and icon picker buttons are 40px (not 44px) per the design. Both the icon picker and color picker containers have a zinc-100 background fill with 16px corner radius.
+
+### Copilot Code Review Learnings (2026-03-21)
+
+- **HTML validity**: Never nest interactive elements (`<button>` inside `<a>`). List cards were restructured so the menu button is a sibling of the link, not nested inside it.
+- **Stimulus on custom elements**: `wa-button` is a custom element with no default Stimulus event. All Stimulus actions on `wa-button` MUST use explicit `click->controller#method` syntax. Native `<button>` defaults to `click` but explicit is preferred for consistency.
+- **Stimulus controller scope**: A Stimulus `data-action` only fires if the element is inside (a descendant of) the element with the matching `data-controller`. The delete confirmation cancel button was moved to inline `onclick` because it lives inside `wa-dialog`, which is not a descendant of the trigger button's Stimulus controller.
+- **No queries in views**: All DB queries must happen in the controller. `@todo_list.todo_items.where(...)` was moved to `@unsectioned_items` in the controller.
+- **`.count` vs `.size`**: When associations are eager-loaded with `.includes()`, use `.size` (reads from memory) not `.count` (forces SQL COUNT). Applied to sidebar and section item counts.
+- **Eager loading**: Index and show actions now use `.includes(:todo_items)` to prevent N+1 queries when rendering cards and sidebar.
+- **Transaction safety**: `apply_template!` is now wrapped in a `transaction` block so template seeding is all-or-nothing.
+- **Case-insensitive DB constraint**: Added a `lower(name)` unique index in SQLite to prevent race-condition duplicates that bypass model validation.
+- **System tests with Web Awesome**: `wa-input` uses shadow DOM — Capybara's `fill_in` cannot reach inside. Use `find()` to wait for element presence, then `execute_script` to set `.value` and dispatch `wa-change`. Never use top-level `await` in `execute_script` (it runs as classic script, not ES module). Use Capybara waits instead of `sleep`.
+- **CI encryption keys**: Active Record encryption keys for test environment should be set in `config/environments/test.rb` with deterministic values so CI doesn't depend on `RAILS_MASTER_KEY`. Additionally, `RAILS_MASTER_KEY` should be stored as a GitHub secret.
 
 ## User Scenarios & Testing *(mandatory)*
 

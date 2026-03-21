@@ -238,7 +238,58 @@ All UI implementation should reference `designs/initial-screens.pen` as source o
 - [x] T078 [P] [US6] Add index isolation test: user does not see other user's lists in `test/controllers/todo_lists_controller_test.rb`
 - [x] T079 [P] [US6] Add parameter injection test: create ignores `user_id` param and assigns to current user in `test/controllers/todo_lists_controller_test.rb`
 
-**Checkpoint**: 159 tests, 433 assertions, 0 failures — all design, component, and security issues resolved
+**Checkpoint**: 160 tests, 434 assertions, 0 failures — all design, component, and security issues resolved
+
+---
+
+## Phase 10: Copilot Code Review Fixes
+
+**Purpose**: Address all 22 Copilot code review comments on PR #7 — HTML validity, N+1 queries, Stimulus event binding, transaction safety, system test reliability, DB constraints, CI config, and doc typos.
+
+### HTML & Accessibility
+
+- [x] T080 [US1] Restructure list card partial: remove `<button>` from inside `<a>`, make wrapper a `<div>`, title and body as separate links, menu button as sibling in `app/views/todo_lists/_list_card.html.erb`
+
+### Performance (N+1 Queries)
+
+- [x] T081 Add `.includes(:todo_items)` to index and show controller actions for eager loading in `app/controllers/todo_lists_controller.rb`
+- [x] T082 Move `@todo_list.todo_items.where(todo_section_id: nil)` from view to `@unsectioned_items` in controller
+- [x] T083 Change `.count` to `.size` in sidebar (`_sidebar.html.erb`) and show view (`show.html.erb`) for eager-loaded associations
+- [x] T084 Memoize `completion_percentage` in local variable in `_list_card.html.erb`; update model method to use in-memory collection when loaded in `app/models/todo_list.rb`
+
+### Stimulus Event Binding
+
+- [x] T085 Add explicit `click->` prefix to all Stimulus actions on `wa-button` (icon picker, template picker) and native buttons (color swatch, delete trigger) in `_form.html.erb` and `show.html.erb`
+- [x] T086 Fix delete confirmation cancel button: replace broken Stimulus action (controller on different element) with inline `onclick` in `_delete_confirmation.html.erb`
+
+### Data Integrity
+
+- [x] T087 Wrap `apply_template!` in `transaction` block for all-or-nothing template seeding in `app/models/todo_list.rb`
+- [x] T088 Add case-insensitive unique index migration `lower(name)` scoped by `user_id` in `db/migrate/20260321180000_add_case_insensitive_unique_index_to_todo_lists.rb`
+- [x] T089 Add model test verifying DB-level case-insensitive constraint (bypasses model validation) in `test/models/todo_list_test.rb`
+
+### Web Awesome Slot Fix
+
+- [x] T090 Fix sidebar search icon `slot="prefix"` → `slot="start"` in `_sidebar.html.erb`
+
+### System Test Reliability
+
+- [x] T091 Remove top-level `await` from `execute_script` calls (runs as classic script, not ES module); use Capybara `find()` waits instead in `test/system/todo_lists_test.rb`
+- [x] T092 Remove `sleep 0.3` from sign-in setup; use `assert_no_text` with Capybara wait instead in `test/system/todo_lists_test.rb`
+
+### CI Configuration
+
+- [x] T093 Add deterministic Active Record encryption keys in `config/environments/test.rb` for CI without `RAILS_MASTER_KEY`
+- [x] T094 Uncomment `RAILS_MASTER_KEY` in `.github/workflows/ci.yml` for both test and system-test jobs
+- [x] T095 Set `RAILS_MASTER_KEY` as GitHub secret via `gh secret set`
+
+### Documentation
+
+- [x] T096 Update UI contracts: `wa-callout` → custom `.form-error-banner` in `specs/002-todo-lists/contracts/ui-contracts.md`
+- [x] T097 Fix typos: "expierence"→"experience", "Fill free"→"Feel free", "refence"→"reference" in `prompts/specs/002/plan.md`
+- [x] T098 Fix grammar: "screens to managing"→"screens for managing", "all out TODO"→"all our TODO" in `prompts/specs/002/spec.md`
+
+**Checkpoint**: 180 tests, 493 assertions, 0 failures — all Copilot review comments resolved, CI green
 
 ---
 
@@ -255,6 +306,7 @@ All UI implementation should reference `designs/initial-screens.pen` as source o
 - **User Story 5 (Phase 7)**: Depends on US3 completion (delete trigger lives in show view)
 - **Polish (Phase 8)**: Depends on all user stories being complete
 - **Design Review & Security (Phase 9)**: Depends on Phase 8 completion. Validates implementation against .pen visual reference and hardens security test coverage.
+- **Copilot Code Review (Phase 10)**: Depends on Phase 9 completion. Addresses PR review findings — HTML validity, N+1 queries, Stimulus binding, transaction safety, DB constraints, system test reliability, CI config.
 
 ### User Story Dependencies
 

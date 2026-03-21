@@ -122,7 +122,7 @@ A new `app.html.erb` layout provides the top navigation bar visible in all .pen 
 
 ### D2: Template Application
 
-Templates are applied via `TodoList#apply_template!` called after create. Template definitions live as a `TEMPLATES` constant (frozen hash) on the model. This keeps the logic simple, testable, and co-located with the model. If template logic grows beyond ~30 lines, extract to a `ListTemplateApplier` service object.
+Templates are applied via `TodoList#apply_template!` called after create. Template definitions live as a `TEMPLATES` constant (frozen hash) on the model. The method is wrapped in a `transaction` block so template seeding is all-or-nothing — if any section or item fails to create, the entire template application rolls back. This keeps the logic simple, testable, and co-located with the model. If template logic grows beyond ~30 lines, extract to a `ListTemplateApplier` service object.
 
 ### D3: Color & Icon Storage
 
@@ -199,10 +199,44 @@ The `.pen` design shows 5 color swatches at 620px card width. The app has 6 colo
 
 All controller actions scope queries through `Current.user.todo_lists`, which provides authorization at the database query level. This means accessing another user's list returns `ActiveRecord::RecordNotFound` → 404, not 403. This is intentional: returning 404 avoids revealing the existence of resources. Strong params exclude `user_id` from the whitelist, preventing parameter injection on create.
 
-**Test coverage added** (159 tests total):
+**Test coverage** (180 tests total, 493 assertions):
 - Authentication required for all 7 actions (index, show, new, create, edit, update, destroy)
 - Authorization isolation for index (no cross-user data), show, edit, update, destroy
 - Parameter injection test (user_id ignored on create)
+- Case-insensitive DB constraint test (bypasses model validation to verify index)
+
+### D12: HTML Validity — No Nested Interactive Elements
+
+Copilot flagged `<button>` inside `<a>` in the list card partial. This is invalid HTML per the spec and causes accessibility/click-handling issues. The card was restructured: wrapper is a `<div>`, the title and body are separate `<a>` links, and the menu button is a sibling — never nested inside a link.
+
+### D13: N+1 Query Prevention
+
+Controller actions now eager-load associations to prevent N+1 queries in views:
+- `index`: `.includes(:todo_items)` for card rendering (completion %, item count)
+- `show`: `.includes(:todo_items)` for sidebar, `@sections.includes(:todo_items)` for detail view
+- `completion_percentage` uses in-memory collection when `todo_items` is already loaded
+- Views use `.size` (reads loaded collection) instead of `.count` (forces SQL COUNT)
+- `@unsectioned_items` is computed in the controller, not the view
+
+### D14: Stimulus Event Binding on Custom Elements
+
+Stimulus only provides default events for native HTML elements (`click` for `<button>`, `submit` for `<form>`, etc.). Custom elements like `wa-button` have NO default event. All Stimulus actions on Web Awesome components MUST use explicit event syntax: `data-action="click->controller#method"`. Omitting the event silently fails — the action never fires.
+
+### D15: Case-Insensitive Database Constraint
+
+SQLite's default unique index on `[user_id, name]` is case-sensitive. A separate migration adds `CREATE UNIQUE INDEX ... ON todo_lists(user_id, lower(name))` to prevent race-condition duplicates (e.g., "Groceries" vs "groceries") that bypass model validation.
+
+### D16: System Tests with Web Awesome Shadow DOM
+
+Web Awesome components (`wa-input`, `wa-button`) use shadow DOM. Capybara cannot interact with elements inside shadow DOM via standard finders (`fill_in`, `click_button`). System test helpers:
+- `set_wa_input(name, value)`: Uses `find()` to wait for element, then `execute_script` to set `.value` and dispatch `wa-change`
+- `click_wa_button(text)`: Finds `wa-button` by text content and clicks via JS
+- Never use top-level `await` in `execute_script` — runs as classic script, not ES module
+- Never use `sleep` — use Capybara's built-in waiting (`find`, `assert_text wait:`)
+
+### D17: CI — Active Record Encryption Keys
+
+2FA tests require Active Record encryption (`encrypts :otp_secret`). In CI, `RAILS_MASTER_KEY` must be set as a GitHub secret to decrypt credentials. As a fallback, deterministic test keys are configured in `config/environments/test.rb` so tests can run without the master key.
 
 ## Complexity Tracking
 
