@@ -86,8 +86,8 @@
   font-size: 14px;
 }
 
-/* wa-alert */
-wa-alert {
+/* wa-callout */
+wa-callout {
   --wa-panel-border-radius: 16px;
   font-family: var(--font-body);
 }
@@ -148,7 +148,7 @@ wa-alert {
   }
 }
 
-wa-alert[open] {
+wa-callout[open] {
   animation: slideInDown 0.3s ease-out;
 }
 
@@ -745,7 +745,7 @@ wa-checkbox::part(control):focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .auth-form-container,
   .brand-content,
-  wa-alert[open] {
+  wa-callout[open] {
     animation: none;
   }
 

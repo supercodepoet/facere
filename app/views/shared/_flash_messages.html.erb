@@ -8,9 +8,9 @@
               else "primary"
               end
   %>
-  <wa-alert variant="<%= variant %>" open closable duration="8000" style="margin-bottom: 16px;">
+  <wa-callout variant="<%= variant %>" open closable duration="8000" style="margin-bottom: 16px;">
     <wa-icon slot="icon" name="<%= variant == 'success' ? 'circle-check' : variant == 'danger' ? 'circle-exclamation' : 'triangle-exclamation' %>" variant="thin"></wa-icon>
     <%= message %>
-  </wa-alert>
+  </wa-callout>
 <% end %>
 </div>

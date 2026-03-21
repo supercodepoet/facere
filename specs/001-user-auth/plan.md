@@ -1,7 +1,9 @@
 # Implementation Plan: User Authentication
 
 **Branch**: `001-user-auth` | **Date**: 2026-03-05 | **Spec**: [spec.md](spec.md)
+**Status**: Complete | **Last Updated**: 2026-03-21
 **Input**: Feature specification from `/specs/001-user-auth/spec.md`
+**Test Results**: 101 tests, 305 assertions, 0 failures, 0 errors (16 parallel processes)
 
 ## Summary
 
@@ -91,13 +93,14 @@ app/
 │   │   ├── show.html.erb
 │   │   └── new.html.erb
 │   ├── oauth_callbacks/
-│   │   └── terms_acceptance.html.erb
+│   │   ├── terms_acceptance.html.erb
+│   │   └── link_account.html.erb
 │   ├── two_factor_authentication/
 │   │   ├── new.html.erb
 │   │   ├── verify.html.erb
-│   │   └── recovery_codes.html.erb
+│   │   ├── recovery_codes.html.erb
+│   │   └── recovery_help.html.erb
 │   ├── shared/
-│   │   ├── _auth_layout.html.erb
 │   │   ├── _flash_messages.html.erb
 │   │   └── _oauth_buttons.html.erb
 │   └── layouts/
@@ -152,6 +155,55 @@ test/
 All code follows Rails conventions. No separate frontend/backend split
 needed; Hotwire handles all interactivity server-side with Turbo and
 Stimulus.
+
+## Technical Implementation Notes
+
+### Web Awesome Pro Component Usage (Actual)
+
+Components used in production code:
+- `<wa-input>` — Form inputs with `::part(base)` and `::part(form-control-label)` styling
+- `<wa-button>` — Primary and social buttons with `variant="brand"` and `variant="neutral"`
+- `<wa-checkbox>` — Terms acceptance
+- `<wa-callout>` — Flash messages and inline alerts (NOT `<wa-alert>`, which does not exist)
+- `<wa-icon>` — Icons with `variant="thin"` style throughout
+- `<wa-tooltip>` — Password requirements hint display
+
+Components NOT used (originally considered):
+- `<wa-tab-group>` — Replaced by custom CSS segmented control with Turbo Frames for tab switching
+- `<wa-card>` — Not needed; custom CSS for card-like elements
+- `<wa-dialog>` — Not needed in auth flows
+- `<wa-divider>` — Replaced by custom CSS divider with "or" text
+- `<wa-alert>` — Does not exist in Web Awesome Pro; use `<wa-callout>` instead
+
+### Turbo Frame Architecture
+
+The Sign In / Sign Up segmented control uses `<turbo-frame id="auth_form">` to swap form content without full page reloads. Each form links to the other via `data: { turbo_frame: "auth_form" }`. The turbo-frame wrapper has `min-height: 720px` to prevent layout shift during tab switching.
+
+### Authentication Flow Details
+
+- **Session storage**: Permanent signed cookies (`cookies.signed.permanent[:session_id]`) with `httponly: true`, `same_site: :lax`
+- **Current context**: `Current` (Rails `CurrentAttributes`) provides `Current.session` and `Current.user` (delegated)
+- **2FA pending state**: When a user with 2FA enabled signs in, `pending_2fa_user_id` is stored in the Rails session (not a cookie) until 2FA is verified
+- **OAuth data flow**: OAuth auth hash data is stored in the Rails session between callback and terms acceptance/account linking steps
+- **Rate limiting**: Uses Rails 8's `rate_limit` macro on `SessionsController#create` and `RegistrationsController#create` (10 per minute)
+
+### Design System Tokens (CSS Custom Properties)
+
+Defined in `app/assets/stylesheets/authentication.css`:
+- `--color-primary`: #8B5CF6 (purple)
+- `--color-primary-hover`: #7C3AED
+- `--color-primary-focus`: rgba(139, 92, 246, 0.25)
+- `--color-danger`: #EF4444
+- `--color-success`: #10B981
+- `--font-heading`: "Plus Jakarta Sans", sans-serif
+- `--font-body`: "Inter", sans-serif
+
+### File Size Compliance
+
+All files remain under the 200-line constitution limit. The largest files:
+- `authentication.css`: ~922 lines (CSS, not subject to code line limit)
+- `user.rb`: Within limits (model with validations, associations, lockout logic)
+- All controllers are thin orchestration layers
 
 ## Complexity Tracking
 

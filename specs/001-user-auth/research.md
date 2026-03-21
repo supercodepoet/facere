@@ -145,7 +145,7 @@ end
 
 **Decision**: Load Web Awesome Pro via CDN kit script tag in the
 application layout. Use Web Awesome web components (`<wa-input>`,
-`<wa-button>`, `<wa-checkbox>`, `<wa-alert>`, `<wa-card>`,
+`<wa-button>`, `<wa-checkbox>`, `<wa-callout>`, `<wa-card>`,
 `<wa-dialog>`, etc.) for all UI elements.
 
 **Rationale**: Web Awesome Pro provides a comprehensive web component

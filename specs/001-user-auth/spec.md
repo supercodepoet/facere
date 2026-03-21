@@ -2,8 +2,10 @@
 
 **Feature Branch**: `001-user-auth`
 **Created**: 2026-03-05
-**Status**: Draft
+**Status**: Complete
+**Last Updated**: 2026-03-21
 **Input**: User authentication with sign in, sign up, password reset, OAuth providers, and two-factor authentication
+**Test Results**: 101 tests, 305 assertions, 0 failures, 0 errors
 
 ## Clarifications
 
@@ -14,6 +16,27 @@
 - Q: Should the name field be a single field or split into first and last name? → A: Single "Name" field (e.g., "Jane Doe") for simplicity and inclusivity.
 - Q: When OAuth email matches an existing email/password account, should linking happen automatically or require verification? → A: Require the user to enter their existing account password to confirm the link.
 - Q: Must users who sign up via OAuth also accept TOS and Privacy Policy? → A: Yes, show a brief acceptance screen after OAuth return before completing account creation.
+
+## Implementation Learnings
+
+### Session 2026-03-21
+
+Learnings captured during implementation and testing:
+
+- **Web Awesome Pro components**: The correct component for alerts/notifications is `<wa-callout>`, NOT `<wa-alert>`. `<wa-alert>` does not exist in Web Awesome Pro. Use `<wa-callout variant="success|danger|warning|primary">` with `open`, `closable`, and `duration` attributes.
+- **Web Awesome Pro icons**: Use `<wa-icon name="..." variant="thin">` component instead of bare `<i>` tags with Font Awesome classes. The `variant="thin"` style matches the design system.
+- **Turbo Frame tab switching**: The segmented Sign In / Sign Up toggle uses Turbo Frames (`<turbo-frame id="auth_form">`) rather than `<wa-tab-group>`. This provides seamless tab switching without full page reload while keeping each form as its own route/controller action. A fixed `min-height: 720px` on the turbo-frame wrapper prevents layout shift during tab switching.
+- **OAuth providers shipped**: Google and Apple are rendered as active OAuth buttons. Facebook is configured in OmniAuth but not shown in the UI buttons partial.
+- **Password validation UX**: The `form_validation_controller` Stimulus controller provides real-time password requirement checking with visual indicators. Requirements are displayed via a `<wa-tooltip>` attached to a hint icon next to the password label, with individual requirements getting a `met` CSS class as they're satisfied.
+- **2FA auto-submit**: The `two_factor_controller` Stimulus controller auto-submits the verification form when 6 digits are entered, and toggles between TOTP code and recovery code input modes.
+- **Session cookies**: Authentication uses permanent signed cookies (`cookies.signed.permanent[:session_id]`) with `httponly: true` and `same_site: :lax` settings.
+- **Lockout escalation**: The exponential backoff formula is `LOCKOUT_DURATION * LOCKOUT_ESCALATION_FACTOR^lockout_count` (15min * 2^n), providing escalating lockout durations across repeated lockout events.
+- **Password requirements**: Enforced both client-side (Stimulus) and server-side (model validation): minimum 8 characters, at least one uppercase, one lowercase, one digit, and one special character. The `password_required?` check is conditional — OAuth-only users without a password_digest are not required to set a password.
+- **Recovery codes**: 10 codes generated per 2FA setup. Stored as BCrypt digests (not plaintext). The `RecoveryCode.generate_for(user)` class method replaces any existing codes before generating new ones, and returns the plaintext codes exactly once for display.
+- **Rate limiting**: Applied to `SessionsController#create` (10/min) and `RegistrationsController#create` (10/min) using Rails 8's built-in `rate_limit` macro.
+- **TOTP drift tolerance**: `TwoFactorCredential#verify_code` accepts codes within ±15 seconds of the current time window using ROTP's `drift_behind` and `drift_ahead` parameters.
+- **Email verification tokens**: Use Rails `generates_token_for` with 24-hour expiry, scoped to the user's email (token invalidated if email changes). Password reset tokens use the same mechanism with 2-hour expiry, scoped to password_digest (token invalidated if password changes).
+- **Test architecture**: 101 tests across 18 files — model tests (45), controller integration tests (43), mailer tests (4), and system tests (13 with Capybara/Selenium). Tests run in parallel (16 processes). OmniAuth testing uses `OmniAuth.config.mock_auth` with test mode enabled. Session helper module provides `sign_in_as(user)` and `sign_out` for authenticated test contexts.
 
 ## User Scenarios & Testing *(mandatory)*
 

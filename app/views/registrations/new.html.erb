@@ -102,12 +102,12 @@
     </div>
 
     <% if @user.errors.any? %>
-      <wa-alert variant="danger" open>
+      <wa-callout variant="danger" open>
         <wa-icon slot="icon" name="circle-exclamation" variant="thin"></wa-icon>
         <% @user.errors.full_messages.each do |msg| %>
           <div><%= msg %></div>
         <% end %>
-      </wa-alert>
+      </wa-callout>
     <% end %>
 
     <wa-button
