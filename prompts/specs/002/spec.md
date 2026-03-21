@@ -1,9 +1,9 @@
 # Definition
 
-We need to create the screens to managing our TODO Lists. We need the following screens:
+We need to create the screens for managing our TODO Lists. We need the following screens:
 
 - Blank slate for TODO List listing where we can create a new list
-- TODO List listing screen that lists all out TODO lists with the ability to create a new one
+- TODO List listing screen that lists all our TODO lists with the ability to create a new one
 - A screen with the ability to create a new TODO List:
   - List name
   - Icon

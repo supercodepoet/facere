@@ -4,9 +4,9 @@ Web Components we want to use to build out HTML. Stimulus needs to be able to co
 to server interactions. Look to use Turbo and Stimulus to provide client side interactions.
 
 Use the initial-screens.pen file for the visual reference and source of truth of the UI/UX.
-We can use some simple movement and motion to improve the interaction expierence. Add back any pieces
+We can use some simple movement and motion to improve the interaction experience. Add back any pieces
 missing to the .pen file for UI/UX elements you add to support the spec. We need to use the
-following screens for refence to the feature:
+following screens for reference to the feature:
 - TODO Lists Overview - Blank Slate
 - TODO Lists Overview
 - Create New List
@@ -15,5 +15,5 @@ following screens for refence to the feature:
 - TODO List Detail
 - Delete Confirmation Modal
 
-Fill free to add any screens, functions, modals that are missing or that will be needed to implement
+Feel free to add any screens, functions, modals that are missing or that will be needed to implement
 a pleasant user flow.

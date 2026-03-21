@@ -11,13 +11,12 @@ class TodoListsTest < ApplicationSystemTestCase
       email_verified_at: Time.current
     )
 
-    # Sign in — wa-input uses FormData, need to set value + dispatch wa-change
+    # Sign in — wa-input web components require JS to set values
     visit sign_in_path
     set_wa_input("email_address", "system@example.com")
     set_wa_input("password", "Password1!")
-    sleep 0.3
     page.execute_script("document.querySelector('form').requestSubmit()")
-    assert_no_text "Welcome back!", wait: 5
+    assert_no_text "Welcome back!", wait: 10
   end
 
   test "viewing blank slate when no lists" do
@@ -102,8 +101,8 @@ class TodoListsTest < ApplicationSystemTestCase
 
   # Set a wa-input value by its name attribute and dispatch wa-change
   def set_wa_input(name, value)
+    find("wa-input[name='#{name}']", wait: 5)
     page.execute_script <<~JS
-      await customElements.whenDefined('wa-input');
       const input = document.querySelector('wa-input[name="#{name}"]');
       input.value = '#{value}';
       input.dispatchEvent(new Event('wa-change', { bubbles: true }));
@@ -112,8 +111,8 @@ class TodoListsTest < ApplicationSystemTestCase
 
   # Set a wa-input value by its id attribute and dispatch wa-change
   def set_wa_input_by_id(id, value)
+    find("##{id}", wait: 5)
     page.execute_script <<~JS
-      await customElements.whenDefined('wa-input');
       const input = document.querySelector('##{id}');
       input.value = '#{value}';
       input.dispatchEvent(new Event('wa-change', { bubbles: true }));

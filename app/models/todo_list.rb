@@ -51,11 +51,13 @@ class TodoList < ApplicationRecord
     template_data = TEMPLATES[template]
     return if template_data.blank? || template == "blank"
 
-    template_data[:sections].each_with_index do |section_name, index|
-      section = todo_sections.create!(name: section_name, position: index)
+    transaction do
+      template_data[:sections].each_with_index do |section_name, index|
+        section = todo_sections.create!(name: section_name, position: index)
 
-      (template_data[:items][section_name] || []).each_with_index do |item_name, item_index|
-        todo_items.create!(name: item_name, todo_section: section, position: item_index)
+        (template_data[:items][section_name] || []).each_with_index do |item_name, item_index|
+          todo_items.create!(name: item_name, todo_section: section, position: item_index)
+        end
       end
     end
   end

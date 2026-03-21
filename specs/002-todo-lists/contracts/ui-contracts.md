@@ -25,7 +25,7 @@
 - Full-page form within content area (no sidebar)
 - Fields: List Name (`wa-input`), Icon picker (grid of `wa-icon` buttons), Color picker (swatches), Description (`wa-textarea`), Template picker (card grid with radio behavior)
 - Actions: Cancel (link back), Create List (`wa-button` brand)
-- Error state: `wa-callout` toast at top, field-level error styling (red border + message)
+- Error state: Custom `.form-error-banner` (triangle-exclamation icon, #FEE2E2 bg, 16px radius) at top, field-level error styling (red border, #FEF2F2 bg + error message)
 
 ### `todo_lists/edit.html.erb`
 - Same form as new, pre-populated with current values
