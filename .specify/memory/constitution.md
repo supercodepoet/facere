@@ -177,6 +177,30 @@ plan document's Complexity Tracking table.
 - **Commit Discipline**: Commit after each logical unit of work with
   clear, descriptive messages
 
+### CI Pipeline — All Checks MUST Pass
+
+Every feature MUST pass the full CI pipeline before being considered
+complete. Zero errors across all checks:
+
+1. **Lint**: `bin/rubocop` — zero offenses
+2. **Security Scan**: `bin/brakeman --no-pager` — zero warnings
+3. **Dependency Audit**: `bin/bundler-audit` — zero advisories
+4. **Unit & Integration Tests**: `bin/rails test` — zero failures
+5. **System Tests**: `bin/rails test:system` — zero failures
+6. **JS Dependency Audit**: `bin/importmap audit` — zero vulnerabilities
+
+### Feature Completion Checklist
+
+A feature is NOT complete until:
+
+- All implementation tasks are marked done
+- `bin/rubocop` passes with zero offenses
+- `bin/brakeman --no-pager` passes with zero warnings
+- `bin/rails test` passes with zero failures
+- `bin/rails test:system` passes with zero failures
+- Spec documents (spec.md, plan.md, tasks.md) are updated with
+  implementation learnings
+
 ## Governance
 
 This constitution is the authoritative source of project principles
@@ -196,4 +220,4 @@ implementation plans MUST verify compliance with these principles.
   (generated from `agent-file-template.md`) for day-to-day development
   reference
 
-**Version**: 1.0.0 | **Ratified**: 2026-03-05 | **Last Amended**: 2026-03-05
+**Version**: 1.1.0 | **Ratified**: 2026-03-05 | **Last Amended**: 2026-03-21

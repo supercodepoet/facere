@@ -48,7 +48,7 @@ class TwoFactorAuthenticationController < ApplicationController
   end
 
   def verify
-    return redirect_to sign_in_path unless session[:pending_2fa_user_id]
+    redirect_to sign_in_path unless session[:pending_2fa_user_id]
   end
 
   def confirm

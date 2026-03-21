@@ -3,7 +3,7 @@
   <p class="auth-form-subtitle">Scan the QR code with your authenticator app</p>
 
   <div style="text-align: center; margin: 24px 0; padding: 20px; background: white; border-radius: 12px; border: 1px solid var(--color-zinc-200, #e4e4e7);">
-    <%= @qr_code.html_safe %>
+    <%= sanitize @qr_code, tags: %w[svg rect path g circle line], attributes: %w[viewBox width height x y d fill xmlns version class transform style] %>
   </div>
 
   <details style="margin-bottom: 20px;">

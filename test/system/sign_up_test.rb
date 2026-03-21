@@ -27,14 +27,12 @@ class SignUpTest < ApplicationSystemTestCase
     assert_text "Apple"
   end
 
-  test "sign up page shows password requirements" do
+  test "sign up page shows password fields" do
     visit sign_up_path
 
-    assert_text "At least 8 characters"
-    assert_text "One uppercase letter"
-    assert_text "One lowercase letter"
-    assert_text "One number"
-    assert_text "One special character"
+    assert_css "wa-input[label='Password']"
+    assert_css "wa-input[label='Confirm Password']"
+    assert_css "wa-input[minlength='8']"
   end
 
   test "sign up page switches to sign in via turbo frame" do
