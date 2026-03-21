@@ -1,0 +1,49 @@
+<% if flash.any? %>
+  <div class="index-flash">
+    <%= render "shared/flash_messages" %>
+  </div>
+<% end %>
+
+<% if @todo_lists.any? %>
+  <div class="lists-header">
+    <h1>My Lists</h1>
+    <%= link_to new_todo_list_path, class: "lists-new-btn" do %>
+      <wa-icon name="plus" variant="thin"></wa-icon>
+      New List
+    <% end %>
+  </div>
+
+  <div class="lists-grid">
+    <% @todo_lists.each do |list| %>
+      <%= render "list_card", list: list %>
+    <% end %>
+
+    <%= link_to new_todo_list_path, class: "list-card-create" do %>
+      <div class="list-card-create-icon">
+        <wa-icon name="plus" variant="thin"></wa-icon>
+      </div>
+      <span>Create New List</span>
+    <% end %>
+  </div>
+<% else %>
+  <div class="blank-slate">
+    <div class="blank-slate-illustration">
+      <wa-icon name="clipboard-list" variant="thin"></wa-icon>
+    </div>
+
+    <h1>Your lists are waiting!</h1>
+    <p>Create your first list and start turning chaos into beautifully organized tasks. It only takes a moment!</p>
+
+    <%= link_to new_todo_list_path, class: "blank-slate-cta" do %>
+      <wa-icon name="plus" variant="thin"></wa-icon>
+      Create My First List
+      <wa-icon name="arrow-right" variant="thin"></wa-icon>
+    <% end %>
+
+    <div class="blank-slate-features">
+      <span><wa-icon name="sparkles" variant="thin"></wa-icon> Organize tasks</span>
+      <span><wa-icon name="users" variant="thin"></wa-icon> Collaborate</span>
+      <span><wa-icon name="clock" variant="thin"></wa-icon> Stay on track</span>
+    </div>
+  </div>
+<% end %>

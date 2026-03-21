@@ -1,0 +1,28 @@
+<%= link_to todo_list_path(list), class: "list-card list-card--#{list.color}" do %>
+  <div class="list-card-header">
+    <div class="list-card-left">
+      <wa-icon name="grip-dots-vertical" variant="thin" class="list-card-drag"></wa-icon>
+      <div class="list-card-emoji list-card-emoji--<%= list.color %>">
+        <% if list.icon.present? %>
+          <wa-icon name="<%= list.icon %>" variant="thin"></wa-icon>
+        <% end %>
+      </div>
+      <span class="list-card-title"><%= list.name %></span>
+    </div>
+    <button class="list-card-menu" aria-label="List options" onclick="event.preventDefault(); event.stopPropagation();">
+      <wa-icon name="ellipsis" variant="thin"></wa-icon>
+    </button>
+  </div>
+
+  <div class="list-card-progress-section">
+    <div class="list-card-progress">
+      <div class="list-card-progress-bar list-card-progress-bar--<%= list.color %>" style="width: <%= list.completion_percentage %>%;"></div>
+    </div>
+    <span class="list-card-pct"><%= list.completion_percentage %>% complete</span>
+  </div>
+
+  <div class="list-card-bottom">
+    <span class="list-card-items"><%= list.todo_items.count %> items</span>
+    <span class="list-card-updated">Updated <%= time_ago_in_words(list.updated_at) %> ago</span>
+  </div>
+<% end %>

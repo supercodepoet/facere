@@ -1,0 +1,27 @@
+<aside class="sidebar" data-controller="list-search">
+  <div class="sidebar-search">
+    <wa-input placeholder="Search lists..." size="small" data-action="input->list-search#filter" data-list-search-target="input">
+      <wa-icon slot="prefix" name="magnifying-glass" variant="thin"></wa-icon>
+    </wa-input>
+  </div>
+
+  <div class="sidebar-heading">My Lists</div>
+
+  <ul class="sidebar-list" data-list-search-target="list">
+    <% sidebar_lists.each do |list| %>
+      <li data-list-search-target="item">
+        <%= link_to todo_list_path(list),
+          class: "sidebar-item #{'active' if local_assigns[:current_list] && current_list.id == list.id}" do %>
+          <span class="sidebar-dot" style="background: var(--list-color-<%= list.color %>);"></span>
+          <%= list.name %>
+          <span class="sidebar-item-count"><%= list.todo_items.count %></span>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+
+  <%= link_to new_todo_list_path, class: "sidebar-new-btn" do %>
+    <wa-icon name="plus" variant="thin"></wa-icon>
+    New List
+  <% end %>
+</aside>

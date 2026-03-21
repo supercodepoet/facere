@@ -1,4 +1,4 @@
-<div aria-live="polite" aria-atomic="true">
+<div aria-live="polite" aria-atomic="true" class="flash-container">
 <% flash.each do |type, message| %>
   <%
     variant = case type.to_s
@@ -7,10 +7,18 @@
               when "warning"          then "warning"
               else "primary"
               end
+    icon = case variant
+           when "success" then "circle-check"
+           when "danger"  then "circle-exclamation"
+           else "triangle-exclamation"
+           end
   %>
-  <wa-callout variant="<%= variant %>" open closable duration="8000" style="margin-bottom: 16px;">
-    <wa-icon slot="icon" name="<%= variant == 'success' ? 'circle-check' : variant == 'danger' ? 'circle-exclamation' : 'triangle-exclamation' %>" variant="thin"></wa-icon>
-    <%= message %>
-  </wa-callout>
+  <div class="flash-toast flash-toast-<%= variant %>" role="alert" data-controller="flash-toast" data-flash-toast-duration-value="8000">
+    <wa-icon name="<%= icon %>" variant="solid" class="flash-toast-icon"></wa-icon>
+    <span class="flash-toast-message"><%= message %></span>
+    <button type="button" class="flash-toast-close" data-action="flash-toast#dismiss" aria-label="Dismiss">
+      <wa-icon name="xmark" variant="thin"></wa-icon>
+    </button>
+  </div>
 <% end %>
 </div>

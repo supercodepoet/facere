@@ -35,8 +35,11 @@ Rails.application.routes.draw do
   get    "two_factor/recovery_codes", to: "two_factor_authentication#recovery_codes", as: :two_factor_recovery_codes
   get    "two_factor/recovery_help",  to: "two_factor_authentication#recovery_help",  as: :two_factor_recovery_help
 
+  # TODO Lists
+  resources :todo_lists, path: "lists"
+
   # Root
-  root "sessions#new"
+  root "todo_lists#index"
 
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
