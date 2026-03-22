@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["input", "quickActions"]
+  static targets = ["input"]
 
   connect() {
     this.inputTarget.focus()
@@ -25,8 +25,11 @@ export default class extends Controller {
   }
 
   cancel() {
-    this.element.remove()
-    const quickActions = document.querySelector('.quick-actions-bar')
-    if (quickActions) quickActions.remove()
+    const wrapper = this.element.closest(".inline-item-wrapper")
+    if (wrapper) {
+      wrapper.remove()
+    } else {
+      this.element.remove()
+    }
   }
 }

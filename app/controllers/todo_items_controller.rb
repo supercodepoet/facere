@@ -30,12 +30,12 @@ class TodoItemsController < ApplicationController
   def update
     if @todo_item.update(todo_item_params)
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(@todo_item, partial: "todo_lists/todo_item", locals: { item: @todo_item, todo_list: @todo_list }) }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(@todo_item, partial: @todo_item.completed? ? "todo_lists/todo_item_completed" : "todo_lists/todo_item", locals: { item: @todo_item, todo_list: @todo_list }) }
         format.html { redirect_to todo_list_todo_item_path(@todo_list, @todo_item) }
       end
     else
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(@todo_item, partial: "todo_lists/todo_item", locals: { item: @todo_item, todo_list: @todo_list }), status: :unprocessable_entity }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(@todo_item, partial: @todo_item.completed? ? "todo_lists/todo_item_completed" : "todo_lists/todo_item", locals: { item: @todo_item, todo_list: @todo_list }), status: :unprocessable_entity }
         format.html { redirect_to todo_list_todo_item_path(@todo_list, @todo_item), alert: @todo_item.errors.full_messages.first }
       end
     end

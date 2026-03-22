@@ -6,7 +6,7 @@ class TodoSectionsController < ApplicationController
 
   def create
     @todo_section = @todo_list.todo_sections.build(todo_section_params)
-    @todo_section.position = @todo_list.todo_sections.count
+    @todo_section.position = @todo_list.all_todo_sections.count
 
     if @todo_section.save
       respond_to do |format|
@@ -68,7 +68,7 @@ class TodoSectionsController < ApplicationController
   end
 
   def set_todo_section
-    @todo_section = @todo_list.todo_sections.find(params[:id])
+    @todo_section = @todo_list.all_todo_sections.find(params[:id])
   end
 
   def todo_section_params

@@ -38,46 +38,42 @@
 
     <% has_content = @unsectioned_items.present? || @sections.any? %>
 
-    <% unless has_content %>
-      <div class="empty-list-slate">
-        <div class="empty-list-illustration">
-          <wa-icon name="party-horn" variant="thin"></wa-icon>
-        </div>
-        <h2>Your list is ready!</h2>
-        <p>"<%= @todo_list.name %>" has been created. Start adding items and sections to bring it to life!</p>
-        <div class="empty-list-actions">
-          <button class="show-action-btn show-action-btn-primary" data-action="click->show-actions#addItem">
-            <wa-icon name="plus" variant="thin"></wa-icon>
-            Add First Item
-          </button>
-          <button class="show-action-btn" data-action="click->show-actions#addSection">
-            <wa-icon name="folder-plus" variant="thin"></wa-icon>
-            Add Section
-          </button>
-        </div>
+    <div class="empty-list-slate" data-show-actions-target="emptySlate" <% if has_content %>style="display: none;"<% end %>>
+      <div class="empty-list-illustration">
+        <wa-icon name="party-horn" variant="thin"></wa-icon>
       </div>
-    <% else %>
-      <div class="show-content" id="show-content" data-controller="drag-reorder" data-drag-reorder-url-value="<%= reorder_todo_list_todo_items_path(@todo_list) %>" data-show-actions-target="content">
-        <% if @unsectioned_items.present? %>
-          <div class="unsectioned-items" id="unsectioned-items">
-            <div class="unsectioned-header">
-              <span>Items without section</span>
-            </div>
-            <% @unsectioned_items.each do |item| %>
-              <% if item.completed? %>
-                <%= render "todo_lists/todo_item_completed", item: item, todo_list: @todo_list %>
-              <% else %>
-                <%= render "todo_lists/todo_item", item: item, todo_list: @todo_list %>
-              <% end %>
-            <% end %>
-          </div>
-        <% end %>
+      <h2>Your list is ready!</h2>
+      <p>"<%= @todo_list.name %>" has been created. Start adding items and sections to bring it to life!</p>
+      <div class="empty-list-actions">
+        <button class="show-action-btn show-action-btn-primary" data-action="click->show-actions#addItem">
+          <wa-icon name="plus" variant="thin"></wa-icon>
+          Add First Item
+        </button>
+        <button class="show-action-btn" data-action="click->show-actions#addSection">
+          <wa-icon name="folder-plus" variant="thin"></wa-icon>
+          Add Section
+        </button>
+      </div>
+    </div>
 
-        <% @sections.each do |section| %>
-          <%= render "todo_lists/section", section: section, todo_list: @todo_list %>
+    <div class="show-content" id="show-content" data-controller="drag-reorder" data-drag-reorder-url-value="<%= reorder_todo_list_todo_items_path(@todo_list) %>" data-show-actions-target="content" <% unless has_content %>style="display: none;"<% end %>>
+      <div class="unsectioned-items" id="unsectioned-items">
+        <div class="unsectioned-header">
+          <span>Items without section</span>
+        </div>
+        <% @unsectioned_items.each do |item| %>
+          <% if item.completed? %>
+            <%= render "todo_lists/todo_item_completed", item: item, todo_list: @todo_list %>
+          <% else %>
+            <%= render "todo_lists/todo_item", item: item, todo_list: @todo_list %>
+          <% end %>
         <% end %>
       </div>
-    <% end %>
+
+      <% @sections.each do |section| %>
+        <%= render "todo_lists/section", section: section, todo_list: @todo_list %>
+      <% end %>
+    </div>
 
     <template data-show-actions-target="itemTemplate">
       <%= render "todo_lists/inline_item_input", todo_list: @todo_list %>

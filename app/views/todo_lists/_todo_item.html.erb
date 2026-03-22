@@ -1,5 +1,5 @@
 <%= turbo_frame_tag dom_id(item) do %>
-  <div class="todo-item" id="<%= dom_id(item) %>" draggable="true">
+  <div class="todo-item" draggable="true">
     <wa-icon name="grip-dots-vertical" variant="thin" class="drag-handle"></wa-icon>
     <%= button_to toggle_todo_list_todo_item_path(todo_list, item), method: :patch, class: "todo-item-checkbox" do %>
       <div class="todo-item-check-circle"></div>

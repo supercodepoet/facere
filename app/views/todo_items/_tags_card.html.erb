@@ -2,9 +2,13 @@
   <span class="detail-card-label">Tags</span>
   <div class="tags-row">
     <% item.tags.each do |tag| %>
-      <span class="tag-pill" style="<%= "background: #{tag.color}20; color: #{tag.color};" if tag.color.present? %>">
-        <%= tag.name %>
-      </span>
+      <% if tag.color.present? && tag.color.match?(/\A#[0-9a-fA-F]{3,8}\z/) %>
+        <span class="tag-pill" style="background: <%= tag.color %>20; color: <%= tag.color %>;">
+          <%= tag.name %>
+        </span>
+      <% else %>
+        <span class="tag-pill"><%= tag.name %></span>
+      <% end %>
     <% end %>
   </div>
 </div>
