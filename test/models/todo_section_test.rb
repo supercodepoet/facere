@@ -40,4 +40,34 @@ class TodoSectionTest < ActiveSupport::TestCase
     section.destroy!
     assert_equal 0, TodoItem.where(todo_section_id: section.id).count
   end
+
+  test "icon can be set" do
+    section = @list.todo_sections.create!(name: "With Icon", position: 0, icon: "star")
+    assert_equal "star", section.reload.icon
+  end
+
+  test "active scope filters archived sections" do
+    @list.todo_sections.create!(name: "Active", position: 0, archived: false)
+    @list.todo_sections.create!(name: "Archived", position: 1, archived: true)
+    results = @list.all_todo_sections.active
+    assert_equal 1, results.count
+    assert_equal "Active", results.first.name
+  end
+
+  test "archive! sets archived true on section and all its items" do
+    section = @list.todo_sections.create!(name: "To Archive", position: 0)
+    item1 = @list.todo_items.create!(name: "Item 1", todo_section: section, position: 0)
+    item2 = @list.todo_items.create!(name: "Item 2", todo_section: section, position: 1)
+    section.archive!
+    assert section.reload.archived?
+    assert item1.reload.archived?
+    assert item2.reload.archived?
+  end
+
+  test "active_item_count returns count of non-archived items" do
+    section = @list.todo_sections.create!(name: "Count Test", position: 0)
+    @list.todo_items.create!(name: "Active Item", todo_section: section, position: 0, archived: false)
+    @list.todo_items.create!(name: "Archived Item", todo_section: section, position: 1, archived: true)
+    assert_equal 1, section.active_item_count
+  end
 end

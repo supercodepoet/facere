@@ -1,0 +1,18 @@
+<wa-dropdown placement="bottom-end" data-controller="context-menu"
+  data-context-menu-section-id-value="<%= section.id %>"
+  data-context-menu-list-id-value="<%= todo_list.id %>"
+  data-action="wa-select->context-menu#dispatch">
+  <wa-button slot="trigger" size="small" appearance="plain" class="section-more">
+    <wa-icon name="ellipsis-vertical" variant="thin"></wa-icon>
+  </wa-button>
+  <wa-dropdown-item value="edit">Edit</wa-dropdown-item>
+  <wa-dropdown-item value="move">Move...</wa-dropdown-item>
+  <wa-dropdown-item value="copy">Copy...</wa-dropdown-item>
+  <wa-divider></wa-divider>
+  <wa-dropdown-item value="new_list">New list from group</wa-dropdown-item>
+  <wa-divider></wa-divider>
+  <wa-dropdown-item value="archive">Archive group</wa-dropdown-item>
+  <wa-dropdown-item value="delete" variant="danger">Delete group</wa-dropdown-item>
+  <wa-divider></wa-divider>
+  <wa-dropdown-item value="insert">Insert a to-do</wa-dropdown-item>
+</wa-dropdown>

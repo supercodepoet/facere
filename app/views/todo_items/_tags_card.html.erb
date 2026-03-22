@@ -1,0 +1,10 @@
+<div class="detail-card">
+  <span class="detail-card-label">Tags</span>
+  <div class="tags-row">
+    <% item.tags.each do |tag| %>
+      <span class="tag-pill" style="<%= "background: #{tag.color}20; color: #{tag.color};" if tag.color.present? %>">
+        <%= tag.name %>
+      </span>
+    <% end %>
+  </div>
+</div>

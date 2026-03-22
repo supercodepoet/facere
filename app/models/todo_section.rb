@@ -5,5 +5,19 @@ class TodoSection < ApplicationRecord
   validates :name, presence: true, length: { maximum: 100 }
   validates :position, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
+  scope :active, -> { where(archived: false) }
+  scope :by_position, -> { order(:position) }
+
   default_scope { order(:position) }
+
+  def archive!
+    transaction do
+      update!(archived: true)
+      todo_items.update_all(archived: true)
+    end
+  end
+
+  def active_item_count
+    todo_items.where(archived: false).size
+  end
 end

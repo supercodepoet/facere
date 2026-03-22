@@ -1,0 +1,17 @@
+<div class="detail-section" data-controller="notes-editor">
+  <div class="detail-section-header">
+    <wa-icon name="file-lines" variant="thin" class="detail-section-icon"></wa-icon>
+    <span class="detail-section-title">Notes</span>
+    <div class="detail-section-spacer"></div>
+    <button class="detail-section-edit-btn" data-action="click->notes-editor#edit">
+      <wa-icon name="pen" variant="thin"></wa-icon>
+    </button>
+  </div>
+  <div class="detail-section-body" data-notes-editor-target="viewMode">
+    <% if item.notes.present? %>
+      <div class="notes-content"><%= item.notes %></div>
+    <% else %>
+      <p class="notes-placeholder">Click edit to add notes...</p>
+    <% end %>
+  </div>
+</div>

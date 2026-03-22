@@ -1,0 +1,30 @@
+<div class="detail-section">
+  <div class="detail-section-header">
+    <wa-icon name="square-check" variant="thin" class="detail-section-icon"></wa-icon>
+    <span class="detail-section-title">Checklist</span>
+    <% completed = item.checklist_items.count(&:completed?) %>
+    <% total = item.checklist_items.size %>
+    <% if total > 0 %>
+      <span class="checklist-progress-badge"><%= completed %>/<%= total %></span>
+    <% end %>
+    <div class="detail-section-spacer"></div>
+    <button class="detail-section-add-btn">
+      <wa-icon name="plus" variant="thin"></wa-icon>
+      Add
+    </button>
+  </div>
+  <div class="checklist-items">
+    <% item.checklist_items.each do |check_item| %>
+      <div class="checklist-item">
+        <%= button_to toggle_todo_list_todo_item_checklist_item_path(todo_list, item, check_item), method: :patch, class: "checklist-checkbox #{'checklist-checkbox--done' if check_item.completed?}" do %>
+          <% if check_item.completed? %>
+            <wa-icon name="square-check" variant="solid"></wa-icon>
+          <% else %>
+            <wa-icon name="square" variant="thin"></wa-icon>
+          <% end %>
+        <% end %>
+        <span class="checklist-name #{'checklist-name--done' if check_item.completed?}"><%= check_item.name %></span>
+      </div>
+    <% end %>
+  </div>
+</div>

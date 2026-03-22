@@ -10,7 +10,74 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_21_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_22_021507) do
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.string "content_type"
+    t.datetime "created_at", null: false
+    t.string "filename", null: false
+    t.string "key", null: false
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "checklist_items", force: :cascade do |t|
+    t.boolean "completed", default: false, null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.integer "position", default: 0, null: false
+    t.integer "todo_item_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["todo_item_id"], name: "index_checklist_items_on_todo_item_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.integer "todo_item_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["todo_item_id"], name: "index_comments_on_todo_item_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "item_tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "tag_id", null: false
+    t.integer "todo_item_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag_id"], name: "index_item_tags_on_tag_id"
+    t.index ["todo_item_id", "tag_id"], name: "index_item_tags_on_todo_item_id_and_tag_id", unique: true
+  end
+
   create_table "oauth_identities", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "provider", null: false
@@ -39,11 +106,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_21_180000) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
-  create_table "todo_items", force: :cascade do |t|
-    t.boolean "completed", default: false, null: false
+  create_table "tags", force: :cascade do |t|
+    t.string "color"
     t.datetime "created_at", null: false
     t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_tags_on_user_id"
+  end
+
+  create_table "todo_items", force: :cascade do |t|
+    t.boolean "archived", default: false, null: false
+    t.integer "assigned_to_user_id"
+    t.boolean "completed", default: false, null: false
+    t.datetime "created_at", null: false
+    t.date "due_date"
+    t.string "name", null: false
     t.integer "position", default: 0, null: false
+    t.string "priority", default: "none", null: false
+    t.string "status", default: "todo", null: false
     t.integer "todo_list_id", null: false
     t.integer "todo_section_id"
     t.datetime "updated_at", null: false
@@ -65,7 +146,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_21_180000) do
   end
 
   create_table "todo_sections", force: :cascade do |t|
+    t.boolean "archived", default: false, null: false
     t.datetime "created_at", null: false
+    t.string "icon"
     t.string "name", null: false
     t.integer "position", default: 0, null: false
     t.integer "todo_list_id", null: false
@@ -97,11 +180,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_21_180000) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "checklist_items", "todo_items"
+  add_foreign_key "comments", "todo_items"
+  add_foreign_key "comments", "users"
+  add_foreign_key "item_tags", "tags"
+  add_foreign_key "item_tags", "todo_items"
   add_foreign_key "oauth_identities", "users"
   add_foreign_key "recovery_codes", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "tags", "users"
   add_foreign_key "todo_items", "todo_lists"
   add_foreign_key "todo_items", "todo_sections"
+  add_foreign_key "todo_items", "users", column: "assigned_to_user_id"
   add_foreign_key "todo_lists", "users"
   add_foreign_key "todo_sections", "todo_lists"
   add_foreign_key "two_factor_credentials", "users"

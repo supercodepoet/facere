@@ -1,0 +1,3 @@
+<%= turbo_stream.prepend(@todo_item.todo_section_id ? dom_id(@todo_item.todo_section, :items) : "unsectioned-items") do %>
+  <%= render "todo_lists/todo_item", item: @todo_item, todo_list: @todo_list %>
+<% end %>

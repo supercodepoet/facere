@@ -36,7 +36,8 @@ class TodoList < ApplicationRecord
   }.freeze
 
   belongs_to :user
-  has_many :todo_sections, dependent: :destroy
+  has_many :todo_sections, -> { active }, dependent: :destroy
+  has_many :all_todo_sections, class_name: "TodoSection", dependent: :destroy
   has_many :todo_items, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 100 },

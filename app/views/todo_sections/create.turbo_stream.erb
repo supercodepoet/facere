@@ -1,0 +1,4 @@
+<%= turbo_stream.append("show-content") do %>
+  <%= render "todo_lists/section", section: @todo_section, todo_list: @todo_list %>
+<% end %>
+<%= turbo_stream.remove("inline-section-input") %>

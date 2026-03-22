@@ -1,0 +1,31 @@
+<div class="detail-section">
+  <div class="detail-section-header">
+    <wa-icon name="message-lines" variant="thin" class="detail-section-icon"></wa-icon>
+    <span class="detail-section-title">Comments</span>
+    <% if item.comments.any? %>
+      <span class="comments-count-badge"><%= item.comments.size %></span>
+    <% end %>
+  </div>
+  <div class="comments-list">
+    <% item.comments.each do |comment| %>
+      <div class="comment-row">
+        <div class="comment-avatar" style="background: var(--list-color-<%= todo_list.color %>);">
+          <%= comment.user.name.split.map(&:first).join.upcase.first(2) %>
+        </div>
+        <div class="comment-body">
+          <div class="comment-header">
+            <span class="comment-author"><%= comment.user.name %></span>
+            <span class="comment-time"><%= time_ago_in_words(comment.created_at) %> ago</span>
+          </div>
+          <p class="comment-text"><%= comment.body %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="comment-input-row">
+    <div class="comment-avatar comment-avatar--self" style="background: var(--list-color-<%= todo_list.color %>);">
+      <%= Current.user.name.split.map(&:first).join.upcase.first(2) %>
+    </div>
+    <span class="comment-placeholder">Write a comment...</span>
+  </div>
+</div>

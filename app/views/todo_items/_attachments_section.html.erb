@@ -1,0 +1,24 @@
+<div class="detail-section">
+  <div class="detail-section-header">
+    <wa-icon name="paperclip" variant="thin" class="detail-section-icon"></wa-icon>
+    <span class="detail-section-title">Attachments</span>
+    <% if item.files.attached? %>
+      <span class="attach-count-badge"><%= item.files.count %></span>
+    <% end %>
+    <div class="detail-section-spacer"></div>
+    <button class="detail-section-add-btn">
+      <wa-icon name="cloud-arrow-up" variant="thin"></wa-icon>
+      Upload
+    </button>
+  </div>
+  <% if item.files.attached? %>
+    <div class="attach-grid">
+      <% item.files.each do |file| %>
+        <div class="file-card">
+          <wa-icon name="file" variant="thin" class="file-card-icon"></wa-icon>
+          <span class="file-card-name"><%= file.filename %></span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

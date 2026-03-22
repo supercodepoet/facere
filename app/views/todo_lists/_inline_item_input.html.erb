@@ -1,0 +1,30 @@
+<div class="active-input-row" id="inline-item-input"
+     data-controller="inline-item"
+     data-inline-item-list-id-value="<%= todo_list.id %>"
+     data-inline-item-section-id-value="<%= local_assigns[:section]&.id %>">
+  <div class="todo-item-check-circle"></div>
+  <input type="text" class="inline-item-text" placeholder="What needs to be done?"
+         data-inline-item-target="input"
+         data-action="keydown->inline-item#handleKeydown"
+         autofocus>
+  <div class="input-hints">
+    <span class="input-hint-badge">Enter</span>
+    <span class="input-hint-text">to save</span>
+    <span class="input-hint-badge">Esc</span>
+    <span class="input-hint-text">to cancel</span>
+  </div>
+</div>
+<div class="quick-actions-bar" data-inline-item-target="quickActions">
+  <button class="quick-action-btn" type="button">
+    <wa-icon name="user-plus" variant="thin"></wa-icon>
+    Assign
+  </button>
+  <button class="quick-action-btn" type="button">
+    <wa-icon name="calendar" variant="thin"></wa-icon>
+    Due date
+  </button>
+  <button class="quick-action-btn" type="button">
+    <wa-icon name="flag" variant="thin"></wa-icon>
+    Priority
+  </button>
+</div>

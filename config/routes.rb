@@ -36,7 +36,38 @@ Rails.application.routes.draw do
   get    "two_factor/recovery_help",  to: "two_factor_authentication#recovery_help",  as: :two_factor_recovery_help
 
   # TODO Lists
-  resources :todo_lists, path: "lists"
+  resources :todo_lists, path: "lists" do
+    resources :todo_items, path: "items", except: [ :index ] do
+      member do
+        patch :toggle
+        patch :archive
+        patch :move
+        post :copy
+      end
+      collection do
+        patch :reorder
+      end
+
+      resources :checklist_items, path: "checklist", only: [ :create, :update, :destroy ] do
+        member do
+          patch :toggle
+        end
+      end
+
+      resources :tags, only: [ :create, :destroy ]
+      resources :attachments, only: [ :create, :destroy ]
+    end
+
+    resources :todo_sections, path: "sections", except: [ :index, :show ] do
+      member do
+        patch :archive
+        patch :move
+      end
+      collection do
+        patch :reorder
+      end
+    end
+  end
 
   # Root
   root "todo_lists#index"

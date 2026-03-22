@@ -1,0 +1,139 @@
+<div class="show-layout">
+  <%= render "todo_lists/sidebar", sidebar_lists: @sidebar_lists, current_list: @todo_list %>
+
+  <div class="show-main">
+    <div class="show-header">
+      <div class="show-header-left">
+        <%= link_to todo_list_path(@todo_list), class: "show-back-btn", aria: { label: "Back to list" } do %>
+          <wa-icon name="arrow-left" variant="thin"></wa-icon>
+        <% end %>
+        <div class="show-title-group">
+          <% if @todo_list.icon.present? %>
+            <wa-icon name="<%= @todo_list.icon %>" variant="thin" class="show-title-icon" style="color: var(--list-color-<%= @todo_list.color %>);"></wa-icon>
+          <% end %>
+          <h1 class="show-title"><%= @todo_list.name %></h1>
+          <%= link_to edit_todo_list_path(@todo_list), class: "show-edit-btn", aria: { label: "Edit list" } do %>
+            <wa-icon name="pen" variant="thin"></wa-icon>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="show-header-right">
+        <button class="show-action-btn show-action-btn-section">
+          <wa-icon name="folder-plus" variant="thin"></wa-icon>
+          Add Section
+        </button>
+        <button class="show-action-btn show-action-btn-primary">
+          <wa-icon name="plus" variant="thin"></wa-icon>
+          Add Item
+        </button>
+      </div>
+    </div>
+
+    <div class="item-detail-content">
+      <div class="item-detail-left">
+        <div class="item-header">
+          <div class="item-status-row">
+            <span class="item-status-badge item-status-badge--<%= @todo_item.status %>">
+              <%= @todo_item.status.humanize %>
+            </span>
+            <% if @todo_item.priority != "none" %>
+              <span class="item-priority-badge item-priority-badge--<%= @todo_item.priority %>">
+                <%= @todo_item.priority.humanize %> Priority
+              </span>
+            <% end %>
+          </div>
+          <h2 class="item-detail-title"><%= @todo_item.name %></h2>
+          <div class="item-meta-row">
+            <span class="item-meta">
+              <wa-icon name="calendar" variant="thin"></wa-icon>
+              Created <%= @todo_item.created_at.strftime("%b %-d, %Y") %>
+            </span>
+            <% if @todo_item.todo_section.present? %>
+              <span class="item-meta">
+                <wa-icon name="folder" variant="thin"></wa-icon>
+                <%= @todo_item.todo_section.name %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="item-divider"></div>
+
+        <%= turbo_frame_tag "item_notes_#{@todo_item.id}" do %>
+          <%= render "todo_items/notes_section", item: @todo_item %>
+        <% end %>
+
+        <div class="item-divider"></div>
+
+        <%= turbo_frame_tag "item_checklist_#{@todo_item.id}" do %>
+          <%= render "todo_items/checklist_section", item: @todo_item, todo_list: @todo_list %>
+        <% end %>
+
+        <div class="item-divider"></div>
+
+        <%= turbo_frame_tag "item_attachments_#{@todo_item.id}" do %>
+          <%= render "todo_items/attachments_section", item: @todo_item %>
+        <% end %>
+
+        <div class="item-divider"></div>
+
+        <%= render "todo_items/comments_section", item: @todo_item, todo_list: @todo_list %>
+      </div>
+
+      <div class="item-detail-right">
+        <%= render "todo_items/status_sidebar", item: @todo_item, todo_list: @todo_list %>
+
+        <% if @todo_item.assigned_to.present? || true %>
+          <div class="detail-card">
+            <div class="detail-card-label">Assigned to
+              <button class="detail-card-add-btn">
+                <wa-icon name="plus" variant="thin"></wa-icon>
+              </button>
+            </div>
+            <% if @todo_item.assigned_to.present? %>
+              <div class="assignee-row">
+                <div class="assignee-avatar" style="background: var(--list-color-<%= @todo_list.color %>);">
+                  <%= @todo_item.assigned_to.name.split.map(&:first).join.upcase.first(2) %>
+                </div>
+                <span class="assignee-name"><%= @todo_item.assigned_to.name %></span>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+
+        <div class="detail-card">
+          <span class="detail-card-label">Due Date</span>
+          <% if @todo_item.due_date.present? %>
+            <div class="due-date-display">
+              <wa-icon name="calendar" variant="thin"></wa-icon>
+              <span><%= @todo_item.due_date.strftime("%B %-d, %Y") %></span>
+            </div>
+          <% else %>
+            <span class="detail-card-empty">No due date set</span>
+          <% end %>
+        </div>
+
+        <div class="detail-card">
+          <span class="detail-card-label">Notify on Complete</span>
+          <span class="detail-card-empty">No notifications set</span>
+        </div>
+
+        <%= turbo_frame_tag "item_tags_#{@todo_item.id}" do %>
+          <%= render "todo_items/tags_card", item: @todo_item %>
+        <% end %>
+
+        <div class="detail-card detail-card--actions">
+          <%= button_to "Mark Complete", toggle_todo_list_todo_item_path(@todo_list, @todo_item), method: :patch, class: "detail-action-btn detail-action-btn--complete" do %>
+            <wa-icon name="circle-check" variant="thin"></wa-icon>
+            Mark Complete
+          <% end %>
+          <%= button_to "Delete Item", todo_list_todo_item_path(@todo_list, @todo_item), method: :delete, class: "detail-action-btn detail-action-btn--delete", data: { turbo_confirm: "Are you sure you want to delete this item?" } do %>
+            <wa-icon name="trash" variant="thin"></wa-icon>
+            Delete Item
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

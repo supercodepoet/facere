@@ -19,14 +19,14 @@
 
 **Purpose**: Install dependencies, create migrations, configure routes
 
-- [ ] T001 Install ActionText: run `bin/rails action_text:install` for rich text notes support
-- [ ] T002 Create migration `add_fields_to_todo_items` adding status (string, default "todo", not null), due_date (date, nullable), priority (string, default "none", not null), archived (boolean, default false, not null), assigned_to_user_id (integer, nullable, FK to users) to `todo_items` in `db/migrate/`
-- [ ] T003 [P] Create migration `add_fields_to_todo_sections` adding icon (string, nullable), archived (boolean, default false, not null) to `todo_sections` in `db/migrate/`
-- [ ] T004 [P] Create migration `create_checklist_items` with name (string, not null), completed (boolean, default false, not null), position (integer, default 0, not null), todo_item_id (integer, not null, FK) in `db/migrate/`
-- [ ] T005 [P] Create migration `create_tags_and_item_tags` with tags table (name string not null, color string nullable, user_id integer not null FK) and item_tags join table (todo_item_id, tag_id, unique index) in `db/migrate/`
-- [ ] T005a [P] Create migration `create_comments` with body (text, not null), todo_item_id (integer, not null, FK), user_id (integer, not null, FK), timestamps in `db/migrate/`
-- [ ] T006 Run `bin/rails db:migrate` to apply all migrations
-- [ ] T007 Update routes in `config/routes.rb`: nest `todo_items` and `todo_sections` resources under `todo_lists` with member actions (toggle, archive, move, copy) and collection actions (reorder). Add nested routes for checklist_items, tags, and attachments under todo_items.
+- [x] T001 Install ActionText: run `bin/rails action_text:install` for rich text notes support
+- [x] T002 Create migration `add_fields_to_todo_items` adding status (string, default "todo", not null), due_date (date, nullable), priority (string, default "none", not null), archived (boolean, default false, not null), assigned_to_user_id (integer, nullable, FK to users) to `todo_items` in `db/migrate/`
+- [x] T003 [P] Create migration `add_fields_to_todo_sections` adding icon (string, nullable), archived (boolean, default false, not null) to `todo_sections` in `db/migrate/`
+- [x] T004 [P] Create migration `create_checklist_items` with name (string, not null), completed (boolean, default false, not null), position (integer, default 0, not null), todo_item_id (integer, not null, FK) in `db/migrate/`
+- [x] T005 [P] Create migration `create_tags_and_item_tags` with tags table (name string not null, color string nullable, user_id integer not null FK) and item_tags join table (todo_item_id, tag_id, unique index) in `db/migrate/`
+- [x] T005a [P] Create migration `create_comments` with body (text, not null), todo_item_id (integer, not null, FK), user_id (integer, not null, FK), timestamps in `db/migrate/`
+- [x] T006 Run `bin/rails db:migrate` to apply all migrations
+- [x] T007 Update routes in `config/routes.rb`: nest `todo_items` and `todo_sections` resources under `todo_lists` with member actions (toggle, archive, move, copy) and collection actions (reorder). Add nested routes for checklist_items, tags, and attachments under todo_items.
 
 **Checkpoint**: Database schema updated, routes configured, ActionText installed
 
@@ -38,19 +38,19 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T008 Update TodoItem model in `app/models/todo_item.rb`: add STATUSES and PRIORITIES constants, status/priority validations, has_many :checklist_items/:item_tags/:tags/:comments associations, belongs_to :assigned_to (User, optional), has_rich_text :notes, has_many_attached :files, scopes (active, completed, incomplete, overdue, by_position), business methods (toggle_completion!, archive!, overdue?, due_date_style), default_scope update to filter archived, completion/status sync callbacks
-- [ ] T009 [P] Update TodoSection model in `app/models/todo_section.rb`: add icon field, archived boolean, active scope, archive! method (archives section + all items), item_count method
-- [ ] T010 [P] Create ChecklistItem model in `app/models/checklist_item.rb`: belongs_to :todo_item, validations (name presence/length, position numericality), default_scope order by position
-- [ ] T011 [P] Create Tag model in `app/models/tag.rb`: belongs_to :user, has_many :item_tags/:todo_items, validations (name presence/length/uniqueness scoped to user_id case-insensitive)
-- [ ] T012 [P] Create ItemTag model in `app/models/item_tag.rb`: belongs_to :todo_item, belongs_to :tag, uniqueness validation on [todo_item_id, tag_id]
-- [ ] T012a [P] Create Comment model in `app/models/comment.rb`: belongs_to :todo_item, belongs_to :user, validations (body presence, length max 2000), default_scope order(created_at: :asc)
-- [ ] T013 Update TodoList model in `app/models/todo_list.rb`: update associations to use active scope on todo_items and todo_sections where appropriate
-- [ ] T014 Create TodoItemsController in `app/controllers/todo_items_controller.rb`: layout "app", before_action :set_todo_list (scoped to Current.user), before_action :set_todo_item, basic CRUD actions (show, create, update, destroy), strong params excluding todo_list_id/user_id
-- [ ] T015 [P] Create TodoSectionsController in `app/controllers/todo_sections_controller.rb`: layout "app", before_action :set_todo_list (scoped to Current.user), before_action :set_todo_section, basic CRUD actions (create, update, destroy), strong params
-- [ ] T016 [P] Write TodoItem model tests in `test/models/todo_item_test.rb`: test new validations (status inclusion, priority inclusion), scopes (active, completed, incomplete, overdue), business methods (toggle_completion!, archive!, overdue?, due_date_style), completion/status sync
-- [ ] T017 [P] Write TodoSection model tests in `test/models/todo_section_test.rb`: test icon field, archived scope, archive! method cascading to items
-- [ ] T018 [P] Write ChecklistItem model tests in `test/models/checklist_item_test.rb`: test validations, associations, ordering
-- [ ] T019 [P] Write Tag model tests in `test/models/tag_test.rb`: test validations, case-insensitive uniqueness scoped to user
+- [x] T008 Update TodoItem model in `app/models/todo_item.rb`: add STATUSES and PRIORITIES constants, status/priority validations, has_many :checklist_items/:item_tags/:tags/:comments associations, belongs_to :assigned_to (User, optional), has_rich_text :notes, has_many_attached :files, scopes (active, completed, incomplete, overdue, by_position), business methods (toggle_completion!, archive!, overdue?, due_date_style), default_scope update to filter archived, completion/status sync callbacks
+- [x] T009 [P] Update TodoSection model in `app/models/todo_section.rb`: add icon field, archived boolean, active scope, archive! method (archives section + all items), item_count method
+- [x] T010 [P] Create ChecklistItem model in `app/models/checklist_item.rb`: belongs_to :todo_item, validations (name presence/length, position numericality), default_scope order by position
+- [x] T011 [P] Create Tag model in `app/models/tag.rb`: belongs_to :user, has_many :item_tags/:todo_items, validations (name presence/length/uniqueness scoped to user_id case-insensitive)
+- [x] T012 [P] Create ItemTag model in `app/models/item_tag.rb`: belongs_to :todo_item, belongs_to :tag, uniqueness validation on [todo_item_id, tag_id]
+- [x] T012a [P] Create Comment model in `app/models/comment.rb`: belongs_to :todo_item, belongs_to :user, validations (body presence, length max 2000), default_scope order(created_at: :asc)
+- [x] T013 Update TodoList model in `app/models/todo_list.rb`: update associations to use active scope on todo_items and todo_sections where appropriate
+- [x] T014 Create TodoItemsController in `app/controllers/todo_items_controller.rb`: layout "app", before_action :set_todo_list (scoped to Current.user), before_action :set_todo_item, basic CRUD actions (show, create, update, destroy), strong params excluding todo_list_id/user_id
+- [x] T015 [P] Create TodoSectionsController in `app/controllers/todo_sections_controller.rb`: layout "app", before_action :set_todo_list (scoped to Current.user), before_action :set_todo_section, basic CRUD actions (create, update, destroy), strong params
+- [x] T016 [P] Write TodoItem model tests in `test/models/todo_item_test.rb`: test new validations (status inclusion, priority inclusion), scopes (active, completed, incomplete, overdue), business methods (toggle_completion!, archive!, overdue?, due_date_style), completion/status sync
+- [x] T017 [P] Write TodoSection model tests in `test/models/todo_section_test.rb`: test icon field, archived scope, archive! method cascading to items
+- [x] T018 [P] Write ChecklistItem model tests in `test/models/checklist_item_test.rb`: test validations, associations, ordering
+- [x] T019 [P] Write Tag model tests in `test/models/tag_test.rb`: test validations, case-insensitive uniqueness scoped to user
 
 **Checkpoint**: Foundation ready — models extended, controllers created, model tests passing. User story implementation can now begin.
 
@@ -64,24 +64,24 @@
 
 ### Tests for Phase 3
 
-- [ ] T020 [P] [US15] Write authentication tests in `test/controllers/todo_items_controller_test.rb`: test unauthenticated redirect for all actions (show, create, update, destroy, toggle, archive, move, copy, reorder)
-- [ ] T021 [P] [US15] Write authorization tests in `test/controllers/todo_items_controller_test.rb`: test accessing other user's items returns 404, index isolation, parameter injection (todo_list_id ignored)
-- [ ] T022 [P] [US15] Write authentication and authorization tests in `test/controllers/todo_sections_controller_test.rb`: unauthenticated redirects, cross-user 404s for all actions
-- [ ] T023 [P] [US6] Write toggle completion tests in `test/controllers/todo_items_controller_test.rb`: test toggle PATCH changes completed state, syncs status field, returns Turbo Stream response
-- [ ] T024 [P] [US2] Write system test for list detail view in `test/system/todo_items_test.rb`: test items display with names/badges, sections display with headers/counts, completed items show checkmark and reduced opacity
+- [x] T020 [P] [US15] Write authentication tests in `test/controllers/todo_items_controller_test.rb`: test unauthenticated redirect for all actions (show, create, update, destroy, toggle, archive, move, copy, reorder)
+- [x] T021 [P] [US15] Write authorization tests in `test/controllers/todo_items_controller_test.rb`: test accessing other user's items returns 404, index isolation, parameter injection (todo_list_id ignored)
+- [x] T022 [P] [US15] Write authentication and authorization tests in `test/controllers/todo_sections_controller_test.rb`: unauthenticated redirects, cross-user 404s for all actions
+- [x] T023 [P] [US6] Write toggle completion tests in `test/controllers/todo_items_controller_test.rb`: test toggle PATCH changes completed state, syncs status field, returns Turbo Stream response
+- [x] T024 [P] [US2] Write system test for list detail view in `test/system/todo_items_test.rb`: test items display with names/badges, sections display with headers/counts, completed items show checkmark and reduced opacity
 
 ### Implementation for Phase 3
 
-- [ ] T025 [US2] Create `_todo_item.html.erb` partial in `app/views/todo_lists/`: item row with drag handle (grip-vertical), checkbox (circle), title (clickable link to detail), optional due badge (color-coded), optional avatar, optional priority dot. Wrap in Turbo Frame `dom_id(item)`. Match design from node `nGCDe`.
-- [ ] T026 [P] [US2] Create `_todo_item_completed.html.erb` partial in `app/views/todo_lists/`: completed variant with teal checkmark (circle-check filled), reduced opacity (0.5), muted title. Match design completed items.
-- [ ] T027 [US2] Create `_section.html.erb` partial in `app/views/todo_lists/`: section wrapper with header (drag handle, chevron, icon, name, item count badge, "Add item" button, ellipsis menu trigger) and collapsible items container. Wrap in Turbo Frame `dom_id(section)`. Match design from node `nGCDe`.
-- [ ] T028 [P] [US2] Create `_empty_section.html.erb` partial in `app/views/todo_lists/`: empty state hint ("No items yet — click Add item to get started") with icon. Match design from node `QBfz6`.
-- [ ] T029 [US2] Overhaul `app/views/todo_lists/show.html.erb`: update header to match design (back button, list emoji + title + edit pencil, "Add Section" button + purple "Add Item" button), display unsectioned items under "Items without section" header using `_todo_item` partials, render sections using `_section` partial, keep empty list slate for no items/sections.
-- [ ] T030 [US2] Update TodoListsController show action in `app/controllers/todo_lists_controller.rb`: eager-load todo_items and todo_sections with active scope, separate unsectioned items, pass sections ordered by position.
-- [ ] T031 [US6] Add `toggle` action to TodoItemsController in `app/controllers/todo_items_controller.rb`: PATCH toggles completed state (calls toggle_completion!), responds with turbo_stream replacing item partial (swaps between _todo_item and _todo_item_completed).
-- [ ] T032 [US6] Add Stimulus controller `item_checkbox_controller.js` in `app/javascript/controllers/`: target checkbox element, toggle action sends PATCH to toggle URL via fetch with Turbo Stream accept header. Add CSS transition for opacity change on completion.
-- [ ] T033 [US2] Add CSS for item rows, section headers, due badges, priority dots, completed items, and unsectioned header in `app/assets/stylesheets/todo_lists.css`. Match design tokens: item row height 44px, corner radius 12px, gap 12px, section header with colored left accent. Due badge colors: overdue #FEE2E2/#991B1B, upcoming #FEF3C7/#92400E, future #DBEAFE/#1E40AF, far-future #D1FAE5/#065F46.
-- [ ] T034 [US2] Add `section_collapse_controller.js` Stimulus controller in `app/javascript/controllers/`: toggle target for items container (slide up/down with height transition), rotate chevron icon 90deg on collapse. CSS transitions for smooth animation.
+- [x] T025 [US2] Create `_todo_item.html.erb` partial in `app/views/todo_lists/`: item row with drag handle (grip-vertical), checkbox (circle), title (clickable link to detail), optional due badge (color-coded), optional avatar, optional priority dot. Wrap in Turbo Frame `dom_id(item)`. Match design from node `nGCDe`.
+- [x] T026 [P] [US2] Create `_todo_item_completed.html.erb` partial in `app/views/todo_lists/`: completed variant with teal checkmark (circle-check filled), reduced opacity (0.5), muted title. Match design completed items.
+- [x] T027 [US2] Create `_section.html.erb` partial in `app/views/todo_lists/`: section wrapper with header (drag handle, chevron, icon, name, item count badge, "Add item" button, ellipsis menu trigger) and collapsible items container. Wrap in Turbo Frame `dom_id(section)`. Match design from node `nGCDe`.
+- [x] T028 [P] [US2] Create `_empty_section.html.erb` partial in `app/views/todo_lists/`: empty state hint ("No items yet — click Add item to get started") with icon. Match design from node `QBfz6`.
+- [x] T029 [US2] Overhaul `app/views/todo_lists/show.html.erb`: update header to match design (back button, list emoji + title + edit pencil, "Add Section" button + purple "Add Item" button), display unsectioned items under "Items without section" header using `_todo_item` partials, render sections using `_section` partial, keep empty list slate for no items/sections.
+- [x] T030 [US2] Update TodoListsController show action in `app/controllers/todo_lists_controller.rb`: eager-load todo_items and todo_sections with active scope, separate unsectioned items, pass sections ordered by position.
+- [x] T031 [US6] Add `toggle` action to TodoItemsController in `app/controllers/todo_items_controller.rb`: PATCH toggles completed state (calls toggle_completion!), responds with turbo_stream replacing item partial (swaps between _todo_item and _todo_item_completed).
+- [x] T032 [US6] Add Stimulus controller `item_checkbox_controller.js` in `app/javascript/controllers/`: target checkbox element, toggle action sends PATCH to toggle URL via fetch with Turbo Stream accept header. Add CSS transition for opacity change on completion.
+- [x] T033 [US2] Add CSS for item rows, section headers, due badges, priority dots, completed items, and unsectioned header in `app/assets/stylesheets/todo_lists.css`. Match design tokens: item row height 44px, corner radius 12px, gap 12px, section header with colored left accent. Due badge colors: overdue #FEE2E2/#991B1B, upcoming #FEF3C7/#92400E, future #DBEAFE/#1E40AF, far-future #D1FAE5/#065F46.
+- [x] T034 [US2] Add `section_collapse_controller.js` Stimulus controller in `app/javascript/controllers/`: toggle target for items container (slide up/down with height transition), rotate chevron icon 90deg on collapse. CSS transitions for smooth animation.
 
 **Checkpoint**: List detail view displays items and sections with all badges, completion toggle works, security tests pass. MVP is functional.
 
@@ -95,17 +95,17 @@
 
 ### Tests for Phase 4
 
-- [ ] T035 [P] [US1] Write controller tests for create action in `test/controllers/todo_items_controller_test.rb`: test POST creates item with name, responds with Turbo Stream, validates name presence, assigns to correct section (or unsectioned), ignores todo_list_id injection
-- [ ] T036 [P] [US1] Write system test for inline creation in `test/system/todo_items_test.rb`: test Add Item button shows input, Enter saves and shows new input, Esc cancels, empty name doesn't create item
+- [x] T035 [P] [US1] Write controller tests for create action in `test/controllers/todo_items_controller_test.rb`: test POST creates item with name, responds with Turbo Stream, validates name presence, assigns to correct section (or unsectioned), ignores todo_list_id injection
+- [x] T036 [P] [US1] Write system test for inline creation in `test/system/todo_items_test.rb`: test Add Item button shows input, Enter saves and shows new input, Esc cancels, empty name doesn't create item
 
 ### Implementation for Phase 4
 
-- [ ] T037 [US1] Create `_inline_item_input.html.erb` partial in `app/views/todo_lists/`: active input row with purple border and shadow, checkbox placeholder (empty circle), text input field (autofocus), keyboard hints ("Enter" badge + "to save", "Esc" badge + "to cancel"). Match design from node `Md812`.
-- [ ] T038 [US1] Create `_quick_actions.html.erb` partial in `app/views/todo_lists/`: quick action bar below input with Assign (user-plus icon), Due date (calendar icon), Priority (flag icon) buttons as pill-shaped bordered buttons. Match design from node `Md812`.
-- [ ] T039 [US1] Create `inline_item_controller.js` Stimulus controller in `app/javascript/controllers/`: connect auto-focuses input, keydown handler for Enter (POST via fetch to create endpoint with Turbo Stream accept header, on success server replaces input + prepends new item), keydown handler for Esc (remove input row without server call). Values: listId, sectionId (optional).
-- [ ] T040 [US1] Implement create action in TodoItemsController `app/controllers/todo_items_controller.rb`: accept turbo_stream format, on success respond with turbo_stream.prepend (new item partial) + turbo_stream.replace (reset input for next item), on failure respond with turbo_stream.replace (input with error state). Set position to 0 (prepend) and shift existing positions.
-- [ ] T041 [US1] Wire "Add Item" button in show.html.erb and section headers: clicking inserts `_inline_item_input` partial via Turbo Frame or JavaScript DOM insertion. "Add Item" in top bar adds to unsectioned area, "Add item" in section header adds within that section.
-- [ ] T042 [US1] Add CSS for active input row (purple border 2px, border-radius 14px, box-shadow purple glow, height 48px), keyboard hint badges (zinc-100 bg, rounded, small text), quick actions bar (gap 8px, pill buttons with border). Add fadeSlideIn animation for newly created items.
+- [x] T037 [US1] Create `_inline_item_input.html.erb` partial in `app/views/todo_lists/`: active input row with purple border and shadow, checkbox placeholder (empty circle), text input field (autofocus), keyboard hints ("Enter" badge + "to save", "Esc" badge + "to cancel"). Match design from node `Md812`.
+- [x] T038 [US1] Create `_quick_actions.html.erb` partial in `app/views/todo_lists/`: quick action bar below input with Assign (user-plus icon), Due date (calendar icon), Priority (flag icon) buttons as pill-shaped bordered buttons. Match design from node `Md812`.
+- [x] T039 [US1] Create `inline_item_controller.js` Stimulus controller in `app/javascript/controllers/`: connect auto-focuses input, keydown handler for Enter (POST via fetch to create endpoint with Turbo Stream accept header, on success server replaces input + prepends new item), keydown handler for Esc (remove input row without server call). Values: listId, sectionId (optional).
+- [x] T040 [US1] Implement create action in TodoItemsController `app/controllers/todo_items_controller.rb`: accept turbo_stream format, on success respond with turbo_stream.prepend (new item partial) + turbo_stream.replace (reset input for next item), on failure respond with turbo_stream.replace (input with error state). Set position to 0 (prepend) and shift existing positions.
+- [x] T041 [US1] Wire "Add Item" button in show.html.erb and section headers: clicking inserts `_inline_item_input` partial via Turbo Frame or JavaScript DOM insertion. "Add Item" in top bar adds to unsectioned area, "Add item" in section header adds within that section.
+- [x] T042 [US1] Add CSS for active input row (purple border 2px, border-radius 14px, box-shadow purple glow, height 48px), keyboard hint badges (zinc-100 bg, rounded, small text), quick actions bar (gap 8px, pill buttons with border). Add fadeSlideIn animation for newly created items.
 
 **Checkpoint**: Users can rapidly create items with Enter-to-continue flow. Quick action buttons visible but full functionality comes in Phase 8.
 
@@ -119,16 +119,16 @@
 
 ### Tests for Phase 5
 
-- [ ] T043 [P] [US3] Write controller tests for section create action in `test/controllers/todo_sections_controller_test.rb`: test POST creates section with name and optional icon, responds with Turbo Stream, validates name presence
-- [ ] T044 [P] [US3] Write system test for section creation in `test/system/todo_items_test.rb`: test Add Section button shows input, icon picker works, Enter creates section with empty hint
+- [x] T043 [P] [US3] Write controller tests for section create action in `test/controllers/todo_sections_controller_test.rb`: test POST creates section with name and optional icon, responds with Turbo Stream, validates name presence
+- [x] T044 [P] [US3] Write system test for section creation in `test/system/todo_items_test.rb`: test Add Section button shows input, icon picker works, Enter creates section with empty hint
 
 ### Implementation for Phase 5
 
-- [ ] T045 [US3] Create `_inline_section_input.html.erb` partial in `app/views/todo_lists/`: active section input row with icon picker trigger (current icon + chevron), text input (autofocus), keyboard hint ("Enter to create"). Include `wa-dropdown` with icon grid for icon selection. Match design from node `kxC0I`.
-- [ ] T046 [US3] Create `inline_section_controller.js` Stimulus controller in `app/javascript/controllers/`: connect auto-focuses input, keydown Enter handler (POST via fetch to sections create endpoint), keydown Esc handler (remove input), selectIcon action (set selected icon value and update icon display via wa-dropdown wa-select event). Values: listId.
-- [ ] T047 [US3] Implement create action in TodoSectionsController `app/controllers/todo_sections_controller.rb`: accept turbo_stream format, on success respond with turbo_stream.append (new section partial with empty state) + turbo_stream.remove (inline input). Set position based on existing section count.
-- [ ] T048 [US3] Wire "Add Section" button in show.html.erb top bar: clicking appends `_inline_section_input` partial below existing content.
-- [ ] T049 [US3] Add CSS for inline section input (icon picker trigger, icon grid dropdown styling, section creation animation). Match design icon grid layout (5 icons per row, 40px button size).
+- [x] T045 [US3] Create `_inline_section_input.html.erb` partial in `app/views/todo_lists/`: active section input row with icon picker trigger (current icon + chevron), text input (autofocus), keyboard hint ("Enter to create"). Include `wa-dropdown` with icon grid for icon selection. Match design from node `kxC0I`.
+- [x] T046 [US3] Create `inline_section_controller.js` Stimulus controller in `app/javascript/controllers/`: connect auto-focuses input, keydown Enter handler (POST via fetch to sections create endpoint), keydown Esc handler (remove input), selectIcon action (set selected icon value and update icon display via wa-dropdown wa-select event). Values: listId.
+- [x] T047 [US3] Implement create action in TodoSectionsController `app/controllers/todo_sections_controller.rb`: accept turbo_stream format, on success respond with turbo_stream.append (new section partial with empty state) + turbo_stream.remove (inline input). Set position based on existing section count.
+- [x] T048 [US3] Wire "Add Section" button in show.html.erb top bar: clicking appends `_inline_section_input` partial below existing content.
+- [x] T049 [US3] Add CSS for inline section input (icon picker trigger, icon grid dropdown styling, section creation animation). Match design icon grid layout (5 icons per row, 40px button size).
 
 **Checkpoint**: Users can create sections with icons. Sections display with empty state hint and "Add item" button.
 
@@ -142,19 +142,19 @@
 
 ### Tests for Phase 6
 
-- [ ] T050 [P] [US4] Write controller tests for update actions in `test/controllers/todo_items_controller_test.rb` and `test/controllers/todo_sections_controller_test.rb`: test PATCH updates name, validates presence, responds with Turbo Stream
-- [ ] T051 [P] [US13] Write controller tests for destroy actions in `test/controllers/todo_items_controller_test.rb` and `test/controllers/todo_sections_controller_test.rb`: test DELETE removes item/section, section delete cascades to items, responds with Turbo Stream remove
+- [x] T050 [P] [US4] Write controller tests for update actions in `test/controllers/todo_items_controller_test.rb` and `test/controllers/todo_sections_controller_test.rb`: test PATCH updates name, validates presence, responds with Turbo Stream
+- [x] T051 [P] [US13] Write controller tests for destroy actions in `test/controllers/todo_items_controller_test.rb` and `test/controllers/todo_sections_controller_test.rb`: test DELETE removes item/section, section delete cascades to items, responds with Turbo Stream remove
 
 ### Implementation for Phase 6
 
-- [ ] T052 [US4] Create `_item_context_menu.html.erb` partial in `app/views/todo_lists/`: `wa-dropdown` with `wa-dropdown-item` elements for Edit, Move..., Copy..., divider, Archive, Delete (variant="danger"), divider, Insert a to-do. Match design from node `9xhXA`.
-- [ ] T053 [P] [US4] Create `_section_context_menu.html.erb` partial in `app/views/todo_lists/`: `wa-dropdown` with items for Edit, Move..., Copy..., divider, New list from group, divider, Archive group, Delete group (variant="danger"), divider, Insert a to-do. Match design from node `Df59j`.
-- [ ] T054 [US4] Create `context_menu_controller.js` Stimulus controller in `app/javascript/controllers/`: listen for `wa-select` event on dropdown, dispatch actions based on `event.detail.item.value`. Handle: edit (toggle inline editing on item/section name), archive (PATCH archive endpoint via fetch), delete (open wa-dialog confirmation), insertTodo (insert inline item input at position). Move and Copy dispatch to respective modals (implemented in Phase 14).
-- [ ] T055 [US4] Implement update actions in TodoItemsController and TodoSectionsController: accept turbo_stream format, respond with turbo_stream.replace updating the item/section partial with new values.
-- [ ] T056 [US13] Implement destroy actions in TodoItemsController and TodoSectionsController: accept turbo_stream format, respond with turbo_stream.remove. Section destroy cascades to all contained items. Add wa-dialog confirmation partial for delete confirmation.
-- [ ] T057 [US4] Add `archive` action to TodoItemsController and TodoSectionsController: PATCH sets archived flag, responds with turbo_stream.remove (hides from view). Section archive cascades to all items.
-- [ ] T058 [US4] Add inline editing behavior: context_menu_controller edit action replaces item title/section name with an input field, Enter saves (PATCH), Esc cancels. Use Turbo Frame for seamless update.
-- [ ] T059 [US4] Add CSS for context menu positioning, inline edit state (input replaces title text), delete confirmation dialog styling. Add fadeOut animation for deleted/archived items.
+- [x] T052 [US4] Create `_item_context_menu.html.erb` partial in `app/views/todo_lists/`: `wa-dropdown` with `wa-dropdown-item` elements for Edit, Move..., Copy..., divider, Archive, Delete (variant="danger"), divider, Insert a to-do. Match design from node `9xhXA`.
+- [x] T053 [P] [US4] Create `_section_context_menu.html.erb` partial in `app/views/todo_lists/`: `wa-dropdown` with items for Edit, Move..., Copy..., divider, New list from group, divider, Archive group, Delete group (variant="danger"), divider, Insert a to-do. Match design from node `Df59j`.
+- [x] T054 [US4] Create `context_menu_controller.js` Stimulus controller in `app/javascript/controllers/`: listen for `wa-select` event on dropdown, dispatch actions based on `event.detail.item.value`. Handle: edit (toggle inline editing on item/section name), archive (PATCH archive endpoint via fetch), delete (open wa-dialog confirmation), insertTodo (insert inline item input at position). Move and Copy dispatch to respective modals (implemented in Phase 14).
+- [x] T055 [US4] Implement update actions in TodoItemsController and TodoSectionsController: accept turbo_stream format, respond with turbo_stream.replace updating the item/section partial with new values.
+- [x] T056 [US13] Implement destroy actions in TodoItemsController and TodoSectionsController: accept turbo_stream format, respond with turbo_stream.remove. Section destroy cascades to all contained items. Add wa-dialog confirmation partial for delete confirmation.
+- [x] T057 [US4] Add `archive` action to TodoItemsController and TodoSectionsController: PATCH sets archived flag, responds with turbo_stream.remove (hides from view). Section archive cascades to all items.
+- [x] T058 [US4] Add inline editing behavior: context_menu_controller edit action replaces item title/section name with an input field, Enter saves (PATCH), Esc cancels. Use Turbo Frame for seamless update.
+- [x] T059 [US4] Add CSS for context menu positioning, inline edit state (input replaces title text), delete confirmation dialog styling. Add fadeOut animation for deleted/archived items.
 
 **Checkpoint**: Context menus work for items and sections. Users can edit names inline and delete with confirmation.
 
@@ -168,16 +168,16 @@
 
 ### Tests for Phase 7
 
-- [ ] T060 [P] [US5] Write controller tests for reorder action in `test/controllers/todo_items_controller_test.rb`: test PATCH reorder updates positions, supports moving between sections, validates ownership
-- [ ] T061 [P] [US5] Write controller tests for section reorder in `test/controllers/todo_sections_controller_test.rb`: test PATCH reorder updates section positions
+- [x] T060 [P] [US5] Write controller tests for reorder action in `test/controllers/todo_items_controller_test.rb`: test PATCH reorder updates positions, supports moving between sections, validates ownership
+- [x] T061 [P] [US5] Write controller tests for section reorder in `test/controllers/todo_sections_controller_test.rb`: test PATCH reorder updates section positions
 
 ### Implementation for Phase 7
 
-- [ ] T062 [US5] Create `drag_reorder_controller.js` Stimulus controller in `app/javascript/controllers/`: dragstart (add dragging class with rotation/shadow/purple border, show wa-tooltip hint), dragover (calculate drop position, show insertion indicator line, prevent default), dragend (remove all effects), drop (extract new position + section_id, send PATCH to reorder endpoint via fetch with Turbo Stream). Support dragging items within sections, between sections, and into/out of unsectioned area. Support dragging section headers to reorder entire sections.
-- [ ] T063 [US5] Add `reorder` collection action to TodoItemsController in `app/controllers/todo_items_controller.rb`: accept `{ id, position, section_id }` params, update item position and section assignment in a transaction, recalculate positions for affected items, respond with turbo_stream updates.
-- [ ] T064 [US5] Add `reorder` collection action to TodoSectionsController in `app/controllers/todo_sections_controller.rb`: accept `{ id, position }` params, update section position in a transaction, recalculate positions, respond with turbo_stream.
-- [ ] T065 [US5] Add `draggable="true"` and drag controller data attributes to `_todo_item.html.erb`, `_todo_item_completed.html.erb`, and `_section.html.erb` partials. Add drag handle styling.
-- [ ] T066 [US5] Add CSS for drag effects: `.todo-item--dragging` (transform: rotate(-1deg), box-shadow with purple glow, border 2px solid purple, elevated z-index), `.drop-indicator` (2px purple line between items), `.drag-hint` tooltip (dark bg, white text, rounded, shadow). Add spring-like ease transition for drop settlement. Match design from node `mg9id`.
+- [x] T062 [US5] Create `drag_reorder_controller.js` Stimulus controller in `app/javascript/controllers/`: dragstart (add dragging class with rotation/shadow/purple border, show wa-tooltip hint), dragover (calculate drop position, show insertion indicator line, prevent default), dragend (remove all effects), drop (extract new position + section_id, send PATCH to reorder endpoint via fetch with Turbo Stream). Support dragging items within sections, between sections, and into/out of unsectioned area. Support dragging section headers to reorder entire sections.
+- [x] T063 [US5] Add `reorder` collection action to TodoItemsController in `app/controllers/todo_items_controller.rb`: accept `{ id, position, section_id }` params, update item position and section assignment in a transaction, recalculate positions for affected items, respond with turbo_stream updates.
+- [x] T064 [US5] Add `reorder` collection action to TodoSectionsController in `app/controllers/todo_sections_controller.rb`: accept `{ id, position }` params, update section position in a transaction, recalculate positions, respond with turbo_stream.
+- [x] T065 [US5] Add `draggable="true"` and drag controller data attributes to `_todo_item.html.erb`, `_todo_item_completed.html.erb`, and `_section.html.erb` partials. Add drag handle styling.
+- [x] T066 [US5] Add CSS for drag effects: `.todo-item--dragging` (transform: rotate(-1deg), box-shadow with purple glow, border 2px solid purple, elevated z-index), `.drop-indicator` (2px purple line between items), `.drag-hint` tooltip (dark bg, white text, rounded, shadow). Add spring-like ease transition for drop settlement. Match design from node `mg9id`.
 
 **Checkpoint**: Items and sections can be reordered via drag-and-drop with smooth animations. Order persists across page reloads.
 
@@ -191,16 +191,16 @@
 
 ### Tests for Phase 8
 
-- [ ] T067 [P] [US10] Write controller tests for item update with due_date and priority in `test/controllers/todo_items_controller_test.rb`: test PATCH with due_date/priority fields, verify Turbo Stream response updates badges
-- [ ] T068 [P] [US10] Write model tests for due_date_style in `test/models/todo_item_test.rb`: test overdue returns "danger", upcoming (0-3 days) returns "warning", future (4-14 days) returns "info", far-future returns "success"
+- [x] T067 [P] [US10] Write controller tests for item update with due_date and priority in `test/controllers/todo_items_controller_test.rb`: test PATCH with due_date/priority fields, verify Turbo Stream response updates badges
+- [x] T068 [P] [US10] Write model tests for due_date_style in `test/models/todo_item_test.rb`: test overdue returns "danger", upcoming (0-3 days) returns "warning", future (4-14 days) returns "info", far-future returns "success"
 
 ### Implementation for Phase 8
 
-- [ ] T069 [US10] Wire quick action buttons in `_quick_actions.html.erb`: "Due date" button opens a native date input (type="date") or wa-input date picker, "Priority" button opens a wa-dropdown with None/Low/Medium/High options. Values set during inline creation via hidden fields in the create form.
-- [ ] T070 [US10] Create `quick_actions_controller.js` Stimulus controller in `app/javascript/controllers/`: setDueDate action (show/toggle date input, update hidden field), setPriority action (wa-dropdown with priority options, update hidden field), assign action (single-user stub — show current user avatar).
-- [ ] T071 [US10] Update TodoItemsController create and update actions to accept due_date and priority params in strong params.
-- [ ] T072 [US10] Update `_todo_item.html.erb` to render due date badge with color-coded styling (overdue/upcoming/future/far-future) and priority dot with correct color (none=hidden, low=teal, medium=orange, high=red). Use `item.due_date_style` helper method.
-- [ ] T073 [US10] Add CSS for due date badge color variants (`.due-badge--danger`, `.due-badge--warning`, `.due-badge--info`, `.due-badge--success`) and priority dot colors (`.priority-dot--low`, `.priority-dot--medium`, `.priority-dot--high`). Add subtle pulse animation on overdue badges.
+- [x] T069 [US10] Wire quick action buttons in `_quick_actions.html.erb`: "Due date" button opens a native date input (type="date") or wa-input date picker, "Priority" button opens a wa-dropdown with None/Low/Medium/High options. Values set during inline creation via hidden fields in the create form.
+- [x] T070 [US10] Create `quick_actions_controller.js` Stimulus controller in `app/javascript/controllers/`: setDueDate action (show/toggle date input, update hidden field), setPriority action (wa-dropdown with priority options, update hidden field), assign action (single-user stub — show current user avatar).
+- [x] T071 [US10] Update TodoItemsController create and update actions to accept due_date and priority params in strong params.
+- [x] T072 [US10] Update `_todo_item.html.erb` to render due date badge with color-coded styling (overdue/upcoming/future/far-future) and priority dot with correct color (none=hidden, low=teal, medium=orange, high=red). Use `item.due_date_style` helper method.
+- [x] T073 [US10] Add CSS for due date badge color variants (`.due-badge--danger`, `.due-badge--warning`, `.due-badge--info`, `.due-badge--success`) and priority dot colors (`.priority-dot--low`, `.priority-dot--medium`, `.priority-dot--high`). Add subtle pulse animation on overdue badges.
 
 **Checkpoint**: Due dates and priorities display correctly in list view with proper color coding.
 
@@ -214,20 +214,20 @@
 
 ### Tests for Phase 9
 
-- [ ] T074 [P] [US7] Write controller tests for show action in `test/controllers/todo_items_controller_test.rb`: test GET renders item detail, test Mark Complete action, test Delete action
-- [ ] T075 [P] [US7] Write system test for item detail navigation in `test/system/todo_items_test.rb`: test clicking item navigates to detail, test status selector changes status, test Mark Complete button
+- [x] T074 [P] [US7] Write controller tests for show action in `test/controllers/todo_items_controller_test.rb`: test GET renders item detail, test Mark Complete action, test Delete action
+- [x] T075 [P] [US7] Write system test for item detail navigation in `test/system/todo_items_test.rb`: test clicking item navigates to detail, test status selector changes status, test Mark Complete button
 
 ### Implementation for Phase 9
 
-- [ ] T076 [US7] Create `app/views/todo_items/show.html.erb`: two-column layout with sidebar (reuse `_sidebar` partial), top bar (back button, list emoji + title + edit pencil, Add Section + Add Item buttons), left column (item header with status/priority badges, title h1 28px bold, meta row with created date + section, notes section placeholder, checklist section placeholder, attachments section placeholder, comments section placeholder), right column (status card, assignees card, due date card, notify card, tags card, actions card). Match design from node `sogSu`.
-- [ ] T077 [US7] Create `_status_sidebar.html.erb` partial in `app/views/todo_items/`: status selector card with Todo/In Progress/Done buttons (selectable, active state highlighted), "Mark Complete" button (green/teal, prominent), "Delete Item" button (red text). Status change sends PATCH via Turbo Frame.
-- [ ] T078 [US7] Implement show action in TodoItemsController: load item with associations (checklist_items, tags, comments, rich_text_notes, files, assigned_to), set @todo_list and @sidebar_lists.
-- [ ] T079 [US7] Add status change handling: clicking a status button sends PATCH to update action with new status value, responds with Turbo Frame replacing the status card. Sync completed field when status changes to/from "done".
-- [ ] T080 [US7] Add CSS for item detail layout: two-column flexbox (left flexible, right 280px fixed), item header (28px title, status/priority badges as colored pills), meta row (12px text, gray), divider lines, status card (segmented button group), action buttons (Mark Complete green gradient, Delete red text). Match design from node `sogSu`.
-- [ ] T080a [US7] Create `_assignees_card.html.erb` partial in `app/views/todo_items/`: single-user stub showing "Assigned to" label with add button (plus icon), current user displayed as assignee (avatar circle with initials + name) when assigned. Clicking add assigns the current user via PATCH. Uses `assigned_to_user_id` on TodoItem. Match design from node `sogSu`.
-- [ ] T080b [US7] Create `_notify_card.html.erb` partial in `app/views/todo_items/`: single-user stub showing "Notify on Complete" label with add button, current user displayed when added. Visual stub only — no notification system built. Match design from node `sogSu`.
-- [ ] T080c [US7] Create `_comments_section.html.erb` partial in `app/views/todo_items/`: single-user comments stub with header (message-circle icon, "Comments" title, count badge), comments list (current user avatar + body text + timestamp for each comment), comment input row (user avatar + "Write a comment..." placeholder input + send button). POST to create comment, Turbo Stream appends new comment. Match design from node `sogSu`.
-- [ ] T080d [US7] Add CSS for assignees card (avatar list, add button), notify card (person list), and comments section (comment bubbles, input row, send button styling). Match design from node `sogSu`.
+- [x] T076 [US7] Create `app/views/todo_items/show.html.erb`: two-column layout with sidebar (reuse `_sidebar` partial), top bar (back button, list emoji + title + edit pencil, Add Section + Add Item buttons), left column (item header with status/priority badges, title h1 28px bold, meta row with created date + section, notes section placeholder, checklist section placeholder, attachments section placeholder, comments section placeholder), right column (status card, assignees card, due date card, notify card, tags card, actions card). Match design from node `sogSu`.
+- [x] T077 [US7] Create `_status_sidebar.html.erb` partial in `app/views/todo_items/`: status selector card with Todo/In Progress/Done buttons (selectable, active state highlighted), "Mark Complete" button (green/teal, prominent), "Delete Item" button (red text). Status change sends PATCH via Turbo Frame.
+- [x] T078 [US7] Implement show action in TodoItemsController: load item with associations (checklist_items, tags, comments, rich_text_notes, files, assigned_to), set @todo_list and @sidebar_lists.
+- [x] T079 [US7] Add status change handling: clicking a status button sends PATCH to update action with new status value, responds with Turbo Frame replacing the status card. Sync completed field when status changes to/from "done".
+- [x] T080 [US7] Add CSS for item detail layout: two-column flexbox (left flexible, right 280px fixed), item header (28px title, status/priority badges as colored pills), meta row (12px text, gray), divider lines, status card (segmented button group), action buttons (Mark Complete green gradient, Delete red text). Match design from node `sogSu`.
+- [x] T080a [US7] Create `_assignees_card.html.erb` partial in `app/views/todo_items/`: single-user stub showing "Assigned to" label with add button (plus icon), current user displayed as assignee (avatar circle with initials + name) when assigned. Clicking add assigns the current user via PATCH. Uses `assigned_to_user_id` on TodoItem. Match design from node `sogSu`.
+- [x] T080b [US7] Create `_notify_card.html.erb` partial in `app/views/todo_items/`: single-user stub showing "Notify on Complete" label with add button, current user displayed when added. Visual stub only — no notification system built. Match design from node `sogSu`.
+- [x] T080c [US7] Create `_comments_section.html.erb` partial in `app/views/todo_items/`: single-user comments stub with header (message-circle icon, "Comments" title, count badge), comments list (current user avatar + body text + timestamp for each comment), comment input row (user avatar + "Write a comment..." placeholder input + send button). POST to create comment, Turbo Stream appends new comment. Match design from node `sogSu`.
+- [x] T080d [US7] Add CSS for assignees card (avatar list, add button), notify card (person list), and comments section (comment bubbles, input row, send button styling). Match design from node `sogSu`.
 
 **Checkpoint**: Users can navigate to item detail, view all metadata, change status, assign to self, add comments, and delete items.
 
@@ -241,15 +241,15 @@
 
 ### Tests for Phase 10
 
-- [ ] T081 [P] [US8] Write controller tests for updating notes in `test/controllers/todo_items_controller_test.rb`: test PATCH with notes rich text content via ActionText
+- [x] T081 [P] [US8] Write controller tests for updating notes in `test/controllers/todo_items_controller_test.rb`: test PATCH with notes rich text content via ActionText
 
 ### Implementation for Phase 10
 
-- [ ] T082 [US8] Add `has_rich_text :notes` to TodoItem model in `app/models/todo_item.rb`
-- [ ] T083 [US8] Create `_notes_section.html.erb` partial in `app/views/todo_items/`: Turbo Frame wrapping notes section with header (file-text icon, "Notes" title, edit pencil button), view mode (rendered rich text content), edit mode (hidden by default, Trix editor via `form.rich_text_area :notes`). Match design from node `sogSu`.
-- [ ] T084 [US8] Create `notes_editor_controller.js` Stimulus controller in `app/javascript/controllers/`: edit action (show Trix editor, hide rendered view), save action (submit form via Turbo Frame, swap back to view mode), cancel action (hide editor, show view).
-- [ ] T085 [US8] Update TodoItemsController update action to accept notes via ActionText strong params (`:notes` in permitted params).
-- [ ] T086 [US8] Add CSS for notes section: rendered content styling (prose-like typography, bullet list styling), Trix editor customization (match app theme, border radius, focus ring color), edit/save/cancel button positioning.
+- [x] T082 [US8] Add `has_rich_text :notes` to TodoItem model in `app/models/todo_item.rb`
+- [x] T083 [US8] Create `_notes_section.html.erb` partial in `app/views/todo_items/`: Turbo Frame wrapping notes section with header (file-text icon, "Notes" title, edit pencil button), view mode (rendered rich text content), edit mode (hidden by default, Trix editor via `form.rich_text_area :notes`). Match design from node `sogSu`.
+- [x] T084 [US8] Create `notes_editor_controller.js` Stimulus controller in `app/javascript/controllers/`: edit action (show Trix editor, hide rendered view), save action (submit form via Turbo Frame, swap back to view mode), cancel action (hide editor, show view).
+- [x] T085 [US8] Update TodoItemsController update action to accept notes via ActionText strong params (`:notes` in permitted params).
+- [x] T086 [US8] Add CSS for notes section: rendered content styling (prose-like typography, bullet list styling), Trix editor customization (match app theme, border radius, focus ring color), edit/save/cancel button positioning.
 
 **Checkpoint**: Notes section works with Trix rich text editing, content persists and renders formatted.
 
@@ -263,14 +263,14 @@
 
 ### Tests for Phase 11
 
-- [ ] T087 [P] [US9] Write controller tests for checklist CRUD in a new `test/controllers/checklist_items_controller_test.rb`: test create, toggle, destroy actions with Turbo Stream responses and authorization
+- [x] T087 [P] [US9] Write controller tests for checklist CRUD in a new `test/controllers/checklist_items_controller_test.rb`: test create, toggle, destroy actions with Turbo Stream responses and authorization
 
 ### Implementation for Phase 11
 
-- [ ] T088 [US9] Create ChecklistItemsController in `app/controllers/checklist_items_controller.rb`: nested under todo_items (scoped through Current.user.todo_lists → todo_item), create action (POST, Turbo Stream append), toggle action (PATCH, Turbo Stream replace), destroy action (DELETE, Turbo Stream remove). Strong params for name only.
-- [ ] T089 [US9] Create `_checklist_section.html.erb` partial in `app/views/todo_items/`: Turbo Frame wrapping checklist with header (square-check icon, "Checklist" title, progress badge "3/5", add button), checklist items list (each: checkbox + name, done items with strikethrough), inline input for adding new items (Enter to add). Match design from node `sogSu`.
-- [ ] T090 [US9] Create `checklist_controller.js` Stimulus controller in `app/javascript/controllers/`: add action (Enter key in input, POST via fetch), toggle action (click checkbox, PATCH toggle via fetch), remove action (click x button, DELETE via fetch). All responses as Turbo Streams.
-- [ ] T091 [US9] Add CSS for checklist items: checkbox styling (matching app theme), done item strikethrough + muted color, progress badge (purple bg, white text), add input styling, item hover state.
+- [x] T088 [US9] Create ChecklistItemsController in `app/controllers/checklist_items_controller.rb`: nested under todo_items (scoped through Current.user.todo_lists → todo_item), create action (POST, Turbo Stream append), toggle action (PATCH, Turbo Stream replace), destroy action (DELETE, Turbo Stream remove). Strong params for name only.
+- [x] T089 [US9] Create `_checklist_section.html.erb` partial in `app/views/todo_items/`: Turbo Frame wrapping checklist with header (square-check icon, "Checklist" title, progress badge "3/5", add button), checklist items list (each: checkbox + name, done items with strikethrough), inline input for adding new items (Enter to add). Match design from node `sogSu`.
+- [x] T090 [US9] Create `checklist_controller.js` Stimulus controller in `app/javascript/controllers/`: add action (Enter key in input, POST via fetch), toggle action (click checkbox, PATCH toggle via fetch), remove action (click x button, DELETE via fetch). All responses as Turbo Streams.
+- [x] T091 [US9] Add CSS for checklist items: checkbox styling (matching app theme), done item strikethrough + muted color, progress badge (purple bg, white text), add input styling, item hover state.
 
 **Checkpoint**: Checklists work with add, toggle, and remove functionality. Progress badge tracks completion.
 
@@ -284,14 +284,14 @@
 
 ### Tests for Phase 12
 
-- [ ] T092 [P] [US11] Write controller tests for tag create/destroy in a new `test/controllers/tags_controller_test.rb`: test adding tag to item, removing tag, autocomplete existing tags, authorization
+- [x] T092 [P] [US11] Write controller tests for tag create/destroy in a new `test/controllers/tags_controller_test.rb`: test adding tag to item, removing tag, autocomplete existing tags, authorization
 
 ### Implementation for Phase 12
 
-- [ ] T093 [US11] Create TagsController in `app/controllers/tags_controller.rb` (nested under todo_items): create action (find or create tag by name for current user, create item_tag association, Turbo Stream append), destroy action (remove item_tag, Turbo Stream remove). Accept name param.
-- [ ] T094 [US11] Create `_tags_card.html.erb` partial in `app/views/todo_items/`: Turbo Frame wrapping tags card with "Tags" label, tag pills row (each: colored pill with name + X remove button), add tag input (type to search/create). Match design from node `sogSu` — tags shown as "Design", "Urgent", "Frontend" colored pills.
-- [ ] T095 [US11] Create `tag_manager_controller.js` Stimulus controller in `app/javascript/controllers/`: add action (Enter in input, POST via fetch), remove action (click X, DELETE via fetch), search action (input event, filter/autocomplete existing user tags).
-- [ ] T096 [US11] Add CSS for tag pills (colored backgrounds, rounded, small text, X button), tag input (inline with pills), autocomplete dropdown styling.
+- [x] T093 [US11] Create TagsController in `app/controllers/tags_controller.rb` (nested under todo_items): create action (find or create tag by name for current user, create item_tag association, Turbo Stream append), destroy action (remove item_tag, Turbo Stream remove). Accept name param.
+- [x] T094 [US11] Create `_tags_card.html.erb` partial in `app/views/todo_items/`: Turbo Frame wrapping tags card with "Tags" label, tag pills row (each: colored pill with name + X remove button), add tag input (type to search/create). Match design from node `sogSu` — tags shown as "Design", "Urgent", "Frontend" colored pills.
+- [x] T095 [US11] Create `tag_manager_controller.js` Stimulus controller in `app/javascript/controllers/`: add action (Enter in input, POST via fetch), remove action (click X, DELETE via fetch), search action (input event, filter/autocomplete existing user tags).
+- [x] T096 [US11] Add CSS for tag pills (colored backgrounds, rounded, small text, X button), tag input (inline with pills), autocomplete dropdown styling.
 
 **Checkpoint**: Tags work with add, remove, and autocomplete. Colored pills display in item detail.
 
@@ -305,13 +305,13 @@
 
 ### Tests for Phase 13
 
-- [ ] T097 [P] [US12] Write controller tests for attachment upload/delete in a new `test/controllers/attachments_controller_test.rb`: test file upload creates attachment, delete removes it, authorization scoping
+- [x] T097 [P] [US12] Write controller tests for attachment upload/delete in a new `test/controllers/attachments_controller_test.rb`: test file upload creates attachment, delete removes it, authorization scoping
 
 ### Implementation for Phase 13
 
-- [ ] T098 [US12] Create AttachmentsController in `app/controllers/attachments_controller.rb` (nested under todo_items): create action (attach file via Active Storage, Turbo Stream append file card), destroy action (purge attachment, Turbo Stream remove). Validate file size (max 10MB).
-- [ ] T099 [US12] Create `_attachments_section.html.erb` partial in `app/views/todo_items/`: Turbo Frame wrapping attachments with header (paperclip icon, "Attachments" title, count badge, upload button with cloud-upload icon), file cards grid (each: file type icon + filename + file size). Upload button triggers hidden file input. Match design from node `sogSu`.
-- [ ] T100 [US12] Add CSS for attachments grid (3-column layout), file cards (border, rounded, icon + text, hover state), upload button styling, count badge.
+- [x] T098 [US12] Create AttachmentsController in `app/controllers/attachments_controller.rb` (nested under todo_items): create action (attach file via Active Storage, Turbo Stream append file card), destroy action (purge attachment, Turbo Stream remove). Validate file size (max 10MB).
+- [x] T099 [US12] Create `_attachments_section.html.erb` partial in `app/views/todo_items/`: Turbo Frame wrapping attachments with header (paperclip icon, "Attachments" title, count badge, upload button with cloud-upload icon), file cards grid (each: file type icon + filename + file size). Upload button triggers hidden file input. Match design from node `sogSu`.
+- [x] T100 [US12] Add CSS for attachments grid (3-column layout), file cards (border, rounded, icon + text, hover state), upload button styling, count badge.
 
 **Checkpoint**: File attachments work with upload and delete. File cards display in grid layout.
 
@@ -325,16 +325,16 @@
 
 ### Tests for Phase 14
 
-- [ ] T101 [P] [US14] Write controller tests for move and copy actions in `test/controllers/todo_items_controller_test.rb`: test move changes section_id and position, test copy creates duplicate in target section, test authorization
+- [x] T101 [P] [US14] Write controller tests for move and copy actions in `test/controllers/todo_items_controller_test.rb`: test move changes section_id and position, test copy creates duplicate in target section, test authorization
 
 ### Implementation for Phase 14
 
-- [ ] T102 [US14] Implement `move` member action in TodoItemsController `app/controllers/todo_items_controller.rb`: accept target_section_id (nil for unsectioned) and target_position params, update item's section and position in transaction, recalculate positions, respond with Turbo Stream (remove from old location, append to new).
-- [ ] T103 [US14] Implement `copy` member action in TodoItemsController: duplicate item attributes (name, due_date, priority, status) to target section/position, respond with Turbo Stream append.
-- [ ] T104 [US14] Implement `move` action in TodoSectionsController: accept target_position, update section position in transaction.
-- [ ] T105 [US14] Create move/copy destination picker: `wa-dialog` with list of sections (+ "Items without section" option) as selectable items. Opened by context_menu_controller when Move/Copy actions are selected. Include section icons and item counts.
-- [ ] T106 [US14] Update `context_menu_controller.js` to wire Move and Copy actions to open the destination picker dialog, capture selection, and send appropriate PATCH/POST request.
-- [ ] T107 [US14] Add CSS for destination picker dialog: section list items with icons, selected state, confirm/cancel buttons.
+- [x] T102 [US14] Implement `move` member action in TodoItemsController `app/controllers/todo_items_controller.rb`: accept target_section_id (nil for unsectioned) and target_position params, update item's section and position in transaction, recalculate positions, respond with Turbo Stream (remove from old location, append to new).
+- [x] T103 [US14] Implement `copy` member action in TodoItemsController: duplicate item attributes (name, due_date, priority, status) to target section/position, respond with Turbo Stream append.
+- [x] T104 [US14] Implement `move` action in TodoSectionsController: accept target_position, update section position in transaction.
+- [x] T105 [US14] Create move/copy destination picker: `wa-dialog` with list of sections (+ "Items without section" option) as selectable items. Opened by context_menu_controller when Move/Copy actions are selected. Include section icons and item counts.
+- [x] T106 [US14] Update `context_menu_controller.js` to wire Move and Copy actions to open the destination picker dialog, capture selection, and send appropriate PATCH/POST request.
+- [x] T107 [US14] Add CSS for destination picker dialog: section list items with icons, selected state, confirm/cancel buttons.
 
 **Checkpoint**: Move and copy work via context menu with destination picker dialog.
 
@@ -344,14 +344,14 @@
 
 **Purpose**: Animations, responsive design, accessibility, and quality assurance
 
-- [ ] T108 [P] Add micro-animations throughout in `app/assets/stylesheets/todo_lists.css`: fadeSlideIn for new items, checkPulse for completion toggle, dragLift for drag start, spring-ease for drop settlement, fadeOut for delete/archive, section collapse slide transition, context menu hover highlights
-- [ ] T109 [P] Add responsive CSS for mobile in `app/assets/stylesheets/todo_lists.css`: single-column layout at 768px breakpoint, sidebar hidden on mobile, full-width items, touch-friendly tap targets (min 44px), context menus as bottom sheets on mobile
-- [ ] T110 [P] Update `app/views/todo_lists/_sidebar.html.erb`: ensure item counts reflect active (non-archived) items, completion percentage includes new status/priority data
-- [ ] T111 Run full test suite: `bin/rails test` and `bin/rails test:system` — zero failures
-- [ ] T112 Run `bin/rubocop` — fix any offenses to zero
-- [ ] T113 Run `bin/brakeman --no-pager` — fix any warnings to zero
-- [ ] T114 Validate all views against design reference screens in `todo-list-item-screens.pen` using Pencil MCP screenshots — fix spacing, fonts, colors, and component sizes to match
-- [ ] T115 Update spec documents (spec.md, plan.md) with implementation learnings and design decisions discovered during development
+- [x] T108 [P] Add micro-animations throughout in `app/assets/stylesheets/todo_lists.css`: fadeSlideIn for new items, checkPulse for completion toggle, dragLift for drag start, spring-ease for drop settlement, fadeOut for delete/archive, section collapse slide transition, context menu hover highlights
+- [x] T109 [P] Add responsive CSS for mobile in `app/assets/stylesheets/todo_lists.css`: single-column layout at 768px breakpoint, sidebar hidden on mobile, full-width items, touch-friendly tap targets (min 44px), context menus as bottom sheets on mobile
+- [x] T110 [P] Update `app/views/todo_lists/_sidebar.html.erb`: ensure item counts reflect active (non-archived) items, completion percentage includes new status/priority data
+- [x] T111 Run full test suite: `bin/rails test` and `bin/rails test:system` — zero failures
+- [x] T112 Run `bin/rubocop` — fix any offenses to zero
+- [x] T113 Run `bin/brakeman --no-pager` — fix any warnings to zero
+- [x] T114 Validate all views against design reference screens in `todo-list-item-screens.pen` using Pencil MCP screenshots — fix spacing, fonts, colors, and component sizes to match
+- [x] T115 Update spec documents (spec.md, plan.md) with implementation learnings and design decisions discovered during development
 
 ---
 

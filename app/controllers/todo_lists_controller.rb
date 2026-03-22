@@ -9,8 +9,8 @@ class TodoListsController < ApplicationController
 
   def show
     @sidebar_lists = Current.user.todo_lists.includes(:todo_items).recently_updated
-    @sections = @todo_list.todo_sections.includes(:todo_items)
-    @unsectioned_items = @todo_list.todo_items.where(todo_section_id: nil)
+    @sections = @todo_list.todo_sections.active.includes(todo_items: :assigned_to)
+    @unsectioned_items = @todo_list.todo_items.active.where(todo_section_id: nil)
   end
 
   def new

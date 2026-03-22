@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :oauth_identities, dependent: :destroy
   has_many :todo_lists, dependent: :destroy
+  has_many :tags, dependent: :destroy
   has_one :two_factor_credential, dependent: :destroy
   has_many :recovery_codes, dependent: :destroy
 
