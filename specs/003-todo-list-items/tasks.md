@@ -355,6 +355,56 @@
 
 ---
 
+## Phase 16: Copilot Code Review Fixes (2026-03-22)
+
+**Purpose**: Fixes identified during Copilot PR code review rounds
+
+### Round 1 (10 comments)
+
+- [x] T116 Fix duplicate `dependent: :destroy` on `todo_sections` — remove from scoped association in `app/models/todo_list.rb`
+- [x] T117 Fix CSS injection via `tag.color` — add hex format validation to `app/models/tag.rb`
+- [x] T118 Fix duplicate DOM IDs in `_todo_item.html.erb`, `_todo_item_completed.html.erb`, `_section.html.erb` — remove inner div `id` attributes
+- [x] T119 Fix archived sections not findable — use `all_todo_sections.find` in `app/controllers/todo_sections_controller.rb`
+- [x] T120 Fix update action always using incomplete partial — select based on `completed?` in `app/controllers/todo_items_controller.rb`
+- [x] T121 Fix "Delete group" missing `variant="danger"` in `app/views/todo_lists/_section_context_menu.html.erb`
+- [x] T122 Fix section position using scoped count — use `all_todo_sections.count` in `app/controllers/todo_sections_controller.rb`
+
+### Round 2 (20 comments)
+
+- [x] T123 Fix context menu targets as siblings — wrap dropdown + forms in container div in `_item_context_menu.html.erb` and `_section_context_menu.html.erb`
+- [x] T124 Fix `assigned_to_user_id` security — force to `Current.user.id` in `app/controllers/todo_items_controller.rb`
+- [x] T125 Fix position shift including new item — shift BEFORE save in transaction in `app/controllers/todo_items_controller.rb`
+- [x] T126 Fix `completion_percentage` including archived items — filter on `archived: false` in `app/models/todo_list.rb`
+- [x] T127 Fix notes form Turbo response wrong on detail page — add `data: { turbo: false }` in `_notes_section.html.erb`
+- [x] T128 Fix status buttons Turbo response on detail page — add `data: { turbo: false }` in `_status_sidebar.html.erb`
+- [x] T129 Fix Mark Complete/Delete on detail page — add `data: { turbo: false }` in `app/views/todo_items/show.html.erb`
+- [x] T130 Create `TagsController` in `app/controllers/tags_controller.rb` with create/destroy actions
+- [x] T131 Add case-insensitive unique index on tags `(user_id, lower(name))` via migration
+- [x] T132 Fix `showPicker()` browser compat — wrap in feature detection in `quick_actions_controller.js`
+- [x] T133 Remove `draggable="true"` from section header in `_section.html.erb`
+- [x] T134 Add guard checks for missing targets in `context_menu_controller.js`
+- [x] T135 Fix tag.color validation — tighten regex to 6-digit hex only in `app/models/tag.rb`
+
+### Additional Implementation Fixes
+
+- [x] T136 Fix inline item input position — render inside `#unsectioned-items` after header, not above page header
+- [x] T137 Fix blank slate / content area toggle — always render both, use `display: none` for toggle
+- [x] T138 Fix `turbo_frame` link navigation — add `data: { turbo_frame: "_top" }` to item title links
+- [x] T139 Rewrite drag controller for turbo-frame compatibility — draggable on frames, cross-section drops
+- [x] T140 Fix `button_to` with blocks — remove first string arg when using block form
+- [x] T141 Fix inline section creation — use `fetch()` POST instead of `requestSubmit()` on non-form element
+- [x] T142 Add section editing via context menu — inline edit with icon picker in `context_menu_controller.js`
+- [x] T143 Create `ChecklistItemsController` with create/toggle/destroy actions
+- [x] T144 Create `CommentsController` with create/destroy actions + comment route
+- [x] T145 Create `AttachmentsController` with create/destroy actions
+- [x] T146 Make Notes section functional with ActionText/Trix editor toggle
+- [x] T147 Remove Add Section/Add Item buttons from item detail header
+- [x] T148 Add delete (trash) button to list show header
+- [x] T149 Fix system tests — sign-in helper events, delete test for new UI
+- [x] T150 Clear bootsnap cache for stale schema resolution
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies

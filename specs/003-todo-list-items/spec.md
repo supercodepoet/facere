@@ -2,7 +2,7 @@
 
 **Feature Branch**: `003-todo-list-items`
 **Created**: 2026-03-21
-**Status**: Draft
+**Status**: In Progress — Core implementation complete, Copilot code review resolved, CI green
 **Input**: User description: "Flesh out the creation and management of TODO list items with inline creation, sections, reordering, context menus, and a rich item detail view"
 
 ## Clarifications
@@ -21,6 +21,24 @@
 - Q: What format should Notes use? -> A: Rich text via ActionText (Trix editor). Notes are stored as HTML and rendered as formatted content. This supports paragraphs, bullet lists, and basic formatting.
 - Q: How does the user navigate to the item detail view? -> A: Full page navigation via standard Rails show action with Turbo Drive. The item detail is a dedicated page, not a panel or modal.
 - Q: How many priority levels exist? -> A: Four: None (no dot, default), Low (teal/green dot), Medium (orange dot), High (red dot).
+
+### Implementation Learnings (2026-03-22)
+
+- **Fizzy is NOT an editor**: "Fizzy" (basecamp/fizzy) is 37signals' Kanban project management tool, not a text editor. The actual rich text editor successor to Trix is "Lexxy" (basecamp/lexxy, currently beta). ActionText with Trix was used instead as a stable, built-in Rails solution.
+- **`wa-dropdown` for context menus**: Web Awesome Pro does NOT have `wa-menu` or `wa-menu-item` components. Use `wa-dropdown` + `wa-dropdown-item` for all menu patterns. `wa-select` event fires on item selection.
+- **Stimulus controller scope and targets**: `data-controller` must be on an ancestor element of ALL targets. When using `wa-dropdown` with hidden form targets, wrap both in a container div with the controller attribute — targets CANNOT be siblings of the controller element.
+- **Turbo Stream vs HTML responses on detail pages**: Turbo Stream responses that replace list-row partials will fail on the item detail page (the target DOM elements don't exist). Use `data: { turbo: false }` on detail-page forms to force full HTML redirects.
+- **Turbo Frames and navigation**: Links inside `turbo_frame_tag` are intercepted by Turbo, which tries to find a matching frame in the response. For full-page navigation (e.g., item title → detail page), add `data: { turbo_frame: "_top" }` to the link.
+- **Drag-and-drop with Turbo Frames**: The `draggable` attribute must be on the `turbo-frame` element itself (not an inner div), since the frame is what moves in the DOM. Use `data-item-id` attributes for identification instead of relying on DOM `id` attributes.
+- **Duplicate DOM IDs with turbo_frame_tag**: `turbo_frame_tag dom_id(item)` creates `<turbo-frame id="...">`. DO NOT also set the same `id` on an inner element — this causes duplicate IDs breaking JS lookups and Turbo replacements.
+- **Scoped associations and controller lookups**: When `has_many` uses a scope (e.g., `-> { active }`), controller `find` calls will exclude records matching that scope (e.g., archived sections can't be found). Use an unscoped association (e.g., `all_todo_sections`) for controller lookups that should operate on all records.
+- **Duplicate `dependent: :destroy`**: Having `dependent: :destroy` on both a scoped and unscoped association pointing at the same table causes duplicate destroy attempts. Only put `dependent: :destroy` on the unscoped association.
+- **`assigned_to_user_id` security**: Even in a single-user-stubs model, NEVER permit arbitrary user IDs from client params. Always force ownership fields server-side (e.g., `permitted[:assigned_to_user_id] = Current.user.id`).
+- **Position shift on item creation**: When prepending items at position 0, shift existing positions BEFORE saving the new item (in a transaction), not after — otherwise the new item also gets shifted.
+- **`button_to` with blocks**: When using `button_to` with a block (for icon content), do NOT pass a label string as the first argument. The block provides the content; the first arg must be the URL. Passing both causes `stringify_keys` errors.
+- **`showPicker()` browser compatibility**: `HTMLInputElement#showPicker()` is not supported in all browsers. Always wrap in feature detection and try/catch.
+- **Case-insensitive DB constraints**: Always add database-level unique indexes with `lower(name)` for user-scoped name fields, matching the model validation. Applied to both `todo_lists` and `tags` tables.
+- **System test sign-in with Web Awesome**: Dispatch multiple events (`wa-input`, `wa-change`, `input`, `change`) when setting wa-input values in tests to ensure form data syncs through shadow DOM.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -397,6 +415,23 @@ All TODO item and section operations are scoped to the authenticated user's TODO
 - **Checklist Item**: A sub-task within a TODO item. Key attributes: name (required), completed (boolean), position (integer for ordering). Belongs to a TODO item.
 - **Attachment**: A file associated with a TODO item. Key attributes: file reference, original filename. Belongs to a TODO item.
 - **Tag**: A categorization label for a TODO item. Key attributes: name (required), color (optional). Associated with TODO items (many-to-many).
+
+### Deferred Features / Future Work
+
+The following features are visible in the design or were identified during implementation but deferred to future iterations:
+
+- **Archive restore UI**: Archive sets an `archived` flag but no "View Archive" or "Restore" screen exists. Items/sections are hidden but recoverable via database.
+- **Move and Copy dialogs**: Context menus show "Move..." and "Copy..." but the destination picker dialog is not yet implemented. Currently these actions are no-ops in the UI.
+- **New list from group**: Section context menu shows "New list from group" but the action to create a new TodoList from a section's items is not implemented.
+- **Insert a to-do**: Context menu "Insert a to-do" action should insert an inline item input at the clicked position. Currently a no-op.
+- **Multi-user collaboration**: Assignees, Comments, and Notify on Complete are single-user stubs. Future work: team/workspace model, multi-user assignment, real-time threaded comments, notification system.
+- **Drag-and-drop for sections**: Section headers currently do not support drag reordering (draggable attribute removed). Needs separate implementation for section-level reordering.
+- **Inline item editing via context menu**: The "Edit" action in item context menus is not yet wired to toggle inline editing of item names.
+- **Tag management UI**: Tags can be created and removed via controller, but the tag input UI (autocomplete, color picker) on the item detail page is not yet interactive.
+- **Attachment preview/download**: File cards display filename and size but clicking does not yet preview or download.
+- **Due date editing on detail page**: The Due Date card in the right sidebar displays the date but does not yet provide a date picker for modification.
+- **Event listener cleanup in drag controller**: Drag reorder controller does not remove event listeners in `disconnect()`, which could cause duplicate handlers on Turbo navigation.
+- **Multiple inline forms guard**: Multiple inline item/section forms can theoretically exist on the same page due to hardcoded IDs. Should implement global guard or unique IDs.
 
 ## Assumptions
 

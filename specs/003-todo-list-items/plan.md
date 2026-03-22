@@ -7,6 +7,8 @@
 
 Implement full TODO item and section management within the existing Rails 8.1 application. Users can create items and sections inline (optimized for speed with Enter-to-save flow), reorder via drag-and-drop, toggle completion, view/edit rich item details (notes, checklist, due date, priority, tags, attachments), and manage items/sections via context menus (edit, move, copy, archive, delete). The UI follows `todo-list-item-screens.pen` using Web Awesome Pro components (`wa-dropdown`, `wa-dialog`, `wa-tooltip`, `wa-button`, `wa-icon`, `wa-input`), Font Awesome Pro icons, and Hotwire (Turbo Streams + Stimulus) for all interactivity. ActionText with Trix provides rich text editing for item notes.
 
+**Test coverage**: 223 tests, 556 assertions — all passing. Includes model validations/scopes/business logic, controller auth/authz/CRUD, and system tests for list creation/editing/deletion.
+
 ## Technical Context
 
 **Language/Version**: Ruby 4.0.1 / Rails 8.1.2
@@ -307,6 +309,54 @@ Calculated in a model helper method `TodoItem#due_date_style` returning the CSS 
 | `notes_editor_controller` | Toggle notes edit mode | `edit`, `save`, `cancel` |
 | `checklist_controller` | Checklist item management | `add`, `toggle`, `remove` |
 | `tag_manager_controller` | Tag add/remove | `add`, `remove`, `search` |
+
+### D18: Stimulus Controller Scope — Targets Must Be Descendants
+
+Copilot code review revealed that `data-controller` was placed on `<wa-dropdown>` while form targets (`archiveForm`, `deleteForm`) were in sibling `<div>` elements. Stimulus requires all targets to be descendants of the controller element. Fix: wrap both the dropdown and hidden forms in a single container `<div>` with `data-controller`.
+
+### D19: Turbo Stream vs HTML on Detail Page
+
+The item detail page uses `data: { turbo: false }` on all forms (status selector, notes editor, mark complete, delete) to force full HTML redirects. This is necessary because the controller's Turbo Stream responses replace list-row partials (`_todo_item`, `_todo_item_completed`) which only exist on the list view, not the detail page. Without this, forms silently fail to update the UI.
+
+### D20: Turbo Frame Navigation — `_top` for Full Page Links
+
+Links inside `turbo_frame_tag` are intercepted by Turbo, which tries to replace just the frame. Item title links in `_todo_item.html.erb` use `data: { turbo_frame: "_top" }` to trigger full-page navigation to the item detail page. Without this, clicking shows "Content missing."
+
+### D21: Drag-and-Drop — Turbo Frames as Draggable Units
+
+After removing duplicate DOM IDs (Copilot fix), the drag controller was rewritten to use `turbo-frame.todo-item-frame` as the draggable elements. Key decisions:
+- `draggable="true"` is on the `turbo_frame_tag`, not the inner div
+- `data-item-id` and `data-section-id` attributes on the frame for identification
+- CSS `turbo-frame.todo-item-frame { display: block; }` to make frames participate in layout
+- Drop targets include items (above/below), section containers (cross-section), and unsectioned area
+- `persistOrder()` collects all items from all containers and sends full order to server
+- Section headers do NOT support drag reordering (deferred)
+
+### D22: Security — Server-Side Ownership Enforcement
+
+`assigned_to_user_id` is permitted in strong params but forced to `Current.user.id` server-side, regardless of what the client sends. This prevents users from assigning items to arbitrary user IDs even though the single-user stub model only allows self-assignment.
+
+### D23: Position Shift — Order of Operations
+
+When creating items with `position: 0` (prepend), existing items must be shifted BEFORE the new item is saved, wrapped in a transaction. If shifted after save, the new item's position also gets incremented, placing it at position 1 instead of 0.
+
+### D24: Inline Section Creation — fetch() not requestSubmit()
+
+The inline section input is a plain `<div>` with `<input>` fields, not a `<form>`. Therefore `this.element.requestSubmit()` fails silently. The controller uses `fetch()` POST with FormData instead, matching the inline item creation pattern.
+
+### D25: Item Detail Sub-Resource Controllers
+
+Each item detail section has its own controller for clean separation:
+- `ChecklistItemsController`: create, toggle, destroy — redirects back to item detail
+- `CommentsController`: create, destroy — redirects back to item detail
+- `AttachmentsController`: create (multi-file), destroy — redirects back to item detail
+- `TagsController`: create (find-or-create tag, create item_tag), destroy — redirects back to item detail
+
+All use `data: { turbo: false }` or standard form submission with HTML redirects to avoid Turbo Stream conflicts on the detail page.
+
+### D26: Blank Slate Visibility Toggle
+
+The show page always renders BOTH the blank slate and the content area, using `style="display: none"` to toggle visibility. This ensures `#unsectioned-items` always exists in the DOM for Turbo Stream prepend targets. The `show-actions` Stimulus controller hides the blank slate and shows the content area when users click "Add First Item."
 
 ## Complexity Tracking
 
