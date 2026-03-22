@@ -4,6 +4,7 @@ Auto-generated from all feature plans. Last updated: 2026-03-05
 
 ## Active Technologies
 - Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Stimulus), Web Awesome Pro (CDN kit), Font Awesome Pro (CDN kit), bcrypt (existing) (002-todo-lists)
+- Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Turbo Streams + Turbo Frames + Stimulus), Web Awesome Pro (CDN kit), Font Awesome Pro (CDN kit), ActionText (Rails built-in, for notes), Active Storage (Rails built-in, for attachments) (003-todo-list-items)
 
 - Ruby 4.0.1 / Rails 8.1.2 (001-user-auth)
 - Hotwire: Turbo Drive, Turbo Frames, Turbo Streams, Stimulus
@@ -52,6 +53,7 @@ bin/rails credentials:edit # Edit encrypted credentials
 - Stimulus controllers for DOM only; server logic via Turbo
 
 ## Recent Changes
+- 003-todo-list-items: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Turbo Streams + Turbo Frames + Stimulus), Web Awesome Pro (CDN kit), Font Awesome Pro (CDN kit), ActionText (Rails built-in, for notes), Active Storage (Rails built-in, for attachments)
 - 002-todo-lists: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Stimulus), Web Awesome Pro (CDN kit), Font Awesome Pro (CDN kit), bcrypt (existing)
 
 - 001-user-auth: User authentication (sign up, sign in, password
