@@ -1241,6 +1241,17 @@ wa-button.form-error-banner-close::part(base):hover {
   border-color: var(--color-primary-hover);
 }
 
+.show-action-btn-danger {
+  color: var(--color-danger, #EF4444);
+  border-color: #FEE2E2;
+  background: transparent;
+  padding: 0 10px;
+}
+
+.show-action-btn-danger:hover {
+  background: #FEE2E2;
+}
+
 .show-action-btn wa-icon {
   font-size: 13px;
 }
@@ -1944,18 +1955,36 @@ wa-dropdown-item[variant="danger"]::part(base) {
 }
 
 /* ===== Drag and Drop ===== */
-.todo-item--dragging {
+turbo-frame.todo-item-frame {
+  display: block;
+}
+
+turbo-frame.todo-item-frame.todo-item--dragging {
   opacity: 0.8;
   transform: rotate(-1deg);
   box-shadow: 0 8px 24px rgba(139, 92, 246, 0.25), 0 2px 8px rgba(0, 0, 0, 0.08);
-  border: 2px solid var(--accent-purple, #8B5CF6);
+  border-radius: 12px;
   z-index: 100;
   position: relative;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.drag-over {
+turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
+  border: 2px solid var(--accent-purple, #8B5CF6);
+}
+
+.drag-over-above {
   border-top: 2px solid var(--accent-purple, #8B5CF6) !important;
+}
+
+.drag-over-below {
+  border-bottom: 2px solid var(--accent-purple, #8B5CF6) !important;
+}
+
+.drag-over-section {
+  background: rgba(139, 92, 246, 0.05);
+  border: 2px dashed var(--accent-purple, #8B5CF6) !important;
+  border-radius: 12px;
+  min-height: 48px;
 }
 
 .todo-item {
@@ -2595,4 +2624,413 @@ wa-dropdown-item[variant="danger"]::part(base) {
   .attach-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* ===== Inline Empty Hint ===== */
+.inline-divider {
+  height: 1px;
+  background: var(--bg-elevated, #E4E4E7);
+  margin: 16px 0;
+}
+
+.inline-empty-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 0;
+}
+
+.inline-empty-hint-emoji {
+  font-size: 32px;
+}
+
+.inline-empty-hint-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-tertiary, #A1A1AA);
+}
+
+.inline-empty-hint-subtext {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted, #D4D4D8);
+  text-align: center;
+  max-width: 360px;
+  line-height: 1.5;
+}
+
+/* ===== Section Header Accent ===== */
+.section-header {
+  position: relative;
+}
+
+/* Active section gets a colored left accent border */
+.section-header[data-active="true"],
+.section-group:first-child .section-header {
+  border: 1px solid var(--accent-purple, #8B5CF6);
+}
+
+/* ===== Drag Tooltip ===== */
+.drag-hint-tooltip {
+  position: fixed;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: #18181BDD;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  z-index: 1000;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.drag-hint-tooltip.visible {
+  display: flex;
+}
+
+/* ===== Section Icon Picker — Purple Theme (matches design) ===== */
+.section-icon-picker-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  height: 30px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent-purple-soft, #EDE9FE);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.section-icon-picker-btn:hover {
+  background: #DDD6FE;
+}
+
+.section-icon-picker-icon {
+  font-size: 16px;
+  color: var(--accent-purple, #8B5CF6);
+}
+
+.section-icon-picker-chevron {
+  font-size: 12px;
+  color: var(--accent-purple, #8B5CF6);
+}
+
+.section-icon-dropdown {
+  padding: 12px;
+}
+
+.section-icon-dropdown-label {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-tertiary, #A1A1AA);
+  margin-bottom: 10px;
+}
+
+.section-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.section-icon-grid-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--text-secondary, #71717A);
+  font-size: 18px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.section-icon-grid-btn:hover {
+  background: var(--bg-surface, #F4F4F5);
+}
+
+.section-icon-grid-btn--selected {
+  background: var(--accent-purple-soft, #EDE9FE);
+  color: var(--accent-purple, #8B5CF6);
+}
+
+.inline-section-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.inline-section-wrapper {
+  margin-top: 16px;
+}
+
+/* ===== Section Inline Editing ===== */
+.section-header--editing {
+  padding: 0 8px;
+}
+
+.section-edit-inline {
+  width: 100%;
+}
+
+.section-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.section-edit-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary, #18181B);
+  background: transparent;
+  padding: 4px 0;
+  border-bottom: 2px solid var(--accent-purple, #8B5CF6);
+}
+
+.section-edit-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.section-edit-save-btn,
+.section-edit-cancel-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.section-edit-save-btn {
+  background: var(--accent-purple, #8B5CF6);
+  color: white;
+}
+
+.section-edit-save-btn:hover {
+  background: #7C3AED;
+}
+
+.section-edit-cancel-btn {
+  background: var(--bg-surface, #F4F4F5);
+  color: var(--text-secondary, #71717A);
+}
+
+.section-edit-cancel-btn:hover {
+  background: #E4E4E7;
+}
+
+/* ===== Checklist Functional Styles ===== */
+.checklist-add-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  margin-top: 8px;
+}
+
+.checklist-add-input {
+  flex: 1;
+  border: 1px solid var(--border-standard, #E4E4E7);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.checklist-add-input:focus {
+  border-color: var(--accent-purple, #8B5CF6);
+}
+
+.checklist-add-submit {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent-purple, #8B5CF6);
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.checklist-add-submit:hover {
+  background: #7C3AED;
+}
+
+.checklist-item {
+  position: relative;
+}
+
+.checklist-delete-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  appearance: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-muted, #A1A1AA);
+  padding: 4px;
+  transition: opacity 0.15s ease;
+}
+
+.checklist-item:hover .checklist-delete-btn {
+  opacity: 1;
+}
+
+.checklist-delete-btn:hover {
+  color: var(--color-danger, #EF4444);
+}
+
+/* ===== Comment Input Functional ===== */
+.comment-input-field {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text-primary, #18181B);
+  background: transparent;
+}
+
+.comment-input-field::placeholder {
+  color: var(--text-muted, #A1A1AA);
+}
+
+.comment-send-btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent-purple, #8B5CF6);
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.comment-send-btn:hover {
+  background: #7C3AED;
+}
+
+/* ===== Attachment Upload ===== */
+.attach-file-input {
+  display: none;
+}
+
+.attach-upload-label {
+  cursor: pointer;
+}
+
+.attach-upload-form {
+  display: none;
+}
+
+.file-card-size {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: var(--text-muted, #A1A1AA);
+  margin-left: auto;
+}
+
+/* ===== Notes Editor ===== */
+.notes-edit-form {
+  margin-top: 8px;
+}
+
+.notes-trix-editor {
+  min-height: 120px;
+  border: 1px solid var(--border-standard, #E4E4E7);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+trix-editor {
+  min-height: 120px;
+  border: 1px solid var(--border-standard, #E4E4E7) !important;
+  border-radius: 8px !important;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+trix-editor:focus {
+  border-color: var(--accent-purple, #8B5CF6) !important;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+}
+
+trix-toolbar {
+  border-bottom: 1px solid var(--border-standard, #E4E4E7);
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+}
+
+.notes-form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.notes-save-btn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent-purple, #8B5CF6);
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.notes-save-btn:hover {
+  background: #7C3AED;
+}
+
+.notes-cancel-btn {
+  padding: 8px 20px;
+  border: 1px solid var(--border-standard, #E4E4E7);
+  border-radius: 8px;
+  background: white;
+  color: var(--text-secondary, #71717A);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.notes-cancel-btn:hover {
+  background: var(--bg-surface, #F4F4F5);
 }

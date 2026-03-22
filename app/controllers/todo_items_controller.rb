@@ -53,7 +53,7 @@ class TodoItemsController < ApplicationController
     @todo_item.toggle_completion!
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.replace(@todo_item, partial: @todo_item.completed? ? "todo_lists/todo_item_completed" : "todo_lists/todo_item", locals: { item: @todo_item, todo_list: @todo_list }) }
-      format.html { redirect_to todo_list_path(@todo_list) }
+      format.html { redirect_back fallback_location: todo_list_todo_item_path(@todo_list, @todo_item) }
     end
   end
 
@@ -78,7 +78,10 @@ class TodoItemsController < ApplicationController
   end
 
   def reorder
-    @todo_list.reorder_items(params[:items])
+    items_data = params.require(:items).map do |item|
+      item.permit(:id, :position, :section_id)
+    end
+    @todo_list.reorder_items(items_data)
     head :ok
   end
 
@@ -93,7 +96,7 @@ class TodoItemsController < ApplicationController
   end
 
   def todo_item_params
-    params.require(:todo_item).permit(:name, :status, :due_date, :priority, :todo_section_id, :assigned_to_user_id)
+    params.require(:todo_item).permit(:name, :status, :due_date, :priority, :todo_section_id, :assigned_to_user_id, :notes, files: [])
   end
 
   def validate_target_section!

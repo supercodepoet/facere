@@ -7,7 +7,7 @@
     <% end %>
   </div>
   <div class="comments-list">
-    <% item.comments.each do |comment| %>
+    <% item.comments.includes(:user).each do |comment| %>
       <div class="comment-row">
         <div class="comment-avatar" style="background: var(--list-color-<%= todo_list.color %>);">
           <%= comment.user.initials %>
@@ -22,10 +22,11 @@
       </div>
     <% end %>
   </div>
-  <div class="comment-input-row">
+  <%= form_with(url: todo_list_todo_item_comments_path(todo_list, item), method: :post, class: "comment-input-row") do |f| %>
     <div class="comment-avatar comment-avatar--self" style="background: var(--list-color-<%= todo_list.color %>);">
       <%= Current.user.initials %>
     </div>
-    <span class="comment-placeholder">Write a comment...</span>
-  </div>
+    <%= f.text_field :body, placeholder: "Write a comment...", class: "comment-input-field", name: "comment[body]" %>
+    <%= f.submit "Send", class: "comment-send-btn" %>
+  <% end %>
 </div>

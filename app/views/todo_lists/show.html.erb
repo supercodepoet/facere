@@ -27,6 +27,9 @@
           <wa-icon name="plus" variant="thin"></wa-icon>
           Add Item
         </button>
+        <button class="show-action-btn show-action-btn-danger" onclick="document.getElementById('delete-dialog-<%= @todo_list.id %>').show()" aria-label="Delete list">
+          <wa-icon name="trash" variant="thin"></wa-icon>
+        </button>
       </div>
     </div>
 
@@ -42,7 +45,7 @@
       <div class="empty-list-illustration">
         <wa-icon name="party-horn" variant="thin"></wa-icon>
       </div>
-      <h2>Your list is ready!</h2>
+      <h2>Your list is ready! ✏️</h2>
       <p>"<%= @todo_list.name %>" has been created. Start adding items and sections to bring it to life!</p>
       <div class="empty-list-actions">
         <button class="show-action-btn show-action-btn-primary" data-action="click->show-actions#addItem">

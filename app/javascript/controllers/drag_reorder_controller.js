@@ -1,94 +1,169 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = { url: String}
+  static values = { url: String }
 
   connect() {
-    this.element.addEventListener("dragstart", this.dragStart.bind(this))
-    this.element.addEventListener("dragend", this.dragEnd.bind(this))
-    this.element.addEventListener("dragover", this.dragOver.bind(this))
-    this.element.addEventListener("drop", this.drop.bind(this))
-    this.element.addEventListener("dragleave", this.dragLeave.bind(this))
+    this.draggedEl = null
+
+    this.element.addEventListener("dragstart", this.onDragStart.bind(this))
+    this.element.addEventListener("dragend", this.onDragEnd.bind(this))
+    this.element.addEventListener("dragover", this.onDragOver.bind(this))
+    this.element.addEventListener("dragleave", this.onDragLeave.bind(this))
+    this.element.addEventListener("drop", this.onDrop.bind(this))
+
+    // Create drag hint tooltip
+    this.tooltip = document.createElement("div")
+    this.tooltip.className = "drag-hint-tooltip"
+    this.tooltip.textContent = "Drop to reorder"
+    document.body.appendChild(this.tooltip)
   }
 
-  dragStart(event) {
-    const item = event.target.closest("[draggable]")
-    if (!item) return
+  disconnect() {
+    if (this.tooltip) this.tooltip.remove()
+  }
 
+  onDragStart(event) {
+    // Find the turbo-frame (the draggable element)
+    const frame = event.target.closest("turbo-frame.todo-item-frame")
+    if (!frame) return
+
+    this.draggedEl = frame
     event.dataTransfer.effectAllowed = "move"
-    event.dataTransfer.setData("text/plain", item.id)
+    event.dataTransfer.setData("text/plain", frame.id)
 
     requestAnimationFrame(() => {
-      item.classList.add("todo-item--dragging")
+      frame.classList.add("todo-item--dragging")
     })
+
+    // Show tooltip
+    const rect = frame.getBoundingClientRect()
+    this.tooltip.style.left = `${rect.left + rect.width / 2 - 60}px`
+    this.tooltip.style.top = `${rect.bottom + 8}px`
+    this.tooltip.classList.add("visible")
   }
 
-  dragEnd(event) {
-    const item = event.target.closest("[draggable]")
-    if (!item) return
+  onDragEnd(event) {
+    if (this.draggedEl) {
+      this.draggedEl.classList.remove("todo-item--dragging")
+      this.draggedEl = null
+    }
 
-    item.classList.remove("todo-item--dragging")
-    document.querySelectorAll(".drop-indicator").forEach(el => el.remove())
-    document.querySelectorAll(".drag-over").forEach(el => el.classList.remove("drag-over"))
+    this.clearDropIndicators()
+    this.tooltip.classList.remove("visible")
   }
 
-  dragOver(event) {
+  onDragOver(event) {
+    if (!this.draggedEl) return
     event.preventDefault()
     event.dataTransfer.dropEffect = "move"
 
-    const target = event.target.closest(".todo-item, .section-header")
-    if (target) {
-      document.querySelectorAll(".drag-over").forEach(el => el.classList.remove("drag-over"))
-      target.classList.add("drag-over")
+    this.clearDropIndicators()
+
+    // Find the drop target: another item frame, a section-items container, or the unsectioned area
+    const targetFrame = event.target.closest("turbo-frame.todo-item-frame")
+    const sectionItems = event.target.closest(".section-items")
+    const unsectioned = event.target.closest(".unsectioned-items")
+
+    if (targetFrame && targetFrame !== this.draggedEl) {
+      // Dropping on another item — show indicator above or below based on mouse position
+      const rect = targetFrame.getBoundingClientRect()
+      const midpoint = rect.top + rect.height / 2
+
+      if (event.clientY < midpoint) {
+        targetFrame.classList.add("drag-over-above")
+      } else {
+        targetFrame.classList.add("drag-over-below")
+      }
+    } else if (sectionItems && sectionItems.querySelectorAll("turbo-frame.todo-item-frame").length === 0) {
+      // Empty section — highlight the whole area
+      sectionItems.classList.add("drag-over-section")
+    } else if (unsectioned) {
+      // Could be dropping at the end of the unsectioned area
+      unsectioned.classList.add("drag-over-section")
     }
   }
 
-  dragLeave(event) {
-    const target = event.target.closest(".todo-item, .section-header")
+  onDragLeave(event) {
+    const target = event.target.closest("turbo-frame.todo-item-frame, .section-items, .unsectioned-items")
     if (target) {
-      target.classList.remove("drag-over")
+      target.classList.remove("drag-over-above", "drag-over-below", "drag-over-section")
     }
   }
 
-  drop(event) {
+  onDrop(event) {
     event.preventDefault()
-    const draggedId = event.dataTransfer.getData("text/plain")
-    const draggedEl = document.getElementById(draggedId)
-    const target = event.target.closest(".todo-item, .section-group")
+    if (!this.draggedEl) return
 
-    if (!draggedEl || !target || draggedEl === target) return
+    const targetFrame = event.target.closest("turbo-frame.todo-item-frame")
+    const sectionItems = event.target.closest(".section-items")
+    const unsectioned = event.target.closest(".unsectioned-items")
 
-    // Determine new position
-    const container = target.closest(".section-items, .unsectioned-items, .show-content")
-    if (!container) return
+    if (targetFrame && targetFrame !== this.draggedEl) {
+      // Drop relative to another item
+      const rect = targetFrame.getBoundingClientRect()
+      const midpoint = rect.top + rect.height / 2
 
-    const items = [...container.querySelectorAll(".todo-item, .section-group")]
-    const targetIndex = items.indexOf(target.closest(".todo-item") || target.closest(".section-group"))
-
-    // Move DOM element
-    if (target.closest(".todo-item")) {
-      target.before(draggedEl)
+      if (event.clientY < midpoint) {
+        targetFrame.before(this.draggedEl)
+      } else {
+        targetFrame.after(this.draggedEl)
+      }
+    } else if (sectionItems) {
+      // Drop into a section (possibly empty)
+      const emptyHint = sectionItems.querySelector(".empty-section-hint")
+      if (emptyHint) emptyHint.remove()
+      sectionItems.appendChild(this.draggedEl)
+    } else if (unsectioned) {
+      unsectioned.appendChild(this.draggedEl)
     } else {
-      target.after(draggedEl)
+      // No valid target
+      this.clearDropIndicators()
+      return
     }
 
-    // Collect new order and send to server
-    this.saveOrder(container)
-
-    document.querySelectorAll(".drag-over").forEach(el => el.classList.remove("drag-over"))
+    this.clearDropIndicators()
+    this.persistOrder()
   }
 
-  saveOrder(container) {
-    const items = [...container.querySelectorAll(":scope > .todo-item, :scope > [id^='todo_item_']")]
-    const sectionEl = container.closest(".section-group")
-    const sectionId = sectionEl ? sectionEl.id.replace("todo_section_", "") : null
+  clearDropIndicators() {
+    this.element.querySelectorAll(".drag-over-above, .drag-over-below, .drag-over-section").forEach(el => {
+      el.classList.remove("drag-over-above", "drag-over-below", "drag-over-section")
+    })
+  }
 
-    const orderData = items.map((el, index) => {
-      const id = el.id.replace("todo_item_", "")
-      return { id: id, position: index, section_id: sectionId }
+  persistOrder() {
+    // Collect all items grouped by their container (section or unsectioned)
+    const items = []
+
+    // Unsectioned items
+    const unsectioned = this.element.querySelector(".unsectioned-items")
+    if (unsectioned) {
+      unsectioned.querySelectorAll("turbo-frame.todo-item-frame").forEach((frame, index) => {
+        items.push({
+          id: frame.dataset.itemId,
+          position: index,
+          section_id: null
+        })
+      })
+    }
+
+    // Section items
+    this.element.querySelectorAll(".section-items").forEach(sectionContainer => {
+      const sectionFrame = sectionContainer.closest("turbo-frame")
+      if (!sectionFrame) return
+      const sectionId = sectionFrame.id.replace("todo_section_", "")
+
+      sectionContainer.querySelectorAll("turbo-frame.todo-item-frame").forEach((frame, index) => {
+        items.push({
+          id: frame.dataset.itemId,
+          position: index,
+          section_id: sectionId
+        })
+      })
     })
 
-    if (orderData.length === 0) return
+    if (items.length === 0) return
 
     fetch(this.urlValue, {
       method: "PATCH",
@@ -97,7 +172,7 @@ export default class extends Controller {
         "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content,
         "Accept": "application/json"
       },
-      body: JSON.stringify({ items: orderData })
+      body: JSON.stringify({ items: items })
     })
   }
 }

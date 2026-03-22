@@ -78,9 +78,12 @@ class TodoListsTest < ApplicationSystemTestCase
     list = @user.todo_lists.create!(name: "To Delete", color: "pink", template: "blank")
     visit todo_list_path(list)
 
-    click_button "Delete"
+    # Click the trash icon button to open the delete dialog
+    find("button.show-action-btn-danger", wait: 5).click
+
+    # Confirm deletion inside the wa-dialog
     within "wa-dialog" do
-      click_button "Delete"
+      find("button.delete-confirm-btn", wait: 5).click
     end
 
     assert_text "List deleted successfully", wait: 5
@@ -99,23 +102,29 @@ class TodoListsTest < ApplicationSystemTestCase
 
   private
 
-  # Set a wa-input value by its name attribute and dispatch wa-change
+  # Set a wa-input value by its name attribute and dispatch events
   def set_wa_input(name, value)
     find("wa-input[name='#{name}']", wait: 5)
     page.execute_script <<~JS
       const input = document.querySelector('wa-input[name="#{name}"]');
       input.value = '#{value}';
+      input.dispatchEvent(new Event('wa-input', { bubbles: true }));
       input.dispatchEvent(new Event('wa-change', { bubbles: true }));
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
     JS
   end
 
-  # Set a wa-input value by its id attribute and dispatch wa-change
+  # Set a wa-input value by its id attribute and dispatch events
   def set_wa_input_by_id(id, value)
     find("##{id}", wait: 5)
     page.execute_script <<~JS
       const input = document.querySelector('##{id}');
       input.value = '#{value}';
+      input.dispatchEvent(new Event('wa-input', { bubbles: true }));
       input.dispatchEvent(new Event('wa-change', { bubbles: true }));
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
     JS
   end
 
