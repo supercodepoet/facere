@@ -5,8 +5,18 @@ class TodoItemsController < ApplicationController
   before_action :set_todo_item, only: %i[show update destroy toggle archive move copy]
 
   def show
+    @todo_item = @todo_list.todo_items
+      .includes(
+        :rich_text_notes,
+        :tags,
+        :checklist_items,
+        :files_attachments,
+        :assigned_to,
+        :notify_people,
+        comments: [ :user, :comment_likes, replies: [ :user, :comment_likes ] ]
+      )
+      .find(params[:id])
     @sidebar_lists = Current.user.todo_lists.includes(:todo_items).recently_updated
-    @sections = @todo_list.todo_sections.active.includes(todo_items: :assigned_to)
   end
 
   def create

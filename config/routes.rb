@@ -56,7 +56,10 @@ Rails.application.routes.draw do
 
       resources :tags, only: [ :create, :destroy ]
       resources :attachments, only: [ :create, :destroy ]
-      resources :comments, only: [ :create, :destroy ]
+      resources :comments, only: [ :create, :update, :destroy ] do
+        resources :likes, only: [ :create, :destroy ], controller: "comment_likes"
+      end
+      resources :notify_people, only: [ :create, :destroy ]
     end
 
     resources :todo_sections, path: "sections", except: [ :index, :show ] do

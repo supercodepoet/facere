@@ -1,0 +1,16 @@
+<div class="detail-card">
+  <div class="detail-card-header">
+    <span class="detail-card-label">PRIORITY</span>
+  </div>
+  <div class="priority-options">
+    <% TodoItem::PRIORITIES.reverse.each do |p| %>
+      <%= button_to todo_list_todo_item_path(todo_list, item), method: :patch, params: { todo_item: { priority: p } }, class: "priority-option #{'priority-option--selected' if item.priority == p}", data: { turbo_frame: "item_priority_#{item.id}" } do %>
+        <span class="priority-dot" style="background: <%= TodoItem::PRIORITY_COLORS[p] %>;"></span>
+        <span class="priority-text"><%= TodoItem::PRIORITY_LABELS[p] %></span>
+        <% if item.priority == p %>
+          <wa-icon name="check" style="color: <%= TodoItem::PRIORITY_COLORS[p] %>; margin-left: auto;"></wa-icon>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

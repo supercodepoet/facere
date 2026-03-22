@@ -1,7 +1,7 @@
 class ChecklistItemsController < ApplicationController
   before_action :set_todo_list
   before_action :set_todo_item
-  before_action :set_checklist_item, only: %i[update destroy toggle]
+  before_action :set_checklist_item, only: %i[destroy toggle]
 
   def create
     @checklist_item = @todo_item.checklist_items.build(checklist_item_params)

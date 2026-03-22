@@ -4,7 +4,12 @@
       "Bash(git:*)",
       "Bash(python3 -c \":*)",
       "Bash(grep -E \"\\\\.\\(rb|erb\\)$\")",
-      "Bash(gh repo:*)"
+      "Bash(gh repo:*)",
+      "Bash(.specify/scripts/bash/create-new-feature.sh --json --number 4 --short-name \"todo-item-detail\" \"TODO Item Detail Screen\")",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(bin/importmap pin:*)",
+      "Bash(RAILS_LOG_LEVEL=debug bin/rails test test/controllers/checklist_debug_test.rb)"
     ]
   }
 }

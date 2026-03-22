@@ -156,4 +156,85 @@ class TodoItemTest < ActiveSupport::TestCase
     item.update!(status: "done")
     assert item.reload.completed?
   end
+
+  # --- Expanded status/priority tests (US1) ---
+
+  test "on_hold is a valid status" do
+    item = @list.todo_items.build(name: "Hold", position: 0, status: "on_hold")
+    assert item.valid?
+  end
+
+  test "on_hold does not mark completed" do
+    item = @list.todo_items.create!(name: "Hold", position: 0, status: "todo")
+    item.update!(status: "on_hold")
+    assert_not item.reload.completed?
+  end
+
+  test "changing from done to on_hold unmarks completed" do
+    item = @list.todo_items.create!(name: "Hold", position: 0, status: "done", completed: true)
+    item.update!(status: "on_hold")
+    assert_not item.reload.completed?
+  end
+
+  test "urgent is a valid priority" do
+    item = @list.todo_items.build(name: "Urgent", position: 0, priority: "urgent")
+    assert item.valid?
+  end
+
+  test "normal is a valid priority" do
+    item = @list.todo_items.build(name: "Normal", position: 0, priority: "normal")
+    assert item.valid?
+  end
+
+  test "medium is no longer a valid priority" do
+    item = @list.todo_items.build(name: "Medium", position: 0, priority: "medium")
+    assert_not item.valid?
+  end
+
+  test "status_label returns human-readable labels" do
+    item = @list.todo_items.build(name: "Test", position: 0, status: "in_progress")
+    assert_equal "In Progress", item.status_label
+  end
+
+  test "priority_label returns human-readable labels" do
+    item = @list.todo_items.build(name: "Test", position: 0, priority: "urgent")
+    assert_equal "Urgent", item.priority_label
+  end
+
+  test "priority_color returns correct hex for each priority" do
+    assert_equal "#EF4444", @list.todo_items.build(priority: "urgent").priority_color
+    assert_equal "#F59E0B", @list.todo_items.build(priority: "high").priority_color
+    assert_equal "#3B82F6", @list.todo_items.build(priority: "normal").priority_color
+    assert_equal "#14B8A6", @list.todo_items.build(priority: "low").priority_color
+    assert_equal "#A1A1AA", @list.todo_items.build(priority: "none").priority_color
+  end
+
+  test "status_color returns correct hex for each status" do
+    assert_equal "#A1A1AA", @list.todo_items.build(status: "todo").status_color
+    assert_equal "#8B5CF6", @list.todo_items.build(status: "in_progress").status_color
+    assert_equal "#F59E0B", @list.todo_items.build(status: "on_hold").status_color
+    assert_equal "#14B8A6", @list.todo_items.build(status: "done").status_color
+  end
+
+  test "due_date_display formats date correctly" do
+    item = @list.todo_items.build(name: "Test", position: 0, due_date: Date.new(2026, 3, 10))
+    assert_equal "March 10, 2026", item.due_date_display
+  end
+
+  test "due_date_countdown shows days left for future date" do
+    item = @list.todo_items.build(name: "Test", position: 0, due_date: 5.days.from_now.to_date)
+    assert_match(/5 days left/, item.due_date_countdown)
+  end
+
+  test "due_date_countdown shows overdue for past date" do
+    item = @list.todo_items.build(name: "Test", position: 0, due_date: 3.days.ago.to_date)
+    assert_match(/3 days overdue/, item.due_date_countdown)
+  end
+
+  test "checklist_progress returns ratio string" do
+    item = @list.todo_items.create!(name: "Progress", position: 0)
+    item.checklist_items.create!(name: "Done", position: 0, completed: true)
+    item.checklist_items.create!(name: "Pending", position: 1, completed: false)
+    assert_equal "1/2", item.checklist_progress
+  end
 end
