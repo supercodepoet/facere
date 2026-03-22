@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :oauth_identities, dependent: :destroy
   has_many :todo_lists, dependent: :destroy
+  has_many :tags, dependent: :destroy
   has_one :two_factor_credential, dependent: :destroy
   has_many :recovery_codes, dependent: :destroy
 
@@ -31,6 +32,10 @@ class User < ApplicationRecord
   MAX_FAILED_ATTEMPTS = 5
   LOCKOUT_DURATION = 15.minutes
   LOCKOUT_ESCALATION_FACTOR = 2
+
+  def initials
+    name.split.map(&:first).join.upcase.first(2)
+  end
 
   def email_verified?
     email_verified_at.present?

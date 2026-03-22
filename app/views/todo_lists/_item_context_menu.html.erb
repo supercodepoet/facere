@@ -1,0 +1,39 @@
+<div data-controller="context-menu"
+  data-context-menu-item-id-value="<%= item.id %>"
+  data-context-menu-list-id-value="<%= todo_list.id %>">
+  <wa-dropdown placement="bottom-end" data-action="wa-select->context-menu#dispatch">
+    <wa-button slot="trigger" size="small" appearance="plain" class="todo-item-more">
+      <wa-icon name="ellipsis-vertical" variant="thin"></wa-icon>
+    </wa-button>
+    <wa-dropdown-item value="edit">
+      <wa-icon slot="start" name="pen" variant="thin"></wa-icon>
+      Edit
+    </wa-dropdown-item>
+    <wa-dropdown-item value="move">
+      <wa-icon slot="start" name="arrow-right-arrow-left" variant="thin"></wa-icon>
+      Move...
+    </wa-dropdown-item>
+    <wa-dropdown-item value="copy">
+      <wa-icon slot="start" name="copy" variant="thin"></wa-icon>
+      Copy...
+    </wa-dropdown-item>
+    <wa-divider></wa-divider>
+    <wa-dropdown-item value="archive">
+      <wa-icon slot="start" name="box-archive" variant="thin"></wa-icon>
+      Archive
+    </wa-dropdown-item>
+    <wa-dropdown-item value="delete" variant="danger">
+      <wa-icon slot="start" name="trash" variant="thin"></wa-icon>
+      Delete
+    </wa-dropdown-item>
+    <wa-divider></wa-divider>
+    <wa-dropdown-item value="insert">
+      <wa-icon slot="start" name="plus" variant="thin"></wa-icon>
+      Insert a to-do
+    </wa-dropdown-item>
+  </wa-dropdown>
+  <div hidden>
+    <%= button_to archive_todo_list_todo_item_path(todo_list, item), method: :patch, data: { context_menu_target: "archiveForm" } %>
+    <%= button_to todo_list_todo_item_path(todo_list, item), method: :delete, data: { context_menu_target: "deleteForm", turbo_confirm: "Are you sure? This cannot be undone." } %>
+  </div>
+</div>

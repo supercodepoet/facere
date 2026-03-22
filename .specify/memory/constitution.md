@@ -116,6 +116,12 @@ explicitness over cleverness.
   blocks for all-or-nothing semantics
 - MUST produce valid HTML — never nest interactive elements (`<button>`
   inside `<a>`, `<a>` inside `<button>`)
+- **No duplicate DOM IDs**: `turbo_frame_tag dom_id(obj)` creates an
+  element with an `id`. MUST NOT also set the same `id` on an inner
+  element. Duplicate IDs break JS lookups and Turbo replacements
+- **`button_to` with blocks**: When using a block for button content
+  (e.g., icons), do NOT pass a label string as the first argument —
+  the block provides the content, the first arg MUST be the URL
 - MUST NOT use generic naming patterns (`utils.rb`, `helpers/misc.rb`)
 - Components and methods that cannot be reused elsewhere MAY stay in
   the same file, but the file MUST still respect the 200-line limit
@@ -193,7 +199,46 @@ Learned through implementation of TODO Lists feature (002):
   using `fill_in`. Use `find()` to wait for element presence, then
   `execute_script` to set `.value` and dispatch `wa-change` event.
   Never use top-level `await` in `execute_script`
+- **`wa-dropdown` for menus**: No `wa-menu` or `wa-menu-item` components
+  exist. Use `<wa-dropdown>` + `<wa-dropdown-item>` for all menu/context
+  menu patterns. Listen for `wa-select` event on the dropdown.
+  `variant="danger"` for destructive actions
+- **Stimulus controller scope**: `data-controller` MUST be on an ancestor
+  element of ALL `data-*-target` elements. Targets CANNOT be siblings.
+  When combining `wa-dropdown` with hidden form targets, wrap both in a
+  container `<div>` with the controller attribute
 - **Reference**: https://webawesome.com/docs/components/button/
+
+### Turbo & Stimulus Integration Rules
+
+Learned through implementation of TODO List Items feature (003):
+
+- **Turbo Frame navigation**: Links inside `turbo_frame_tag` are
+  intercepted by Turbo. For full-page navigation, add
+  `data: { turbo_frame: "_top" }` to the link
+- **Turbo Stream responses on detail pages**: If a controller action
+  responds with Turbo Streams that target list-view partials, those
+  streams will fail on detail pages where the targets don't exist.
+  Use `data: { turbo: false }` on detail-page forms to force HTML
+  redirects
+- **Draggable turbo-frames**: When using HTML5 drag-and-drop with Turbo
+  Frames, put `draggable="true"` on the `turbo_frame_tag` itself (not
+  inner elements). Use `data-*` attributes for identification.
+  Add `turbo-frame { display: block; }` in CSS
+- **Position management**: When prepending items at position 0, shift
+  existing positions BEFORE saving the new record (in a transaction).
+  Shifting after save will also increment the new record
+- **Inline creation without forms**: If inline creation uses plain
+  `<div>` + `<input>` (not `<form>`), use `fetch()` with FormData
+  instead of `requestSubmit()`. `requestSubmit()` only works on
+  `<form>` elements
+- **Scoped associations in controllers**: When `has_many` uses a
+  default scope (e.g., `-> { active }`), controller `find` calls
+  will exclude scoped-out records. Use an unscoped association
+  for lookups that should operate on all records (e.g., archived)
+- **System tests with Web Awesome**: When setting `wa-input` values,
+  dispatch multiple events (`wa-input`, `wa-change`, `input`,
+  `change`) to ensure form data syncs through shadow DOM
 
 ## Development Workflow & Quality Gates
 
@@ -215,6 +260,10 @@ Learned through implementation of TODO Lists feature (002):
   resource existence. Strong params MUST exclude `user_id` and other
   ownership fields. Enforce uniqueness constraints at both model AND
   database level (e.g., case-insensitive unique indexes for SQLite)
+- **Server-side ownership enforcement**: Even for "single-user stub"
+  features, NEVER permit arbitrary foreign key IDs from client params.
+  Always force ownership fields server-side (e.g.,
+  `permitted[:assigned_to_user_id] = Current.user.id`)
 - **Test Coverage — Security**: Every controller MUST have tests for
   authentication (unauthenticated redirects) and authorization (other
   user's resources return 404) on all actions. Parameter injection
@@ -268,4 +317,4 @@ implementation plans MUST verify compliance with these principles.
   (generated from `agent-file-template.md`) for day-to-day development
   reference
 
-**Version**: 1.2.0 | **Ratified**: 2026-03-05 | **Last Amended**: 2026-03-21
+**Version**: 1.3.0 | **Ratified**: 2026-03-05 | **Last Amended**: 2026-03-22

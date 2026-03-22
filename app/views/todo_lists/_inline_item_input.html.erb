@@ -1,0 +1,37 @@
+<div class="inline-item-wrapper" id="inline-item-wrapper">
+  <%= form_with(model: [todo_list, TodoItem.new], url: todo_list_todo_items_path(todo_list), id: "inline-item-input",
+       class: "active-input-row",
+       data: { controller: "inline-item", action: "turbo:submit-end->inline-item#afterSubmit" }) do |f| %>
+    <%= f.hidden_field :todo_section_id, value: local_assigns[:section]&.id %>
+    <div class="todo-item-check-circle"></div>
+    <%= f.text_field :name, class: "inline-item-text", placeholder: "What needs to be done?",
+        data: { inline_item_target: "input", action: "keydown->inline-item#handleKeydown" },
+        autofocus: true %>
+    <div class="input-hints">
+      <span class="input-hint-badge">Enter</span>
+      <span class="input-hint-text">to save</span>
+      <span class="input-hint-badge">Esc</span>
+      <span class="input-hint-text">to cancel</span>
+    </div>
+  <% end %>
+  <div class="quick-actions-bar">
+    <button class="quick-action-btn" type="button">
+      <wa-icon name="user-plus" variant="thin"></wa-icon>
+      Assign
+    </button>
+    <button class="quick-action-btn" type="button">
+      <wa-icon name="calendar" variant="thin"></wa-icon>
+      Due date
+    </button>
+    <button class="quick-action-btn" type="button">
+      <wa-icon name="flag" variant="thin"></wa-icon>
+      Priority
+    </button>
+  </div>
+  <div class="inline-divider"></div>
+  <div class="inline-empty-hint">
+    <span class="inline-empty-hint-emoji">✍️</span>
+    <span class="inline-empty-hint-title">Start typing to add your first item</span>
+    <span class="inline-empty-hint-subtext">Pro tip: Hit Enter to save and immediately start typing the next one!</span>
+  </div>
+</div>

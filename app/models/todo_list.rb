@@ -36,7 +36,8 @@ class TodoList < ApplicationRecord
   }.freeze
 
   belongs_to :user
-  has_many :todo_sections, dependent: :destroy
+  has_many :todo_sections, -> { active }
+  has_many :all_todo_sections, class_name: "TodoSection", dependent: :destroy
   has_many :todo_items, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 100 },
@@ -62,12 +63,34 @@ class TodoList < ApplicationRecord
     end
   end
 
+  def shift_item_positions(section_id)
+    todo_items.where(todo_section_id: section_id).update_all("position = position + 1")
+  end
+
+  def reorder_items(items_data)
+    TodoItem.transaction do
+      items_data.each do |item_data|
+        todo_items.where(id: item_data[:id])
+          .update_all(position: item_data[:position], todo_section_id: item_data[:section_id].presence)
+      end
+    end
+  end
+
+  def reorder_sections(sections_data)
+    TodoSection.transaction do
+      sections_data.each do |section_data|
+        all_todo_sections.where(id: section_data[:id])
+          .update_all(position: section_data[:position])
+      end
+    end
+  end
+
   def completion_percentage
-    items = todo_items.loaded? ? todo_items : todo_items.to_a
-    total = items.size
+    active_items = todo_items.where(archived: false)
+    total = active_items.size
     return 0 if total.zero?
 
-    completed = items.count(&:completed?)
+    completed = active_items.where(completed: true).count
     (completed * 100.0 / total).round
   end
 end

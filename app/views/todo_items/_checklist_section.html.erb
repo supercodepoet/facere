@@ -1,0 +1,37 @@
+<div class="detail-section">
+  <div class="detail-section-header">
+    <wa-icon name="square-check" variant="thin" class="detail-section-icon"></wa-icon>
+    <span class="detail-section-title">Checklist</span>
+    <% completed_count = item.checklist_items.count(&:completed?) %>
+    <% total_count = item.checklist_items.size %>
+    <% if total_count > 0 %>
+      <span class="checklist-progress-badge"><%= completed_count %>/<%= total_count %></span>
+    <% end %>
+    <div class="detail-section-spacer"></div>
+    <button class="detail-section-add-btn" onclick="document.getElementById('checklist-add-form-<%= item.id %>').style.display='flex'">
+      <wa-icon name="plus" variant="thin"></wa-icon>
+      Add
+    </button>
+  </div>
+  <div class="checklist-items">
+    <% item.checklist_items.each do |check_item| %>
+      <div class="checklist-item">
+        <%= button_to toggle_todo_list_todo_item_checklist_item_path(todo_list, item, check_item), method: :patch, class: "checklist-checkbox #{'checklist-checkbox--done' if check_item.completed?}" do %>
+          <% if check_item.completed? %>
+            <wa-icon name="square-check" variant="solid"></wa-icon>
+          <% else %>
+            <wa-icon name="square" variant="thin"></wa-icon>
+          <% end %>
+        <% end %>
+        <span class="checklist-name #{'checklist-name--done' if check_item.completed?}"><%= check_item.name %></span>
+        <%= button_to todo_list_todo_item_checklist_item_path(todo_list, item, check_item), method: :delete, class: "checklist-delete-btn", data: { turbo_confirm: "Delete this checklist item?" } do %>
+          <wa-icon name="xmark" variant="thin"></wa-icon>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <%= form_with(url: todo_list_todo_item_checklist_items_path(todo_list, item), method: :post, id: "checklist-add-form-#{item.id}", class: "checklist-add-form", style: "display: none;") do |f| %>
+    <%= f.text_field :name, placeholder: "Add checklist item...", class: "checklist-add-input", name: "checklist_item[name]", autofocus: true %>
+    <%= f.submit "Add", class: "checklist-add-submit" %>
+  <% end %>
+</div>

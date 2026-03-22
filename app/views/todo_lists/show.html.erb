@@ -1,31 +1,34 @@
 <div class="show-layout">
   <%= render "sidebar", sidebar_lists: @sidebar_lists, current_list: @todo_list %>
 
-  <div class="show-main">
+  <div class="show-main" data-controller="show-actions">
     <div class="show-header">
       <div class="show-header-left">
         <%= link_to todo_lists_path, class: "show-back-btn", aria: { label: "Back to lists" } do %>
           <wa-icon name="arrow-left" variant="thin"></wa-icon>
         <% end %>
-        <h1 class="show-title">
+        <div class="show-title-group">
           <% if @todo_list.icon.present? %>
-            <wa-icon name="<%= @todo_list.icon %>" variant="thin" style="color: var(--list-color-<%= @todo_list.color %>);"></wa-icon>
+            <wa-icon name="<%= @todo_list.icon %>" variant="thin" class="show-title-icon" style="color: var(--list-color-<%= @todo_list.color %>);"></wa-icon>
           <% end %>
-          <%= @todo_list.name %>
+          <h1 class="show-title"><%= @todo_list.name %></h1>
           <%= link_to edit_todo_list_path(@todo_list), class: "show-edit-btn", aria: { label: "Edit list" } do %>
             <wa-icon name="pen" variant="thin"></wa-icon>
           <% end %>
-        </h1>
+        </div>
       </div>
 
       <div class="show-header-right">
-        <button class="show-action-btn" data-action="click->delete-confirmation#open" data-controller="delete-confirmation" data-delete-confirmation-dialog-value="delete-dialog-<%= @todo_list.id %>">
-          <wa-icon name="trash" variant="thin"></wa-icon>
-          Delete
+        <button class="show-action-btn show-action-btn-section" data-action="click->show-actions#addSection">
+          <wa-icon name="folder-plus" variant="thin"></wa-icon>
+          Add Section
         </button>
-        <button class="show-action-btn show-action-btn-primary" disabled>
+        <button class="show-action-btn show-action-btn-primary" data-action="click->show-actions#addItem">
           <wa-icon name="plus" variant="thin"></wa-icon>
           Add Item
+        </button>
+        <button class="show-action-btn show-action-btn-danger" onclick="document.getElementById('delete-dialog-<%= @todo_list.id %>').show()" aria-label="Delete list">
+          <wa-icon name="trash" variant="thin"></wa-icon>
         </button>
       </div>
     </div>
@@ -36,61 +39,51 @@
       </div>
     <% end %>
 
-    <% if @todo_list.todo_items.none? && @todo_list.todo_sections.none? %>
-      <div class="empty-list-slate">
-        <div class="empty-list-illustration">
-          <wa-icon name="party-horn" variant="thin"></wa-icon>
-        </div>
-        <h2>Your list is ready! ✏️</h2>
-        <p>"<%= @todo_list.name %>" has been created. Start adding items and sections to bring it to life!</p>
-        <div class="empty-list-actions">
-          <button class="show-action-btn show-action-btn-primary" disabled>
-            <wa-icon name="plus" variant="thin"></wa-icon>
-            Add First Item
-          </button>
-          <button class="show-action-btn" disabled>
-            <wa-icon name="layer-group" variant="thin"></wa-icon>
-            Add Section
-          </button>
-        </div>
-      </div>
-    <% else %>
-      <div class="show-content">
-        <%# Items without section %>
-        <% if @unsectioned_items.present? %>
-          <div class="section-group">
-            <div class="section-header">
-              <wa-icon name="list" variant="thin"></wa-icon>
-              Items without section
-            </div>
-            <% @unsectioned_items.each do |item| %>
-              <div class="todo-item">
-                <wa-icon name="<%= item.completed? ? 'circle-check' : 'circle' %>" variant="thin"></wa-icon>
-                <span><%= item.name %></span>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
+    <% has_content = @unsectioned_items.present? || @sections.any? %>
 
-        <%# Sections with items %>
-        <% @sections.each do |section| %>
-          <div class="section-group">
-            <div class="section-header">
-              <wa-icon name="chevron-down" variant="thin"></wa-icon>
-              <wa-icon name="layer-group" variant="thin" style="color: var(--list-color-<%= @todo_list.color %>);"></wa-icon>
-              <%= section.name %>
-              <span class="section-badge"><%= section.todo_items.size %></span>
-            </div>
-            <% section.todo_items.each do |item| %>
-              <div class="todo-item">
-                <wa-icon name="<%= item.completed? ? 'circle-check' : 'circle' %>" variant="thin"></wa-icon>
-                <span><%= item.name %></span>
-              </div>
-            <% end %>
-          </div>
+    <div class="empty-list-slate" data-show-actions-target="emptySlate" <% if has_content %>style="display: none;"<% end %>>
+      <div class="empty-list-illustration">
+        <wa-icon name="party-horn" variant="thin"></wa-icon>
+      </div>
+      <h2>Your list is ready! ✏️</h2>
+      <p>"<%= @todo_list.name %>" has been created. Start adding items and sections to bring it to life!</p>
+      <div class="empty-list-actions">
+        <button class="show-action-btn show-action-btn-primary" data-action="click->show-actions#addItem">
+          <wa-icon name="plus" variant="thin"></wa-icon>
+          Add First Item
+        </button>
+        <button class="show-action-btn" data-action="click->show-actions#addSection">
+          <wa-icon name="folder-plus" variant="thin"></wa-icon>
+          Add Section
+        </button>
+      </div>
+    </div>
+
+    <div class="show-content" id="show-content" data-controller="drag-reorder" data-drag-reorder-url-value="<%= reorder_todo_list_todo_items_path(@todo_list) %>" data-show-actions-target="content" <% unless has_content %>style="display: none;"<% end %>>
+      <div class="unsectioned-items" id="unsectioned-items">
+        <div class="unsectioned-header">
+          <span>Items without section</span>
+        </div>
+        <% @unsectioned_items.each do |item| %>
+          <% if item.completed? %>
+            <%= render "todo_lists/todo_item_completed", item: item, todo_list: @todo_list %>
+          <% else %>
+            <%= render "todo_lists/todo_item", item: item, todo_list: @todo_list %>
+          <% end %>
         <% end %>
       </div>
-    <% end %>
+
+      <% @sections.each do |section| %>
+        <%= render "todo_lists/section", section: section, todo_list: @todo_list %>
+      <% end %>
+    </div>
+
+    <template data-show-actions-target="itemTemplate">
+      <%= render "todo_lists/inline_item_input", todo_list: @todo_list %>
+    </template>
+    <template data-show-actions-target="sectionTemplate">
+      <%= render "todo_lists/inline_section_input", todo_list: @todo_list %>
+    </template>
 
     <%= render "delete_confirmation", todo_list: @todo_list %>
   </div>
