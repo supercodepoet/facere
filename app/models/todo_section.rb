@@ -6,8 +6,6 @@ class TodoSection < ApplicationRecord
   validates :position, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   scope :active, -> { where(archived: false) }
-  scope :by_position, -> { order(:position) }
-
   default_scope { order(:position) }
 
   def archive!
@@ -18,6 +16,6 @@ class TodoSection < ApplicationRecord
   end
 
   def active_item_count
-    todo_items.where(archived: false).size
+    todo_items.active.size
   end
 end

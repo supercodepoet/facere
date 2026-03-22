@@ -12,9 +12,9 @@ class TodoItemsController < ApplicationController
   def create
     @todo_item = @todo_list.todo_items.build(todo_item_params)
     @todo_item.position = 0
-    shift_positions(@todo_item.todo_section_id)
 
     if @todo_item.save
+      shift_positions(@todo_item.todo_section_id)
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to todo_list_path(@todo_list) }
@@ -28,15 +28,16 @@ class TodoItemsController < ApplicationController
   end
 
   def update
-    if @todo_item.update(todo_item_params)
-      respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(@todo_item, partial: "todo_lists/todo_item", locals: { item: @todo_item, todo_list: @todo_list }) }
-        format.html { redirect_to todo_list_todo_item_path(@todo_list, @todo_item) }
-      end
-    else
-      respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(@todo_item, partial: "todo_lists/todo_item", locals: { item: @todo_item, todo_list: @todo_list }) }
-        format.html { redirect_to todo_list_todo_item_path(@todo_list, @todo_item), alert: @todo_item.errors.full_messages.first }
+    @todo_item.update(todo_item_params)
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(@todo_item, partial: "todo_lists/todo_item", locals: { item: @todo_item, todo_list: @todo_list }) }
+      format.html do
+        if @todo_item.errors.any?
+          redirect_to todo_list_todo_item_path(@todo_list, @todo_item), alert: @todo_item.errors.full_messages.first
+        else
+          redirect_to todo_list_todo_item_path(@todo_list, @todo_item)
+        end
       end
     end
   end
@@ -66,33 +67,28 @@ class TodoItemsController < ApplicationController
   end
 
   def move
-    target_section_id = params[:target_section_id].presence
-    target_position = params[:target_position].to_i
-
-    @todo_item.update!(todo_section_id: target_section_id, position: target_position)
-    respond_to do |format|
-      format.turbo_stream { redirect_to todo_list_path(@todo_list) }
-      format.html { redirect_to todo_list_path(@todo_list) }
-    end
+    @todo_item.update!(
+      todo_section_id: params[:target_section_id].presence,
+      position: params[:target_position].to_i
+    )
+    redirect_to todo_list_path(@todo_list)
   end
 
   def copy
     duplicate = @todo_item.dup
-    duplicate.todo_section_id = params[:target_section_id].presence
-    duplicate.position = params[:target_position].to_i
+    duplicate.assign_attributes(
+      todo_section_id: params[:target_section_id].presence,
+      position: params[:target_position].to_i
+    )
     duplicate.save!
-
-    respond_to do |format|
-      format.turbo_stream { redirect_to todo_list_path(@todo_list) }
-      format.html { redirect_to todo_list_path(@todo_list), notice: "Item copied" }
-    end
+    redirect_to todo_list_path(@todo_list), notice: "Item copied"
   end
 
   def reorder
-    ActiveRecord::Base.transaction do
+    TodoItem.transaction do
       params[:items].each do |item_data|
-        item = @todo_list.todo_items.find(item_data[:id])
-        item.update!(position: item_data[:position], todo_section_id: item_data[:section_id].presence)
+        @todo_list.todo_items.where(id: item_data[:id])
+          .update_all(position: item_data[:position], todo_section_id: item_data[:section_id].presence)
       end
     end
 

@@ -14,7 +14,7 @@
     <% end %>
     <% if item.assigned_to.present? %>
       <div class="todo-item-avatar" style="background-color: var(--list-color-<%= todo_list.color %>);">
-        <%= item.assigned_to.name.split.map(&:first).join.upcase.first(2) %>
+        <%= item.assigned_to.initials %>
       </div>
     <% end %>
     <% if item.priority != "none" %>

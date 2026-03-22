@@ -33,6 +33,10 @@ class User < ApplicationRecord
   LOCKOUT_DURATION = 15.minutes
   LOCKOUT_ESCALATION_FACTOR = 2
 
+  def initials
+    name.split.map(&:first).join.upcase.first(2)
+  end
+
   def email_verified?
     email_verified_at.present?
   end

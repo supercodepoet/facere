@@ -36,7 +36,7 @@
       </div>
     <% end %>
 
-    <% has_content = @todo_list.todo_items.active.any? || @todo_list.todo_sections.any? %>
+    <% has_content = @unsectioned_items.present? || @sections.any? %>
 
     <% unless has_content %>
       <div class="empty-list-slate">
@@ -57,7 +57,7 @@
         </div>
       </div>
     <% else %>
-      <div class="show-content" id="show-content" data-controller="drag-reorder">
+      <div class="show-content" id="show-content" data-controller="drag-reorder" data-drag-reorder-url-value="<%= reorder_todo_list_todo_items_path(@todo_list) %>">
         <% if @unsectioned_items.present? %>
           <div class="unsectioned-items" id="unsectioned-items">
             <div class="unsectioned-header">

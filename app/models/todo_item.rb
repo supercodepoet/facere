@@ -25,8 +25,6 @@ class TodoItem < ApplicationRecord
   scope :completed, -> { where(completed: true) }
   scope :incomplete, -> { where(completed: false) }
   scope :overdue, -> { where("due_date < ?", Date.current).where(completed: false) }
-  scope :by_position, -> { order(:position) }
-
   default_scope { order(:position) }
 
   before_save :sync_completion_and_status

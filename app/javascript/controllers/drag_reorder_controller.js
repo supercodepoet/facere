@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = { url: String }
+  static values = { url: String}
 
   connect() {
     this.element.addEventListener("dragstart", this.dragStart.bind(this))
@@ -90,10 +90,7 @@ export default class extends Controller {
 
     if (orderData.length === 0) return
 
-    const listId = window.location.pathname.match(/\/lists\/(\d+)/)?.[1]
-    if (!listId) return
-
-    fetch(`/lists/${listId}/items/reorder`, {
+    fetch(this.urlValue, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

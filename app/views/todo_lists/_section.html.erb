@@ -9,8 +9,9 @@
         <wa-icon name="<%= section.icon %>" variant="thin" class="section-icon" style="color: var(--list-color-<%= todo_list.color %>);"></wa-icon>
       <% end %>
       <span class="section-name"><%= section.name %></span>
+      <% active_items = section.todo_items.active %>
       <span class="section-count" style="background-color: var(--list-color-<%= todo_list.color %>-soft); color: var(--list-color-<%= todo_list.color %>);">
-        <%= section.todo_items.active.size %>
+        <%= active_items.size %>
       </span>
       <button class="section-add-item" data-action="click->inline-item#show" data-section-id="<%= section.id %>">
         <wa-icon name="plus" variant="thin"></wa-icon>
@@ -19,7 +20,6 @@
       <%= render "todo_lists/section_context_menu", section: section, todo_list: todo_list %>
     </div>
     <div class="section-items" data-section-collapse-target="items">
-      <% active_items = section.todo_items.active %>
       <% if active_items.empty? %>
         <%= render "todo_lists/empty_section" %>
       <% else %>

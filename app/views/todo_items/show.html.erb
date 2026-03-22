@@ -84,7 +84,7 @@
       <div class="item-detail-right">
         <%= render "todo_items/status_sidebar", item: @todo_item, todo_list: @todo_list %>
 
-        <% if @todo_item.assigned_to.present? || true %>
+        <% if @todo_item.assigned_to.present? %>
           <div class="detail-card">
             <div class="detail-card-label">Assigned to
               <button class="detail-card-add-btn">
@@ -94,7 +94,7 @@
             <% if @todo_item.assigned_to.present? %>
               <div class="assignee-row">
                 <div class="assignee-avatar" style="background: var(--list-color-<%= @todo_list.color %>);">
-                  <%= @todo_item.assigned_to.name.split.map(&:first).join.upcase.first(2) %>
+                  <%= @todo_item.assigned_to.initials %>
                 </div>
                 <span class="assignee-name"><%= @todo_item.assigned_to.name %></span>
               </div>

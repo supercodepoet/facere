@@ -53,17 +53,14 @@ class TodoSectionsController < ApplicationController
 
   def move
     @todo_section.update!(position: params[:target_position].to_i)
-    respond_to do |format|
-      format.turbo_stream { redirect_to todo_list_path(@todo_list) }
-      format.html { redirect_to todo_list_path(@todo_list) }
-    end
+    redirect_to todo_list_path(@todo_list)
   end
 
   def reorder
-    ActiveRecord::Base.transaction do
+    TodoSection.transaction do
       params[:sections].each do |section_data|
-        section = @todo_list.todo_sections.find(section_data[:id])
-        section.update!(position: section_data[:position])
+        @todo_list.todo_sections.where(id: section_data[:id])
+          .update_all(position: section_data[:position])
       end
     end
 

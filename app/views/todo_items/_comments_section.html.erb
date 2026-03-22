@@ -10,7 +10,7 @@
     <% item.comments.each do |comment| %>
       <div class="comment-row">
         <div class="comment-avatar" style="background: var(--list-color-<%= todo_list.color %>);">
-          <%= comment.user.name.split.map(&:first).join.upcase.first(2) %>
+          <%= comment.user.initials %>
         </div>
         <div class="comment-body">
           <div class="comment-header">
@@ -24,7 +24,7 @@
   </div>
   <div class="comment-input-row">
     <div class="comment-avatar comment-avatar--self" style="background: var(--list-color-<%= todo_list.color %>);">
-      <%= Current.user.name.split.map(&:first).join.upcase.first(2) %>
+      <%= Current.user.initials %>
     </div>
     <span class="comment-placeholder">Write a comment...</span>
   </div>
