@@ -5,6 +5,6 @@ class Tag < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 50 },
     uniqueness: { scope: :user_id, case_sensitive: false }
-  validates :color, format: { with: /\A#[0-9a-fA-F]{3,8}\z/, message: "must be a valid hex color" },
+  validates :color, format: { with: /\A#[0-9a-fA-F]{6}\z/, message: "must be a 6-digit hex color (e.g., #FF5733)" },
     allow_blank: true
 end

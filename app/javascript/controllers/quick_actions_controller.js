@@ -31,7 +31,11 @@ export default class extends Controller {
     })
     this.element.appendChild(input)
     input.focus()
-    input.showPicker()
+    if (typeof input.showPicker === 'function') {
+      try { input.showPicker() } catch (e) { input.click() }
+    } else {
+      input.click()
+    }
   }
 
   setPriority(event) {

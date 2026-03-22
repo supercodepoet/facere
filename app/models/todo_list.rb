@@ -86,10 +86,11 @@ class TodoList < ApplicationRecord
   end
 
   def completion_percentage
-    total = todo_items.size
+    active_items = todo_items.where(archived: false)
+    total = active_items.size
     return 0 if total.zero?
 
-    completed = todo_items.where(completed: true).count
+    completed = active_items.where(completed: true).count
     (completed * 100.0 / total).round
   end
 end

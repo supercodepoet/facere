@@ -15,7 +15,7 @@
     <% end %>
   </div>
   <div class="notes-edit-form" data-notes-editor-target="editMode" style="display: none;">
-    <%= form_with(model: item, url: todo_list_todo_item_path(item.todo_list, item), method: :patch, data: { notes_editor_target: "form" }) do |f| %>
+    <%= form_with(model: item, url: todo_list_todo_item_path(item.todo_list, item), method: :patch, data: { turbo: false, notes_editor_target: "form" }) do |f| %>
       <%= f.rich_text_area :notes, class: "notes-trix-editor" %>
       <div class="notes-form-actions">
         <button type="submit" class="notes-save-btn">Save Notes</button>

@@ -13,17 +13,19 @@ class TodoItemsController < ApplicationController
     @todo_item = @todo_list.todo_items.build(todo_item_params)
     @todo_item.position = 0
 
-    if @todo_item.save
+    ActiveRecord::Base.transaction do
       @todo_list.shift_item_positions(@todo_item.todo_section_id)
-      respond_to do |format|
-        format.turbo_stream
-        format.html { redirect_to todo_list_path(@todo_list) }
-      end
-    else
-      respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("inline-item-input", partial: "todo_lists/inline_item_input", locals: { todo_list: @todo_list, section: @todo_item.todo_section, error: @todo_item.errors.full_messages.first }) }
-        format.html { redirect_to todo_list_path(@todo_list), alert: @todo_item.errors.full_messages.first }
-      end
+      @todo_item.save!
+    end
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to todo_list_path(@todo_list) }
+    end
+  rescue ActiveRecord::RecordInvalid
+    respond_to do |format|
+      format.turbo_stream { redirect_to todo_list_path(@todo_list), alert: @todo_item.errors.full_messages.first }
+      format.html { redirect_to todo_list_path(@todo_list), alert: @todo_item.errors.full_messages.first }
     end
   end
 
@@ -96,7 +98,11 @@ class TodoItemsController < ApplicationController
   end
 
   def todo_item_params
-    params.require(:todo_item).permit(:name, :status, :due_date, :priority, :todo_section_id, :assigned_to_user_id, :notes, files: [])
+    permitted = params.require(:todo_item).permit(:name, :status, :due_date, :priority, :todo_section_id, :assigned_to_user_id, :notes, files: [])
+    if permitted.key?(:assigned_to_user_id)
+      permitted[:assigned_to_user_id] = Current.user.id
+    end
+    permitted
   end
 
   def validate_target_section!

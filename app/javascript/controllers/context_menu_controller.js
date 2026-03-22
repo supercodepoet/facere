@@ -9,10 +9,14 @@ export default class extends Controller {
 
     switch (action) {
       case "delete":
-        this.deleteFormTarget.requestSubmit()
+        if (this.hasDeleteFormTarget) {
+          this.deleteFormTarget.requestSubmit()
+        }
         break
       case "archive":
-        this.archiveFormTarget.requestSubmit()
+        if (this.hasArchiveFormTarget) {
+          this.archiveFormTarget.requestSubmit()
+        }
         break
       case "edit":
         this.editSection()
