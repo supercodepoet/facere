@@ -21,4 +21,22 @@ export default class extends Controller {
       })
     }
   }
+
+  addItem(event) {
+    if (this.itemsTarget.querySelector("#inline-item-input")) return
+
+    const sectionId = event.currentTarget.dataset.sectionId
+    const listId = event.currentTarget.dataset.listId
+    const template = document.querySelector('[data-show-actions-target="itemTemplate"]')
+    if (!template) return
+
+    const clone = template.content.cloneNode(true)
+    const form = clone.querySelector("form") || clone.querySelector("[data-controller='inline-item']")
+    if (form) {
+      const sectionInput = form.querySelector("[name='todo_item[todo_section_id]']")
+      if (sectionInput) sectionInput.value = sectionId
+    }
+
+    this.itemsTarget.prepend(clone)
+  }
 }

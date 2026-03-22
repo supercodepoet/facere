@@ -37,6 +37,17 @@ class TodoItem < ApplicationRecord
     update!(archived: true)
   end
 
+  def move_to(section_id:, position:)
+    update!(todo_section_id: section_id, position: position)
+  end
+
+  def duplicate_to(section_id:, position:)
+    duplicate = dup
+    duplicate.assign_attributes(todo_section_id: section_id, position: position)
+    duplicate.save!
+    duplicate
+  end
+
   def overdue?
     due_date.present? && due_date < Date.current && !completed?
   end

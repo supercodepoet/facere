@@ -1,11 +1,9 @@
 <%= turbo_frame_tag dom_id(item) do %>
-  <div class="todo-item" id="<%= dom_id(item) %>" draggable="true"
-       data-controller="item-checkbox"
-       data-item-checkbox-url-value="<%= toggle_todo_list_todo_item_path(todo_list, item) %>">
+  <div class="todo-item" id="<%= dom_id(item) %>" draggable="true">
     <wa-icon name="grip-dots-vertical" variant="thin" class="drag-handle"></wa-icon>
-    <button class="todo-item-checkbox" data-action="click->item-checkbox#toggle">
+    <%= button_to toggle_todo_list_todo_item_path(todo_list, item), method: :patch, class: "todo-item-checkbox" do %>
       <div class="todo-item-check-circle"></div>
-    </button>
+    <% end %>
     <%= link_to item.name, todo_list_todo_item_path(todo_list, item), class: "todo-item-title" %>
     <% if item.due_date.present? %>
       <span class="due-badge due-badge--<%= item.due_date_style %>">

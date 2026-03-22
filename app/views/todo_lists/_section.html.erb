@@ -13,13 +13,13 @@
       <span class="section-count" style="background-color: var(--list-color-<%= todo_list.color %>-soft); color: var(--list-color-<%= todo_list.color %>);">
         <%= active_items.size %>
       </span>
-      <button class="section-add-item" data-action="click->inline-item#show" data-section-id="<%= section.id %>">
+      <button class="section-add-item" data-action="click->section-collapse#addItem" data-section-id="<%= section.id %>" data-list-id="<%= todo_list.id %>">
         <wa-icon name="plus" variant="thin"></wa-icon>
         Add item
       </button>
       <%= render "todo_lists/section_context_menu", section: section, todo_list: todo_list %>
     </div>
-    <div class="section-items" data-section-collapse-target="items">
+    <div class="section-items" id="<%= dom_id(section, :items) %>" data-section-collapse-target="items">
       <% if active_items.empty? %>
         <%= render "todo_lists/empty_section" %>
       <% else %>

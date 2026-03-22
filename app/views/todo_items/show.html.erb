@@ -91,14 +91,12 @@
                 <wa-icon name="plus" variant="thin"></wa-icon>
               </button>
             </div>
-            <% if @todo_item.assigned_to.present? %>
-              <div class="assignee-row">
-                <div class="assignee-avatar" style="background: var(--list-color-<%= @todo_list.color %>);">
-                  <%= @todo_item.assigned_to.initials %>
-                </div>
-                <span class="assignee-name"><%= @todo_item.assigned_to.name %></span>
+            <div class="assignee-row">
+              <div class="assignee-avatar" style="background: var(--list-color-<%= @todo_list.color %>);">
+                <%= @todo_item.assigned_to.initials %>
               </div>
-            <% end %>
+              <span class="assignee-name"><%= @todo_item.assigned_to.name %></span>
+            </div>
           </div>
         <% end %>
 

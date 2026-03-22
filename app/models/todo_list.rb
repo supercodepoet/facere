@@ -63,6 +63,28 @@ class TodoList < ApplicationRecord
     end
   end
 
+  def shift_item_positions(section_id)
+    todo_items.where(todo_section_id: section_id).update_all("position = position + 1")
+  end
+
+  def reorder_items(items_data)
+    TodoItem.transaction do
+      items_data.each do |item_data|
+        todo_items.where(id: item_data[:id])
+          .update_all(position: item_data[:position], todo_section_id: item_data[:section_id].presence)
+      end
+    end
+  end
+
+  def reorder_sections(sections_data)
+    TodoSection.transaction do
+      sections_data.each do |section_data|
+        all_todo_sections.where(id: section_data[:id])
+          .update_all(position: section_data[:position])
+      end
+    end
+  end
+
   def completion_percentage
     total = todo_items.size
     return 0 if total.zero?

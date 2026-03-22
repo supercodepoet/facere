@@ -57,13 +57,7 @@ class TodoSectionsController < ApplicationController
   end
 
   def reorder
-    TodoSection.transaction do
-      params[:sections].each do |section_data|
-        @todo_list.todo_sections.where(id: section_data[:id])
-          .update_all(position: section_data[:position])
-      end
-    end
-
+    @todo_list.reorder_sections(params[:sections])
     head :ok
   end
 

@@ -1,17 +1,16 @@
-<div class="active-section-input" id="inline-section-input"
-     data-controller="inline-section"
-     data-inline-section-list-id-value="<%= todo_list.id %>">
+<%= form_with(model: [@todo_list || todo_list, TodoSection.new], url: todo_list_todo_sections_path(todo_list), id: "inline-section-input",
+     class: "active-section-input",
+     data: { controller: "inline-section", action: "turbo:submit-end->inline-section#afterSubmit" }) do |f| %>
   <div class="section-icon-picker">
     <wa-icon name="folder" variant="thin" data-inline-section-target="iconDisplay"></wa-icon>
     <wa-icon name="chevron-down" variant="thin" class="icon-picker-chevron"></wa-icon>
   </div>
-  <input type="text" class="inline-section-text" placeholder="Section name..."
-         data-inline-section-target="input"
-         data-action="keydown->inline-section#handleKeydown"
-         autofocus>
-  <input type="hidden" data-inline-section-target="iconInput" value="">
+  <%= f.text_field :name, class: "inline-section-text", placeholder: "Section name...",
+      data: { inline_section_target: "input", action: "keydown->inline-section#handleKeydown" },
+      autofocus: true %>
+  <%= f.hidden_field :icon, value: "", data: { inline_section_target: "iconInput" } %>
   <div class="input-hints">
     <span class="input-hint-badge">Enter</span>
     <span class="input-hint-text">to create</span>
   </div>
-</div>
+<% end %>

@@ -14,7 +14,7 @@ class TodoItemsController < ApplicationController
     @todo_item.position = 0
 
     if @todo_item.save
-      shift_positions(@todo_item.todo_section_id)
+      @todo_list.shift_item_positions(@todo_item.todo_section_id)
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to todo_list_path(@todo_list) }
@@ -28,16 +28,15 @@ class TodoItemsController < ApplicationController
   end
 
   def update
-    @todo_item.update(todo_item_params)
-
-    respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.replace(@todo_item, partial: "todo_lists/todo_item", locals: { item: @todo_item, todo_list: @todo_list }) }
-      format.html do
-        if @todo_item.errors.any?
-          redirect_to todo_list_todo_item_path(@todo_list, @todo_item), alert: @todo_item.errors.full_messages.first
-        else
-          redirect_to todo_list_todo_item_path(@todo_list, @todo_item)
-        end
+    if @todo_item.update(todo_item_params)
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(@todo_item, partial: "todo_lists/todo_item", locals: { item: @todo_item, todo_list: @todo_list }) }
+        format.html { redirect_to todo_list_todo_item_path(@todo_list, @todo_item) }
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(@todo_item, partial: "todo_lists/todo_item", locals: { item: @todo_item, todo_list: @todo_list }), status: :unprocessable_entity }
+        format.html { redirect_to todo_list_todo_item_path(@todo_list, @todo_item), alert: @todo_item.errors.full_messages.first }
       end
     end
   end
@@ -67,31 +66,19 @@ class TodoItemsController < ApplicationController
   end
 
   def move
-    @todo_item.update!(
-      todo_section_id: params[:target_section_id].presence,
-      position: params[:target_position].to_i
-    )
+    validate_target_section!
+    @todo_item.move_to(section_id: params[:target_section_id].presence, position: params[:target_position].to_i)
     redirect_to todo_list_path(@todo_list)
   end
 
   def copy
-    duplicate = @todo_item.dup
-    duplicate.assign_attributes(
-      todo_section_id: params[:target_section_id].presence,
-      position: params[:target_position].to_i
-    )
-    duplicate.save!
+    validate_target_section!
+    @todo_item.duplicate_to(section_id: params[:target_section_id].presence, position: params[:target_position].to_i)
     redirect_to todo_list_path(@todo_list), notice: "Item copied"
   end
 
   def reorder
-    TodoItem.transaction do
-      params[:items].each do |item_data|
-        @todo_list.todo_items.where(id: item_data[:id])
-          .update_all(position: item_data[:position], todo_section_id: item_data[:section_id].presence)
-      end
-    end
-
+    @todo_list.reorder_items(params[:items])
     head :ok
   end
 
@@ -109,8 +96,12 @@ class TodoItemsController < ApplicationController
     params.require(:todo_item).permit(:name, :status, :due_date, :priority, :todo_section_id, :assigned_to_user_id)
   end
 
-  def shift_positions(section_id)
-    scope = @todo_list.todo_items.where(todo_section_id: section_id)
-    scope.update_all("position = position + 1")
+  def validate_target_section!
+    section_id = params[:target_section_id].presence
+    return unless section_id
+
+    unless @todo_list.all_todo_sections.exists?(id: section_id)
+      raise ActiveRecord::RecordNotFound, "Section not found in this list"
+    end
   end
 end

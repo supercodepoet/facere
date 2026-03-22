@@ -1,7 +1,7 @@
 <div class="show-layout">
   <%= render "sidebar", sidebar_lists: @sidebar_lists, current_list: @todo_list %>
 
-  <div class="show-main">
+  <div class="show-main" data-controller="show-actions">
     <div class="show-header">
       <div class="show-header-left">
         <%= link_to todo_lists_path, class: "show-back-btn", aria: { label: "Back to lists" } do %>
@@ -19,11 +19,11 @@
       </div>
 
       <div class="show-header-right">
-        <button class="show-action-btn show-action-btn-section" id="add-section-trigger">
+        <button class="show-action-btn show-action-btn-section" data-action="click->show-actions#addSection">
           <wa-icon name="folder-plus" variant="thin"></wa-icon>
           Add Section
         </button>
-        <button class="show-action-btn show-action-btn-primary" id="add-item-trigger">
+        <button class="show-action-btn show-action-btn-primary" data-action="click->show-actions#addItem">
           <wa-icon name="plus" variant="thin"></wa-icon>
           Add Item
         </button>
@@ -46,18 +46,18 @@
         <h2>Your list is ready!</h2>
         <p>"<%= @todo_list.name %>" has been created. Start adding items and sections to bring it to life!</p>
         <div class="empty-list-actions">
-          <button class="show-action-btn show-action-btn-primary" id="add-first-item-trigger">
+          <button class="show-action-btn show-action-btn-primary" data-action="click->show-actions#addItem">
             <wa-icon name="plus" variant="thin"></wa-icon>
             Add First Item
           </button>
-          <button class="show-action-btn" id="add-first-section-trigger">
+          <button class="show-action-btn" data-action="click->show-actions#addSection">
             <wa-icon name="folder-plus" variant="thin"></wa-icon>
             Add Section
           </button>
         </div>
       </div>
     <% else %>
-      <div class="show-content" id="show-content" data-controller="drag-reorder" data-drag-reorder-url-value="<%= reorder_todo_list_todo_items_path(@todo_list) %>">
+      <div class="show-content" id="show-content" data-controller="drag-reorder" data-drag-reorder-url-value="<%= reorder_todo_list_todo_items_path(@todo_list) %>" data-show-actions-target="content">
         <% if @unsectioned_items.present? %>
           <div class="unsectioned-items" id="unsectioned-items">
             <div class="unsectioned-header">
@@ -78,6 +78,13 @@
         <% end %>
       </div>
     <% end %>
+
+    <template data-show-actions-target="itemTemplate">
+      <%= render "todo_lists/inline_item_input", todo_list: @todo_list %>
+    </template>
+    <template data-show-actions-target="sectionTemplate">
+      <%= render "todo_lists/inline_section_input", todo_list: @todo_list %>
+    </template>
 
     <%= render "delete_confirmation", todo_list: @todo_list %>
   </div>
