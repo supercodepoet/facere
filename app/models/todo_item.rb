@@ -24,8 +24,9 @@ class TodoItem < ApplicationRecord
 
   belongs_to :todo_list
   belongs_to :todo_section, optional: true
-  belongs_to :assigned_to, class_name: "User", optional: true
 
+  has_many :item_assignees, dependent: :destroy
+  has_many :assignees, through: :item_assignees, source: :user
   has_many :checklist_items, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :item_tags, dependent: :destroy
@@ -47,7 +48,12 @@ class TodoItem < ApplicationRecord
   scope :overdue, -> { where("due_date < ?", Date.current).where(completed: false) }
   default_scope { order(:position) }
 
+  after_create_commit -> { broadcast_refresh_to [ todo_list, :updates ] }
+  after_update_commit -> { broadcast_refresh_to [ todo_list, :updates ] }
+  after_destroy_commit -> { broadcast_refresh_to [ todo_list, :updates ] }
+
   before_save :sync_completion_and_status
+  after_save :send_completion_notifications
 
   def toggle_completion!
     update!(completed: !completed)
@@ -156,6 +162,15 @@ class TodoItem < ApplicationRecord
   end
 
   private
+
+  def send_completion_notifications
+    return unless saved_change_to_completed? && completed?
+    return unless Current.user
+
+    notify_people.includes(:user).each do |notify_person|
+      CollaborationMailer.item_completed_email(self, Current.user, notify_person.user).deliver_later
+    end
+  end
 
   def sync_completion_and_status
     if completed_changed?

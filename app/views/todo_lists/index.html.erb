@@ -25,7 +25,21 @@
       <span>Create New List</span>
     <% end %>
   </div>
-<% else %>
+<% end %>
+
+<% if @shared_lists.any? %>
+  <div class="lists-header">
+    <h1>Shared with me</h1>
+  </div>
+
+  <div class="lists-grid">
+    <% @shared_lists.each do |list| %>
+      <%= render "list_card", list: list, shared: true %>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @todo_lists.empty? && @shared_lists.empty? %>
   <div class="blank-slate">
     <div class="blank-slate-illustration">
       <wa-icon name="clipboard-list" variant="thin"></wa-icon>

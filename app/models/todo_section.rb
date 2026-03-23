@@ -2,6 +2,10 @@ class TodoSection < ApplicationRecord
   belongs_to :todo_list
   has_many :todo_items, dependent: :destroy
 
+  after_create_commit -> { broadcast_refresh_to [ todo_list, :updates ] }
+  after_update_commit -> { broadcast_refresh_to [ todo_list, :updates ] }
+  after_destroy_commit -> { broadcast_refresh_to [ todo_list, :updates ] }
+
   validates :name, presence: true, length: { maximum: 100 }
   validates :position, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 

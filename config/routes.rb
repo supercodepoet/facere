@@ -60,6 +60,7 @@ Rails.application.routes.draw do
         resources :likes, only: [ :create, :destroy ], controller: "comment_likes"
       end
       resources :notify_people, only: [ :create, :destroy ]
+      resources :item_assignees, path: "assignees", only: [ :create, :destroy ]
     end
 
     resources :todo_sections, path: "sections", except: [ :index, :show ] do
@@ -71,10 +72,21 @@ Rails.application.routes.draw do
         patch :reorder
       end
     end
+
+    # Collaboration
+    resources :collaborators, controller: "list_collaborators", only: [ :index, :update, :destroy ]
+    delete "leave", to: "list_collaborators#leave", as: :leave
+    resources :invitations, controller: "list_invitations", only: [ :create, :destroy ]
   end
+
+  # Invitation acceptance (top-level, token-based)
+  get "invitations/:token/accept", to: "list_invitations#accept", as: :accept_invitation
 
   # Root
   root "todo_lists#index"
+
+  # Email preview (development only)
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check

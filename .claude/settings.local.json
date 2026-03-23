@@ -12,7 +12,22 @@
       "Bash(RAILS_LOG_LEVEL=debug bin/rails test test/controllers/checklist_debug_test.rb)",
       "Bash(curl -s -b /dev/null http://localhost:3000)",
       "Bash(bin/rails test:system -v)",
-      "Bash(grep -B2 \"F$\\\\|FAIL\\\\|failure\\\\|Expected\")"
+      "Bash(grep -B2 \"F$\\\\|FAIL\\\\|failure\\\\|Expected\")",
+      "Bash(.specify/scripts/bash/create-new-feature.sh --json --number 5 --short-name \"list-collaboration\" \"Add collaboration support for TODO Lists and Items\")",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T006/- [x] T006/' specs/005-list-collaboration/tasks.md)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T007/- [x] T007/' specs/005-list-collaboration/tasks.md)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T008/- [x] T008/' specs/005-list-collaboration/tasks.md)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T009/- [x] T009/' specs/005-list-collaboration/tasks.md)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T010/- [x] T010/' specs/005-list-collaboration/tasks.md)",
+      "Bash(bin/rubocop app/models/list_collaborator.rb app/models/list_invitation.rb app/models/item_assignee.rb app/controllers/list_invitations_controller.rb app/controllers/list_collaborators_controller.rb app/controllers/item_assignees_controller.rb app/controllers/concerns/list_authorization.rb app/mailers/collaboration_mailer.rb)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T0/- [x] T0/g' specs/005-list-collaboration/tasks.md)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T07/- [x] T07/g' specs/005-list-collaboration/tasks.md)",
+      "Bash(bin/brakeman --no-pager --format json)",
+      "Bash(ruby -rjson -e \":*)",
+      "Bash(bin/brakeman --format json --no-pager)",
+      "Bash(bin/brakeman -o /tmp/brakeman.json --no-pager)",
+      "Bash(ls Procfile* .dev*)",
+      "Bash(bin/rubocop app/controllers/list_invitations_controller.rb app/controllers/registrations_controller.rb app/controllers/sessions_controller.rb)"
     ]
   }
 }

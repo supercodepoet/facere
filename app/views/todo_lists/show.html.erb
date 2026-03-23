@@ -1,7 +1,9 @@
 <div class="show-layout">
-  <%= render "sidebar", sidebar_lists: @sidebar_lists, current_list: @todo_list %>
+  <%= render "sidebar", sidebar_lists: @sidebar_lists, shared_lists: @shared_sidebar_lists, current_list: @todo_list %>
 
-  <div class="show-main" data-controller="show-actions">
+  <div class="show-main" data-controller="show-actions collaboration">
+    <%= turbo_stream_from @todo_list, :updates %>
+    <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
     <div class="show-header">
       <div class="show-header-left">
         <%= link_to todo_lists_path, class: "show-back-btn", aria: { label: "Back to lists" } do %>
@@ -12,24 +14,34 @@
             <wa-icon name="<%= @todo_list.icon %>" variant="thin" class="show-title-icon" style="color: var(--list-color-<%= @todo_list.color %>);"></wa-icon>
           <% end %>
           <h1 class="show-title"><%= @todo_list.name %></h1>
-          <%= link_to edit_todo_list_path(@todo_list), class: "show-edit-btn", aria: { label: "Edit list" } do %>
-            <wa-icon name="pen" variant="thin"></wa-icon>
+          <% if list_owner? %>
+            <%= link_to edit_todo_list_path(@todo_list), class: "show-edit-btn", aria: { label: "Edit list" } do %>
+              <wa-icon name="pen" variant="thin"></wa-icon>
+            <% end %>
           <% end %>
         </div>
       </div>
 
       <div class="show-header-right">
-        <button class="show-action-btn show-action-btn-section" data-action="click->show-actions#addSection">
-          <wa-icon name="folder-plus" variant="thin"></wa-icon>
-          Add Section
+        <% if list_editor? %>
+          <button class="show-action-btn show-action-btn-section" data-action="click->show-actions#addSection">
+            <wa-icon name="folder-plus" variant="thin"></wa-icon>
+            Add Section
+          </button>
+          <button class="show-action-btn show-action-btn-primary" data-action="click->show-actions#addItem">
+            <wa-icon name="plus" variant="thin"></wa-icon>
+            Add Item
+          </button>
+        <% end %>
+        <button class="show-action-btn" data-action="click->collaboration#toggle" aria-label="Collaboration">
+          <wa-icon name="users" variant="thin"></wa-icon>
+          Share
         </button>
-        <button class="show-action-btn show-action-btn-primary" data-action="click->show-actions#addItem">
-          <wa-icon name="plus" variant="thin"></wa-icon>
-          Add Item
-        </button>
-        <button class="show-action-btn show-action-btn-danger" onclick="document.getElementById('delete-dialog-<%= @todo_list.id %>').show()" aria-label="Delete list">
-          <wa-icon name="trash" variant="thin"></wa-icon>
-        </button>
+        <% if list_owner? %>
+          <button class="show-action-btn show-action-btn-danger" onclick="document.getElementById('delete-dialog-<%= @todo_list.id %>').show()" aria-label="Delete list">
+            <wa-icon name="trash" variant="thin"></wa-icon>
+          </button>
+        <% end %>
       </div>
     </div>
 
@@ -85,6 +97,13 @@
       <%= render "todo_lists/inline_section_input", todo_list: @todo_list %>
     </template>
 
-    <%= render "delete_confirmation", todo_list: @todo_list %>
+    <% if list_owner? %>
+      <%= render "delete_confirmation", todo_list: @todo_list %>
+    <% end %>
+
+    <%= render "todo_lists/collaboration_panel",
+      todo_list: @todo_list,
+      collaborators: @todo_list.list_collaborators.includes(:user),
+      pending_invitations: @todo_list.list_invitations.active %>
   </div>
 </div>

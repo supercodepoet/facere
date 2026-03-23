@@ -25,7 +25,11 @@
 
     <div class="list-card-bottom">
       <span class="list-card-items"><%= list.todo_items.size %> items</span>
-      <span class="list-card-updated">Updated <%= time_ago_in_words(list.updated_at) %> ago</span>
+      <% if local_assigns[:shared] %>
+        <span class="shared-owner-label">Shared by <%= list.user.name %></span>
+      <% else %>
+        <span class="list-card-updated">Updated <%= time_ago_in_words(list.updated_at) %> ago</span>
+      <% end %>
     </div>
   <% end %>
 </div>

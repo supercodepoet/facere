@@ -15,13 +15,28 @@ class RegistrationsController < ApplicationController
     if @user.save
       start_new_session_for(@user)
       EmailVerificationMailer.verification_email(@user).deliver_later
-      redirect_to root_path, notice: "Welcome to Facere! Please check your email to verify your account."
+      accepted_list = accept_pending_invitation_for(@user)
+      redirect_to (accepted_list ? todo_list_path(accepted_list) : root_path),
+        notice: "Welcome to Facere! Please check your email to verify your account."
     else
       render :new, status: :unprocessable_entity
     end
   end
 
   private
+
+  def accept_pending_invitation_for(user)
+    token = session.delete(:pending_invitation_token)
+    return unless token
+
+    invitation = ListInvitation.find_by_token_for(:acceptance, token)
+    return unless invitation&.pending?
+
+    invitation.accept!(user)
+    invitation.todo_list
+  rescue ActiveRecord::RecordInvalid
+    nil
+  end
 
   def registration_params
     params.require(:user).permit(:name, :email_address, :password, :password_confirmation).tap do |p|

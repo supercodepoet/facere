@@ -1,8 +1,12 @@
 class TodoItemsController < ApplicationController
+  include ListAuthorization
+
   layout "app"
 
   before_action :set_todo_list
   before_action :set_todo_item, only: %i[show update destroy toggle archive move copy]
+  before_action :authorize_list_access!, only: %i[show]
+  before_action :authorize_editor!, only: %i[create update destroy toggle archive move copy reorder]
 
   def show
     ActiveRecord::Associations::Preloader.new(
@@ -12,12 +16,13 @@ class TodoItemsController < ApplicationController
         :tags,
         :checklist_items,
         :files_attachments,
-        :assigned_to,
-        :notify_people,
+        { item_assignees: :user },
+        { notify_people: :user },
         { comments: [ :user, :comment_likes, { replies: [ :user, :comment_likes ] } ] }
       ]
     ).call
     @sidebar_lists = Current.user.todo_lists.includes(:todo_items).recently_updated
+    @shared_sidebar_lists = Current.user.shared_lists.includes(:user, :todo_items).recently_updated
   end
 
   def create
@@ -101,7 +106,11 @@ class TodoItemsController < ApplicationController
   private
 
   def set_todo_list
-    @todo_list = Current.user.todo_lists.find(params[:todo_list_id])
+    @todo_list = TodoList.where(id: params[:todo_list_id])
+      .where(id: Current.user.todo_lists.select(:id))
+      .or(TodoList.where(id: params[:todo_list_id])
+        .where(id: Current.user.shared_lists.select(:id)))
+      .first!
   end
 
   def set_todo_item
@@ -109,11 +118,7 @@ class TodoItemsController < ApplicationController
   end
 
   def todo_item_params
-    permitted = params.require(:todo_item).permit(:name, :status, :due_date, :priority, :todo_section_id, :assigned_to_user_id, :notes, files: [])
-    if permitted.key?(:assigned_to_user_id)
-      permitted[:assigned_to_user_id] = Current.user.id
-    end
-    permitted
+    params.require(:todo_item).permit(:name, :status, :due_date, :priority, :todo_section_id, :notes, files: [])
   end
 
   def validate_target_section!

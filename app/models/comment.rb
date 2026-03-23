@@ -6,6 +6,10 @@ class Comment < ApplicationRecord
   has_many :replies, class_name: "Comment", foreign_key: :parent_id, dependent: :destroy
   has_many :comment_likes, dependent: :destroy
 
+  after_create_commit -> { broadcast_refresh_to [ todo_item, :updates ] }
+  after_update_commit -> { broadcast_refresh_to [ todo_item, :updates ] }
+  after_destroy_commit -> { broadcast_refresh_to [ todo_item, :updates ] }
+
   validates :body, presence: true, length: { maximum: 2000 }
   validate :nesting_depth_limit
   validate :parent_belongs_to_same_item

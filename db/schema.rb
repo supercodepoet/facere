@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_23_012459) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_23_183304) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -83,6 +83,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_23_012459) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "item_assignees", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "todo_item_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["todo_item_id", "user_id"], name: "index_item_assignees_on_todo_item_id_and_user_id", unique: true
+    t.index ["todo_item_id"], name: "index_item_assignees_on_todo_item_id"
+    t.index ["user_id"], name: "index_item_assignees_on_user_id"
+  end
+
   create_table "item_tags", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "tag_id", null: false
@@ -90,6 +100,34 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_23_012459) do
     t.datetime "updated_at", null: false
     t.index ["tag_id"], name: "index_item_tags_on_tag_id"
     t.index ["todo_item_id", "tag_id"], name: "index_item_tags_on_todo_item_id_and_tag_id", unique: true
+  end
+
+  create_table "list_collaborators", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "role", default: "editor", null: false
+    t.integer "todo_list_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["todo_list_id", "user_id"], name: "index_list_collaborators_on_todo_list_id_and_user_id", unique: true
+    t.index ["todo_list_id"], name: "index_list_collaborators_on_todo_list_id"
+    t.index ["user_id"], name: "index_list_collaborators_on_user_id"
+  end
+
+  create_table "list_invitations", force: :cascade do |t|
+    t.datetime "accepted_at"
+    t.datetime "created_at", null: false
+    t.string "email", null: false
+    t.datetime "expires_at", null: false
+    t.integer "invited_by_id", null: false
+    t.string "role", default: "editor", null: false
+    t.string "status", default: "pending", null: false
+    t.integer "todo_list_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_list_invitations_on_email"
+    t.index ["invited_by_id"], name: "index_list_invitations_on_invited_by_id"
+    t.index ["status", "expires_at"], name: "index_list_invitations_on_status_and_expires_at"
+    t.index ["todo_list_id", "email"], name: "index_list_invitations_unique_pending", unique: true, where: "status = 'pending'"
+    t.index ["todo_list_id"], name: "index_list_invitations_on_todo_list_id"
   end
 
   create_table "notify_people", force: :cascade do |t|
@@ -142,7 +180,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_23_012459) do
 
   create_table "todo_items", force: :cascade do |t|
     t.boolean "archived", default: false, null: false
-    t.integer "assigned_to_user_id"
     t.boolean "completed", default: false, null: false
     t.datetime "created_at", null: false
     t.date "due_date"
@@ -212,8 +249,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_23_012459) do
   add_foreign_key "comment_likes", "users"
   add_foreign_key "comments", "todo_items"
   add_foreign_key "comments", "users"
+  add_foreign_key "item_assignees", "todo_items"
+  add_foreign_key "item_assignees", "users"
   add_foreign_key "item_tags", "tags"
   add_foreign_key "item_tags", "todo_items"
+  add_foreign_key "list_collaborators", "todo_lists"
+  add_foreign_key "list_collaborators", "users"
+  add_foreign_key "list_invitations", "todo_lists"
+  add_foreign_key "list_invitations", "users", column: "invited_by_id"
   add_foreign_key "notify_people", "todo_items"
   add_foreign_key "notify_people", "users"
   add_foreign_key "oauth_identities", "users"
@@ -222,7 +265,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_23_012459) do
   add_foreign_key "tags", "users"
   add_foreign_key "todo_items", "todo_lists"
   add_foreign_key "todo_items", "todo_sections"
-  add_foreign_key "todo_items", "users", column: "assigned_to_user_id"
   add_foreign_key "todo_lists", "users"
   add_foreign_key "todo_sections", "todo_lists"
   add_foreign_key "two_factor_credentials", "users"

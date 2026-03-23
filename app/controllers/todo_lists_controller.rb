@@ -1,16 +1,22 @@
 class TodoListsController < ApplicationController
+  include ListAuthorization
+
   layout "app"
 
   before_action :set_todo_list, only: %i[show edit update destroy]
+  before_action :authorize_list_access!, only: %i[show]
+  before_action :authorize_owner!, only: %i[edit update destroy]
 
   def index
     @todo_lists = Current.user.todo_lists.includes(:todo_items).recently_updated
+    @shared_lists = Current.user.shared_lists.includes(:user, :list_collaborators, :todo_items).recently_updated
   end
 
   def show
     @sidebar_lists = Current.user.todo_lists.includes(:todo_items).recently_updated
-    @sections = @todo_list.todo_sections.active.includes(todo_items: :assigned_to)
-    @unsectioned_items = @todo_list.todo_items.active.where(todo_section_id: nil)
+    @shared_sidebar_lists = Current.user.shared_lists.includes(:user, :todo_items).recently_updated
+    @sections = @todo_list.todo_sections.active.includes(todo_items: { item_assignees: :user })
+    @unsectioned_items = @todo_list.todo_items.active.includes(item_assignees: :user).where(todo_section_id: nil)
   end
 
   def new
@@ -49,7 +55,11 @@ class TodoListsController < ApplicationController
   private
 
   def set_todo_list
-    @todo_list = Current.user.todo_lists.find(params[:id])
+    @todo_list = TodoList.where(id: params[:id])
+      .where(id: Current.user.todo_lists.select(:id))
+      .or(TodoList.where(id: params[:id])
+        .where(id: Current.user.shared_lists.select(:id)))
+      .first!
   end
 
   def todo_list_params

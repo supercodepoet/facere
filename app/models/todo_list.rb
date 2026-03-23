@@ -35,10 +35,15 @@ class TodoList < ApplicationRecord
     }
   }.freeze
 
+  MAX_COLLABORATORS = 25
+
   belongs_to :user
   has_many :todo_sections, -> { active }
   has_many :all_todo_sections, class_name: "TodoSection", dependent: :destroy
   has_many :todo_items, dependent: :destroy
+  has_many :list_collaborators, dependent: :destroy
+  has_many :collaborators, through: :list_collaborators, source: :user
+  has_many :list_invitations, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 100 },
     uniqueness: { scope: :user_id, case_sensitive: false }
@@ -83,6 +88,21 @@ class TodoList < ApplicationRecord
           .update_all(position: section_data[:position])
       end
     end
+  end
+
+  def role_for(user)
+    return nil unless user
+    return "owner" if user_id == user.id
+
+    list_collaborators.find_by(user_id: user.id)&.role
+  end
+
+  def all_members
+    User.where(id: [ user_id ] + list_collaborators.pluck(:user_id))
+  end
+
+  def at_collaborator_limit?
+    list_collaborators.count >= MAX_COLLABORATORS
   end
 
   def completion_percentage
