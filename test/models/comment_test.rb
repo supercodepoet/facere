@@ -70,6 +70,14 @@ class CommentTest < ActiveSupport::TestCase
     assert comment.liked_by?(@user)
   end
 
+  test "parent must belong to same todo_item" do
+    other_item = @list.todo_items.create!(name: "Other Item", position: 1)
+    other_comment = other_item.comments.create!(body: "Other", user: @user)
+    reply = @item.comments.build(body: "Cross-item reply", user: @user, parent: other_comment)
+    assert_not reply.valid?
+    assert reply.errors[:parent].any?
+  end
+
   test "destroying parent cascades to replies" do
     parent = @item.comments.create!(body: "Parent", user: @user)
     @item.comments.create!(body: "Reply 1", user: @user, parent: parent)

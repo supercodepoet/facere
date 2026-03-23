@@ -8,6 +8,7 @@ class Comment < ApplicationRecord
 
   validates :body, presence: true, length: { maximum: 2000 }
   validate :nesting_depth_limit
+  validate :parent_belongs_to_same_item
 
   scope :top_level, -> { where(parent_id: nil) }
   scope :ordered, -> { order(created_at: :asc) }
@@ -27,5 +28,11 @@ class Comment < ApplicationRecord
     return if parent.nil?
 
     errors.add(:parent, "replies can only be one level deep") if parent.parent_id.present?
+  end
+
+  def parent_belongs_to_same_item
+    return if parent.nil?
+
+    errors.add(:parent, "must belong to the same item") if parent.todo_item_id != todo_item_id
   end
 end

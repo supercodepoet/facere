@@ -209,6 +209,31 @@ Learned through implementation of TODO Lists feature (002):
   container `<div>` with the controller attribute
 - **Reference**: https://webawesome.com/docs/components/button/
 
+### Lexxy Integration Rules
+
+Learned through implementation of TODO Item Detail feature (004):
+
+- **Lexxy JS pin**: Do NOT use `bin/importmap pin lexxy` — it downloads
+  a wrong npm package (a tiny lexer library, not the editor). Use
+  `pin "lexxy", to: "lexxy.min.js"` which resolves through Propshaft
+  to the gem's bundled 692KB editor JS. Also pin `@rails/activestorage`
+  as Lexxy imports it internally:
+  `pin "@rails/activestorage", to: "activestorage.esm.js"`
+- **Lexxy replaces Trix**: Remove `import "trix"` and
+  `import "@rails/actiontext"` from application.js, replace with
+  `import "lexxy"`. Set
+  `config.lexxy.override_action_text_defaults = true` in an
+  initializer. Update ActionText content partial class from
+  `trix-content` to `lexxy-content`
+- **Lexxy toolbar theming**: Use CSS custom properties
+  (`--lexxy-color-ink`, `--lexxy-toolbar-gap`,
+  `--lexxy-toolbar-icon-size`, `--lexxy-color-canvas`, etc.) to style
+  the toolbar. Target `lexxy-toolbar` and
+  `.lexxy-editor__toolbar-button` for button styling
+- **Lexxy auto-save**: Listen for `lexxy:change` event in a Stimulus
+  controller, debounce 2 seconds, submit form via `fetch()`. Save
+  immediately on `disconnect()` to prevent data loss during navigation
+
 ### Turbo & Stimulus Integration Rules
 
 Learned through implementation of TODO List Items feature (003):
@@ -239,6 +264,23 @@ Learned through implementation of TODO List Items feature (003):
 - **System tests with Web Awesome**: When setting `wa-input` values,
   dispatch multiple events (`wa-input`, `wa-change`, `input`,
   `change`) to ensure form data syncs through shadow DOM
+- **`button_to` in flex layouts**: `button_to` generates `<form><button>`
+  wrappers. Inside flex containers, these `<form>` elements break layout
+  (block elements with default margins, hidden inputs leak into flex
+  flow). Prefer `link_to` with `data: { turbo_method: :patch }` (or
+  `:delete`) for simple actions in flex layouts (checklist toggles,
+  status buttons). If `button_to` must be used, add
+  `.parent form { display: contents; }` CSS — but be aware hidden
+  inputs may still cause spacing issues
+- **`before_action only:` validates action existence (Rails 8.1)**:
+  `before_action :callback, only: %i[update destroy]` will raise
+  `AbstractController::ActionNotFound` if `update` is not defined on
+  the controller. Always verify all action names in `only:` filters
+  reference actual controller actions
+- **`ActiveRecord::Associations::Preloader` for show actions**: When
+  `before_action` already loads a record and `show` needs eager loading,
+  use `Preloader.new(records: [@record], associations: [...]).call`
+  instead of re-fetching with `includes(...).find()`
 
 ## Development Workflow & Quality Gates
 
@@ -268,6 +310,12 @@ Learned through implementation of TODO List Items feature (003):
   authentication (unauthenticated redirects) and authorization (other
   user's resources return 404) on all actions. Parameter injection
   tests MUST verify ownership fields cannot be overridden via params
+- **Cross-resource parameter validation**: When permitting foreign key
+  params like `parent_id`, MUST validate the referenced record belongs
+  to the same parent resource. Without this, users can create
+  cross-resource associations (e.g., replying to a comment on a
+  different item). Add model-level validation:
+  `validate :parent_belongs_to_same_resource`
 - **Commit Discipline**: Commit after each logical unit of work with
   clear, descriptive messages
 
@@ -297,6 +345,8 @@ A feature is NOT complete until:
 - `bin/rails test:system` passes with zero failures
 - Spec documents (spec.md, plan.md, tasks.md) are updated with
   implementation learnings
+- Copilot code review findings addressed or documented as intentional
+  deviations
 
 ## Governance
 
@@ -317,4 +367,4 @@ implementation plans MUST verify compliance with these principles.
   (generated from `agent-file-template.md`) for day-to-day development
   reference
 
-**Version**: 1.3.0 | **Ratified**: 2026-03-05 | **Last Amended**: 2026-03-22
+**Version**: 1.4.0 | **Ratified**: 2026-03-05 | **Last Amended**: 2026-03-23

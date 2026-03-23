@@ -181,13 +181,13 @@ class TodoItemTest < ActiveSupport::TestCase
     assert item.valid?
   end
 
-  test "normal is a valid priority" do
-    item = @list.todo_items.build(name: "Normal", position: 0, priority: "normal")
+  test "medium is a valid priority" do
+    item = @list.todo_items.build(name: "Medium", position: 0, priority: "medium")
     assert item.valid?
   end
 
-  test "medium is no longer a valid priority" do
-    item = @list.todo_items.build(name: "Medium", position: 0, priority: "medium")
+  test "normal is no longer a valid priority" do
+    item = @list.todo_items.build(name: "Normal", position: 0, priority: "normal")
     assert_not item.valid?
   end
 
@@ -204,7 +204,7 @@ class TodoItemTest < ActiveSupport::TestCase
   test "priority_color returns correct hex for each priority" do
     assert_equal "#EF4444", @list.todo_items.build(priority: "urgent").priority_color
     assert_equal "#F59E0B", @list.todo_items.build(priority: "high").priority_color
-    assert_equal "#3B82F6", @list.todo_items.build(priority: "normal").priority_color
+    assert_equal "#3B82F6", @list.todo_items.build(priority: "medium").priority_color
     assert_equal "#14B8A6", @list.todo_items.build(priority: "low").priority_color
     assert_equal "#A1A1AA", @list.todo_items.build(priority: "none").priority_color
   end

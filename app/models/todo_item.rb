@@ -1,12 +1,12 @@
 class TodoItem < ApplicationRecord
   STATUSES = %w[todo in_progress on_hold done].freeze
-  PRIORITIES = %w[none low normal high urgent].freeze
+  PRIORITIES = %w[none low medium high urgent].freeze
   PRIORITY_COLORS = {
-    "none" => "#A1A1AA", "low" => "#14B8A6", "normal" => "#3B82F6",
+    "none" => "#A1A1AA", "low" => "#14B8A6", "medium" => "#3B82F6",
     "high" => "#F59E0B", "urgent" => "#EF4444"
   }.freeze
   PRIORITY_BG_COLORS = {
-    "none" => nil, "low" => "#F0FDFA", "normal" => "#EFF6FF",
+    "none" => nil, "low" => "#F0FDFA", "medium" => "#EFF6FF",
     "high" => "#FEF3C7", "urgent" => "#FEE2E2"
   }.freeze
   STATUS_COLORS = {
@@ -18,7 +18,7 @@ class TodoItem < ApplicationRecord
     "on_hold" => "On Hold", "done" => "Done"
   }.freeze
   PRIORITY_LABELS = {
-    "none" => "None", "low" => "Low", "normal" => "Medium",
+    "none" => "None", "low" => "Low", "medium" => "Medium",
     "high" => "High", "urgent" => "Urgent"
   }.freeze
 

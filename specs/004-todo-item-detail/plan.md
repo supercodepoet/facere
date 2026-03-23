@@ -121,3 +121,11 @@ test/
 ## Complexity Tracking
 
 No constitution violations to justify. All decisions align with existing principles.
+
+## Implementation Notes
+
+- **Lexxy integration**: Pin via `pin "lexxy", to: "lexxy.min.js"` (NOT `bin/importmap pin lexxy`). Also pin `@rails/activestorage`. Remove trix/actiontext imports.
+- **button_to vs link_to in flex layouts**: `button_to` creates `<form>` wrappers that break flex layouts. Use `link_to` with `data-turbo-method` for simple PATCH/DELETE actions in flex containers (checklist items, status buttons).
+- **Priority enum**: Internal value is `"medium"` (not "normal"), display label is "Medium".
+- **Status badge**: Always purple `#8B5CF6` in the header, regardless of actual status.
+- **Notes toggle**: Uses Edit/Done button toggle despite original spec saying always-editable. Design reference takes precedence.

@@ -186,11 +186,11 @@ class TodoItemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "high", @todo_item.reload.priority
   end
 
-  test "update priority to normal" do
+  test "update priority to medium" do
     sign_in_as(@user)
-    patch todo_list_todo_item_url(@todo_list, @todo_item), params: { todo_item: { priority: "normal" } }
+    patch todo_list_todo_item_url(@todo_list, @todo_item), params: { todo_item: { priority: "medium" } }
     assert_response :redirect
-    assert_equal "normal", @todo_item.reload.priority
+    assert_equal "medium", @todo_item.reload.priority
   end
 
   test "update priority to low" do

@@ -14,6 +14,7 @@
 - Q: How should unsaved note changes be handled? -> A: Auto-save. Note content saves automatically on blur or after a brief delay. No manual save button is needed.
 - Q: What rich text editor should be used for Notes? -> A: Lexxy (basecamp/lexxy), the successor to Trix. It integrates with ActionText as a drop-in replacement.
 - Q: Should the Notes section require an "Edit" button to enter editing mode? -> A: No. The Notes section is always editable — the Lexxy editor is always visible and active. No view/edit mode toggle needed.
+- Q: Should the priority be called "Normal" or "Medium"? -> A: "Medium". The internal enum value is "medium" and the display label is "Medium", matching the design reference.
 
 ### Implementation Learnings (2026-03-22)
 
@@ -24,6 +25,17 @@
 - **TodoItemScoped concern was abandoned**: The Fizzy-style scoped concern approach caused issues in integration tests. Controllers use private `set_todo_list`/`set_todo_item` methods instead (same pattern as the existing TodoItemsController). The concern file remains in `app/controllers/concerns/` but is not included anywhere.
 - **Priority rename migration**: Since `priority` is a string column (not a DB enum), renaming "medium" to "normal" is a simple `UPDATE` statement, not a schema change.
 - **Comment reply nesting**: Self-referential `parent_id` on Comment with `dependent: :destroy` on the `replies` association handles cascade deletion cleanly. The `nesting_depth_limit` validation checks `parent.parent_id.nil?` to enforce 1-level max.
+- **Priority renamed from "normal" to "medium"**: The internal enum value, DB column default, data migration, model constants, and UI labels all use "medium" now. The label displayed is "Medium". This was changed mid-implementation to match the design reference.
+- **Notes section uses Edit button toggle, NOT always-editable**: Despite the original spec saying always-editable, the final implementation uses an Edit/Done toggle button matching the `TODO Item Detail` design. Click Edit to show the Lexxy editor, click Done to return to rendered view. Auto-save still works while editing.
+- **Status badge in header is always purple (#8B5CF6)**: Regardless of the actual status value, the status badge above the item title always uses purple background and dot, matching the design reference.
+- **Lexxy gem JS must be pinned from the gem's asset path, NOT npm**: `bin/importmap pin lexxy` downloads a wrong npm package (a tiny lexer library). The correct approach is `pin "lexxy", to: "lexxy.min.js"` which resolves through Propshaft to the gem's bundled JS (692KB editor). Also requires `pin "@rails/activestorage", to: "activestorage.esm.js"` because Lexxy imports it internally.
+- **Lexxy replaces both Trix imports**: Remove `import "trix"` and `import "@rails/actiontext"` from application.js, replace with just `import "lexxy"`. Update the ActionText content partial class from `trix-content` to `lexxy-content`.
+- **`display: contents` on button_to form wrappers**: `button_to` generates `<form><button>` which creates block-level form wrappers that break flex layouts. Using `display: contents` on the form makes it invisible to layout, but causes issues when hidden inputs leak into flex containers. For checklist items, switched to `link_to` with `data-turbo-method` to avoid the form wrapper entirely.
+- **Cross-item reply security**: Added `parent_belongs_to_same_item` validation on Comment model to prevent creating replies whose parent comment belongs to a different todo_item. Without this, a user could create cross-item data leakage via the parent_id parameter. Found during Copilot code review.
+- **N+1 on comment likes**: `comment.liked_by?(Current.user)` uses `exists?` which hits the DB even when `comment_likes` is eager-loaded. Cache the lookup once per comment using the loaded association: `comment.comment_likes.find { |l| l.user_id == Current.user.id }`.
+- **Double fetch in show action**: The `before_action :set_todo_item` fetches the item, then `show` re-fetched it with `includes().find()`. Use `ActiveRecord::Associations::Preloader` instead to eager-load onto the already-fetched record.
+- **Status selector is a segmented control**: The design uses a gray `#E4E4E7` pill container (border-radius 12px, padding 4px) with buttons inside (border-radius 8px). Not individual bordered buttons.
+- **Checklist uses `link_to` with `data-turbo-method` instead of `button_to`**: Avoids form wrapper issues. Toggle uses `data: { turbo_method: :patch }`, delete uses `data: { turbo_method: :delete, turbo_confirm: "..." }`.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -298,3 +310,13 @@ A user marks a TODO item as complete or deletes it entirely from the item detail
 - **SC-006**: Users can complete the full item lifecycle (create → set status/priority → add notes → mark complete) without navigating away from the detail screen.
 - **SC-007**: 100% of functional requirements are covered by automated tests.
 - **SC-008**: All user-facing actions (status change, priority change, checklist toggle, comment submission) provide immediate visual feedback.
+
+## Deferred Features
+
+- **Comment Reply functionality**: Reply button removed from UI. The data model (parent_id, nesting validation) is implemented. Need to add: reply input form that appears when Reply is clicked, Stimulus controller to toggle reply form, `parent_id` passed in the form submission.
+- **Comment Edit functionality**: Edit button removed from UI. The controller `update` action exists with `edited_at` timestamp. Need to add: inline edit form in the comment partial, Stimulus controller to toggle between view/edit mode, form submission to PATCH the comment.
+- **Real notification delivery for Notify on Complete**: Currently a single-user stub — data model exists but no actual notifications are sent when an item is marked complete. Need to implement email/push notification delivery.
+- **Multi-user assignees**: Currently single-assignment via `assigned_to_user_id` FK. To support multiple assignees, create an `assignments` join table (like `notify_people`). The UI card already shows the pattern.
+- **Custom date picker**: Currently uses native HTML date input with `showPicker()`. The design shows a custom popover with quick-pick buttons (Today, Tomorrow, Next Week, No Date) and a calendar grid. Implement as a Stimulus-controlled dropdown.
+- **Tag color picker**: Currently uses a basic HTML color input. Could be enhanced with preset color swatches matching the design.
+- **Attachment preview/download**: Clicking an attachment card should download or preview the file. Currently file cards are display-only.
