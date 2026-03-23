@@ -15,8 +15,8 @@ class TodoListsController < ApplicationController
   def show
     @sidebar_lists = Current.user.todo_lists.includes(:todo_items).recently_updated
     @shared_sidebar_lists = Current.user.shared_lists.includes(:user, :todo_items).recently_updated
-    @sections = @todo_list.todo_sections.active.includes(todo_items: :item_assignees)
-    @unsectioned_items = @todo_list.todo_items.active.where(todo_section_id: nil)
+    @sections = @todo_list.todo_sections.active.includes(todo_items: { item_assignees: :user })
+    @unsectioned_items = @todo_list.todo_items.active.includes(item_assignees: :user).where(todo_section_id: nil)
   end
 
   def new

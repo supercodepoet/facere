@@ -24,6 +24,8 @@ class ListInvitation < ApplicationRecord
 
   def accept!(user)
     transaction do
+      raise ActiveRecord::RecordInvalid.new(self) if todo_list.at_collaborator_limit?
+
       update!(status: "accepted", accepted_at: Time.current)
       todo_list.list_collaborators.create!(user: user, role: role)
     end

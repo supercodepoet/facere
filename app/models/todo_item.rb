@@ -165,6 +165,7 @@ class TodoItem < ApplicationRecord
 
   def send_completion_notifications
     return unless saved_change_to_completed? && completed?
+    return unless Current.user
 
     notify_people.includes(:user).each do |notify_person|
       CollaborationMailer.item_completed_email(self, Current.user, notify_person.user).deliver_later

@@ -7,7 +7,7 @@ We have built the main portion of our application but have missed a big piece of
 - We need to allow multiple folks to collaborate on a TODO List and TODO List Item
 - We need to provide a way to invite folks to collaborate
 - We need a way to remove folks from collaborating but keep their past interactions
-- We need to be able to assign collaboratiors to a TODO List Item
+- We need to be able to assign collaborators to a TODO List Item
 - We need to be able to notify set collaborators when an TODO List Item is Done
 - We need to allow collaborators to leave comments and replies on a TODO List Item
 - We need a way to manage if a collaborator can change the Note, Status, Priority, Tags, etc of a TODO List Item

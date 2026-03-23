@@ -54,7 +54,7 @@ class ListInvitationsController < ApplicationController
   end
 
   def destroy
-    invitation = @todo_list.list_invitations.find(params[:id])
+    invitation = @todo_list.list_invitations.find_by!(id: params[:id], status: "pending")
     invitation.update!(status: "cancelled")
     redirect_to todo_list_path(@todo_list), notice: "Invitation cancelled."
   end

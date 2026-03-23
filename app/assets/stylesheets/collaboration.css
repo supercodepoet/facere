@@ -243,6 +243,45 @@
   background: #FEE2E2;
 }
 
+/* Assignee picker */
+.assignee-add {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #F4F4F5;
+}
+
+.assignee-add-form {
+  display: contents;
+}
+
+.assignee-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #71717A;
+}
+
+.assignee-add-btn:hover {
+  background: #F9FAFB;
+  color: #18181B;
+}
+
+.assignee-avatar-sm {
+  width: 24px;
+  height: 24px;
+  font-size: 10px;
+}
+
 /* Shared list indicators */
 .shared-badge {
   display: inline-flex;
