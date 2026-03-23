@@ -1,4 +1,4 @@
-<div class="collab-panel" data-controller="collaboration" data-collaboration-target="panel">
+<div class="collab-panel" data-collaboration-target="panel">
   <div class="collab-panel-header">
     <h3>Collaboration</h3>
     <button class="collab-panel-close" data-action="click->collaboration#close">
@@ -9,9 +9,7 @@
   <% if list_owner? %>
     <div class="collab-invite-form">
       <%= form_with url: todo_list_invitations_path(todo_list), method: :post, class: "collab-invite-fields" do |f| %>
-        <wa-input name="invitation[email]" placeholder="Enter email address..." size="small" type="email" required>
-          <wa-icon slot="start" name="envelope" variant="thin"></wa-icon>
-        </wa-input>
+        <input type="email" name="invitation[email]" placeholder="Enter email address..." class="collab-email-input" required>
         <select name="invitation[role]" class="collab-role-select">
           <option value="editor">Editor</option>
           <option value="viewer">Viewer</option>
@@ -77,9 +75,19 @@
             <span class="collab-member-name"><%= invitation.email %></span>
             <span class="collab-member-role collab-role-<%= invitation.role %>"><%= invitation.role.capitalize %></span>
           </div>
-          <%= button_to todo_list_invitation_path(todo_list, invitation), method: :delete, class: "collab-remove-btn" do %>
-            <wa-icon name="xmark" variant="thin"></wa-icon>
-          <% end %>
+          <div class="collab-member-actions">
+            <%= form_with url: todo_list_invitations_path(todo_list), method: :post, class: "collab-resend-form" do %>
+              <input type="hidden" name="invitation[email]" value="<%= invitation.email %>">
+              <input type="hidden" name="invitation[role]" value="<%= invitation.role %>">
+              <button type="submit" class="collab-resend-btn" title="Resend invitation">
+                <wa-icon name="paper-plane" variant="thin"></wa-icon>
+                Resend
+              </button>
+            <% end %>
+            <%= button_to todo_list_invitation_path(todo_list, invitation), method: :delete, class: "collab-remove-btn" do %>
+              <wa-icon name="xmark" variant="thin"></wa-icon>
+            <% end %>
+          </div>
         </div>
       <% end %>
     </div>

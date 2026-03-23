@@ -4,7 +4,7 @@ You're invited to collaborate!
 
 Your role: <%= @invitation.role.capitalize %>
 
-<%= if @invitation.role == "editor" %>As an editor, you can create, edit, and complete items on this list.<% else %>As a viewer, you can see all items and leave comments on this list.<% end %>
+<% if @invitation.role == "editor" %>As an editor, you can create, edit, and complete items on this list.<% else %>As a viewer, you can see all items and leave comments on this list.<% end %>
 
 Accept the invitation: <%= @accept_url %>
 

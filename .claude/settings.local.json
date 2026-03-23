@@ -25,7 +25,8 @@
       "Bash(bin/brakeman --no-pager --format json)",
       "Bash(ruby -rjson -e \":*)",
       "Bash(bin/brakeman --format json --no-pager)",
-      "Bash(bin/brakeman -o /tmp/brakeman.json --no-pager)"
+      "Bash(bin/brakeman -o /tmp/brakeman.json --no-pager)",
+      "Bash(ls Procfile* .dev*)"
     ]
   }
 }

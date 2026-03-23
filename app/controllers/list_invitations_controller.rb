@@ -7,8 +7,18 @@ class ListInvitationsController < ApplicationController
   allow_unauthenticated_access only: :accept
 
   def create
+    email = invitation_params[:email]&.strip&.downcase
+
     if @todo_list.at_collaborator_limit?
       redirect_to todo_list_path(@todo_list), alert: "This list has reached the maximum of #{TodoList::MAX_COLLABORATORS} collaborators."
+      return
+    end
+
+    # If there's already a pending invitation for this email, resend it
+    existing = @todo_list.list_invitations.active.find_by(email: email)
+    if existing
+      CollaborationMailer.invitation_email(existing).deliver_now
+      redirect_to todo_list_path(@todo_list), notice: "Invitation resent to #{email}"
       return
     end
 
@@ -16,7 +26,7 @@ class ListInvitationsController < ApplicationController
     @invitation.invited_by = Current.user
 
     if @invitation.save
-      CollaborationMailer.invitation_email(@invitation).deliver_later
+      CollaborationMailer.invitation_email(@invitation).deliver_now
       redirect_to todo_list_path(@todo_list), notice: "Invitation sent to #{@invitation.email}"
     else
       redirect_to todo_list_path(@todo_list), alert: @invitation.errors.full_messages.first

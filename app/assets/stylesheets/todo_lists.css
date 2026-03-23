@@ -1159,6 +1159,15 @@ wa-button.form-error-banner-close::part(base):hover {
   display: flex;
   align-items: center;
   gap: 16px;
+  flex: 1;
+  min-width: 0;
+}
+
+.show-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .show-back-btn {

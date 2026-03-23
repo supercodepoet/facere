@@ -62,6 +62,21 @@
   gap: 10px;
 }
 
+.collab-email-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #374151;
+  outline: none;
+}
+
+.collab-email-input:focus {
+  border-color: #8B5CF6;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.15);
+}
+
 .collab-role-select {
   appearance: none;
   background: #fff;
@@ -177,6 +192,29 @@
 
 .collab-member-pending {
   opacity: 0.7;
+}
+
+.collab-resend-form {
+  display: contents;
+}
+
+.collab-resend-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: 1px solid #8B5CF6;
+  color: #8B5CF6;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.collab-resend-btn:hover {
+  background: #EDE9FE;
 }
 
 /* Leave Button */

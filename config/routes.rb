@@ -85,6 +85,9 @@ Rails.application.routes.draw do
   # Root
   root "todo_lists#index"
 
+  # Email preview (development only)
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
+
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
 end
