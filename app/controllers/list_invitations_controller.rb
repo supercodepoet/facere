@@ -17,7 +17,7 @@ class ListInvitationsController < ApplicationController
     # If there's already a pending invitation for this email, resend it
     existing = @todo_list.list_invitations.active.find_by(email: email)
     if existing
-      CollaborationMailer.invitation_email(existing).deliver_now
+      CollaborationMailer.invitation_email(existing).deliver_later
       redirect_to todo_list_path(@todo_list), notice: "Invitation resent to #{email}"
       return
     end
@@ -26,7 +26,7 @@ class ListInvitationsController < ApplicationController
     @invitation.invited_by = Current.user
 
     if @invitation.save
-      CollaborationMailer.invitation_email(@invitation).deliver_now
+      CollaborationMailer.invitation_email(@invitation).deliver_later
       redirect_to todo_list_path(@todo_list), notice: "Invitation sent to #{@invitation.email}"
     else
       redirect_to todo_list_path(@todo_list), alert: @invitation.errors.full_messages.first
@@ -68,7 +68,7 @@ class ListInvitationsController < ApplicationController
   def invitation_params
     permitted = params.require(:invitation).permit(:email)
     role = params.dig(:invitation, :role)
-    permitted[:role] = role if ListInvitation::ROLES.include?(role)
+    permitted[:role] = ListInvitation::ROLES.include?(role) ? role : "editor"
     permitted
   end
 end

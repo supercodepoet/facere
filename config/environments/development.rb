@@ -31,7 +31,7 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  # Process background jobs inline so emails send immediately.
+  # Process background jobs in a thread pool so emails deliver without Solid Queue worker.
   config.active_job.queue_adapter = :async
 
   # Use letter_opener_web to capture and preview emails in the browser.

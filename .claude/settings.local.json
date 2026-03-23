@@ -26,7 +26,8 @@
       "Bash(ruby -rjson -e \":*)",
       "Bash(bin/brakeman --format json --no-pager)",
       "Bash(bin/brakeman -o /tmp/brakeman.json --no-pager)",
-      "Bash(ls Procfile* .dev*)"
+      "Bash(ls Procfile* .dev*)",
+      "Bash(bin/rubocop app/controllers/list_invitations_controller.rb app/controllers/registrations_controller.rb app/controllers/sessions_controller.rb)"
     ]
   }
 }

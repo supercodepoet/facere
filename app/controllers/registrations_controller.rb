@@ -15,8 +15,9 @@ class RegistrationsController < ApplicationController
     if @user.save
       start_new_session_for(@user)
       EmailVerificationMailer.verification_email(@user).deliver_later
-      accept_pending_invitation_for(@user)
-      redirect_to after_registration_url, notice: "Welcome to Facere! Please check your email to verify your account."
+      accepted_list = accept_pending_invitation_for(@user)
+      redirect_to (accepted_list ? todo_list_path(accepted_list) : root_path),
+        notice: "Welcome to Facere! Please check your email to verify your account."
     else
       render :new, status: :unprocessable_entity
     end
@@ -32,16 +33,9 @@ class RegistrationsController < ApplicationController
     return unless invitation&.pending?
 
     invitation.accept!(user)
+    invitation.todo_list
   rescue ActiveRecord::RecordInvalid
-    # Silently skip if acceptance fails (e.g., already a collaborator)
-  end
-
-  def after_registration_url
-    if session[:pending_invitation_token].blank?
-      root_path
-    else
-      root_path # invitation already accepted above
-    end
+    nil
   end
 
   def registration_params

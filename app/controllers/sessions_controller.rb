@@ -25,8 +25,8 @@ class SessionsController < ApplicationController
       end
 
       start_new_session_for(user)
-      accept_pending_invitation_for(user)
-      redirect_to after_authentication_url
+      accepted_list = accept_pending_invitation_for(user)
+      redirect_to (accepted_list ? todo_list_path(accepted_list) : after_authentication_url)
     else
       user&.increment_failed_login_attempts!
       redirect_to sign_in_path, alert: "Invalid email or password."
@@ -43,8 +43,9 @@ class SessionsController < ApplicationController
     return unless invitation&.pending?
 
     invitation.accept!(user)
+    invitation.todo_list
   rescue ActiveRecord::RecordInvalid
-    # Silently skip
+    nil
   end
 
   public
