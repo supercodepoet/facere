@@ -25,12 +25,29 @@ class SessionsController < ApplicationController
       end
 
       start_new_session_for(user)
+      accept_pending_invitation_for(user)
       redirect_to after_authentication_url
     else
       user&.increment_failed_login_attempts!
       redirect_to sign_in_path, alert: "Invalid email or password."
     end
   end
+
+  private
+
+  def accept_pending_invitation_for(user)
+    token = session.delete(:pending_invitation_token)
+    return unless token
+
+    invitation = ListInvitation.find_by_token_for(:acceptance, token)
+    return unless invitation&.pending?
+
+    invitation.accept!(user)
+  rescue ActiveRecord::RecordInvalid
+    # Silently skip
+  end
+
+  public
 
   def destroy
     terminate_session

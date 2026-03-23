@@ -1,0 +1,17 @@
+<h2>You're invited to collaborate!</h2>
+
+<p><strong><%= @inviter.name %></strong> has invited you to collaborate on the list <strong>"<%= @todo_list.name %>"</strong> in Facere.</p>
+
+<p>Your role: <strong><%= @invitation.role.capitalize %></strong></p>
+
+<% if @invitation.role == "editor" %>
+  <p>As an editor, you can create, edit, and complete items on this list.</p>
+<% else %>
+  <p>As a viewer, you can see all items and leave comments on this list.</p>
+<% end %>
+
+<p>
+  <%= link_to "Accept Invitation", @accept_url, style: "display: inline-block; padding: 12px 24px; background-color: #8B5CF6; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600;" %>
+</p>
+
+<p><small>This invitation expires in 30 days. If you don't have a Facere account yet, you'll be prompted to create one first.</small></p>

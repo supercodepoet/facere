@@ -1,0 +1,7 @@
+<h2>Item completed!</h2>
+
+<p><strong><%= @completed_by.name %></strong> marked <strong>"<%= @todo_item.name %>"</strong> as done in the list <strong>"<%= @todo_list.name %>"</strong>.</p>
+
+<p>
+  <%= link_to "View Item", @item_url, style: "display: inline-block; padding: 12px 24px; background-color: #14B8A6; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600;" %>
+</p>

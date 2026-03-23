@@ -7,6 +7,10 @@ class User < ApplicationRecord
   has_many :tags, dependent: :destroy
   has_one :two_factor_credential, dependent: :destroy
   has_many :recovery_codes, dependent: :destroy
+  has_many :list_collaborators, dependent: :destroy
+  has_many :shared_lists, through: :list_collaborators, source: :todo_list
+  has_many :item_assignees, dependent: :destroy
+  has_many :sent_invitations, class_name: "ListInvitation", foreign_key: :invited_by_id, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 

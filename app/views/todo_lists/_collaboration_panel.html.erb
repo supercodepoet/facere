@@ -1,0 +1,96 @@
+<div class="collab-panel" data-controller="collaboration" data-collaboration-target="panel">
+  <div class="collab-panel-header">
+    <h3>Collaboration</h3>
+    <button class="collab-panel-close" data-action="click->collaboration#close">
+      <wa-icon name="xmark" variant="thin"></wa-icon>
+    </button>
+  </div>
+
+  <% if list_owner? %>
+    <div class="collab-invite-form">
+      <%= form_with url: todo_list_invitations_path(todo_list), method: :post, class: "collab-invite-fields" do |f| %>
+        <wa-input name="invitation[email]" placeholder="Enter email address..." size="small" type="email" required>
+          <wa-icon slot="start" name="envelope" variant="thin"></wa-icon>
+        </wa-input>
+        <select name="invitation[role]" class="collab-role-select">
+          <option value="editor">Editor</option>
+          <option value="viewer">Viewer</option>
+        </select>
+        <wa-button type="submit" variant="brand" size="small">
+          <wa-icon slot="start" name="paper-plane" variant="thin"></wa-icon>
+          Invite
+        </wa-button>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="collab-members">
+    <div class="collab-section-label">Members</div>
+
+    <%# Owner %>
+    <div class="collab-member">
+      <div class="collab-member-avatar" style="background: #8B5CF6;">
+        <%= todo_list.user.initials %>
+      </div>
+      <div class="collab-member-info">
+        <span class="collab-member-name"><%= todo_list.user.name %></span>
+        <span class="collab-member-role collab-role-owner">Owner</span>
+      </div>
+    </div>
+
+    <%# Collaborators %>
+    <% collaborators.each do |collab| %>
+      <div class="collab-member">
+        <div class="collab-member-avatar" style="background: #F472B6;">
+          <%= collab.user.initials %>
+        </div>
+        <div class="collab-member-info">
+          <span class="collab-member-name"><%= collab.user.name %></span>
+          <span class="collab-member-role collab-role-<%= collab.role %>"><%= collab.role.capitalize %></span>
+        </div>
+        <% if list_owner? %>
+          <div class="collab-member-actions">
+            <%= form_with url: todo_list_collaborator_path(todo_list, collab), method: :patch, class: "collab-role-form" do %>
+              <select name="collaborator[role]" onchange="this.form.requestSubmit()" class="collab-role-select collab-role-select-sm">
+                <option value="editor" <%= "selected" if collab.role == "editor" %>>Editor</option>
+                <option value="viewer" <%= "selected" if collab.role == "viewer" %>>Viewer</option>
+              </select>
+            <% end %>
+            <%= button_to todo_list_collaborator_path(todo_list, collab), method: :delete, class: "collab-remove-btn", data: { turbo_confirm: "Remove #{collab.user.name} from this list?" } do %>
+              <wa-icon name="xmark" variant="thin"></wa-icon>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if list_owner? && pending_invitations.any? %>
+    <div class="collab-pending">
+      <div class="collab-section-label">Pending Invitations</div>
+      <% pending_invitations.each do |invitation| %>
+        <div class="collab-member collab-member-pending">
+          <div class="collab-member-avatar collab-avatar-pending">
+            <wa-icon name="envelope" variant="thin"></wa-icon>
+          </div>
+          <div class="collab-member-info">
+            <span class="collab-member-name"><%= invitation.email %></span>
+            <span class="collab-member-role collab-role-<%= invitation.role %>"><%= invitation.role.capitalize %></span>
+          </div>
+          <%= button_to todo_list_invitation_path(todo_list, invitation), method: :delete, class: "collab-remove-btn" do %>
+            <wa-icon name="xmark" variant="thin"></wa-icon>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if !list_owner? %>
+    <div class="collab-leave">
+      <%= button_to todo_list_leave_path(todo_list), method: :delete, class: "collab-leave-btn", data: { turbo_confirm: "Are you sure you want to leave this list?" } do %>
+        <wa-icon name="right-from-bracket" variant="thin"></wa-icon>
+        Leave this list
+      <% end %>
+    </div>
+  <% end %>
+</div>
