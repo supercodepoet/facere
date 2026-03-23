@@ -2295,7 +2295,7 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
 .checklist-items {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 /* ===== Attachments ===== */
@@ -2387,10 +2387,13 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
   margin: 0;
 }
 
-/* ===== Status Selector — design: gap 6, fill_container buttons, cornerRadius 10 ===== */
+/* ===== Status Selector — segmented control with gray pill container ===== */
 .status-selector {
   display: flex;
-  gap: 6px;
+  gap: 4px;
+  background: #E4E4E7;
+  border-radius: 12px;
+  padding: 4px;
 }
 
 /* button_to forms: invisible wrapper */
@@ -2403,27 +2406,30 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
   min-width: 0;
   padding: 8px 12px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   background: transparent;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 500;
   color: #A1A1AA;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease;
   text-align: center;
   white-space: nowrap;
 }
 
 .status-btn:hover {
-  background: #E4E4E7;
+  background: #D4D4D8;
 }
 
 .status-btn--active {
   background: #8B5CF6;
   color: #FFFFFF;
   font-weight: 600;
-  padding: 8px 20px;
+}
+
+.status-btn--active:hover {
+  background: #7C3AED;
 }
 
 /* ===== Assignees ===== */
@@ -2832,6 +2838,25 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
 }
 
 /* ===== Checklist Functional Styles ===== */
+/* Checklist inline edit */
+.checklist-edit-form {
+  flex: 1;
+}
+
+.checklist-edit-input {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #18181B;
+  border: none;
+  border-bottom: 2px solid #8B5CF6;
+  outline: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
 .checklist-add-form {
   display: none;
   align-items: center;
@@ -2870,33 +2895,6 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
 
 .checklist-add-submit:hover {
   background: #7C3AED;
-}
-
-.checklist-item {
-  position: relative;
-}
-
-.checklist-delete-btn {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0;
-  appearance: none;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: var(--text-muted, #A1A1AA);
-  padding: 4px;
-  transition: opacity 0.15s ease;
-}
-
-.checklist-item:hover .checklist-delete-btn {
-  opacity: 1;
-}
-
-.checklist-delete-btn:hover {
-  color: var(--color-danger, #EF4444);
 }
 
 /* ===== Comment Input Functional ===== */
@@ -3606,43 +3604,8 @@ trix-toolbar {
   cursor: default;
 }
 
-/* Issue 11: Checklist checkbox box styles */
-.checklist-box {
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  border: 2px solid #D4D4D8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: all 0.15s ease;
-}
-
-.checklist-box--checked {
-  background: #14B8A6;
-  border-color: #14B8A6;
-}
-
-.checklist-checkbox {
-  appearance: none;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-/* Design: vertical, gap 2 */
-.checklist-items {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-/* Design: padding [12,16], cornerRadius 12, gap 12 */
-.checklist-item {
+/* ===== Checklist row styles (using link_to, no button_to forms) ===== */
+.checklist-row {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -3651,24 +3614,17 @@ trix-toolbar {
   position: relative;
 }
 
-/* Done items: #F4F4F5 bg, muted text */
-.checklist-item--done {
+.checklist-row--done {
   background: #F4F4F5;
 }
 
-.checklist-item--done .checklist-name {
-  color: #A1A1AA;
-  font-weight: 400;
+.checklist-toggle {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
 }
 
-/* button_to forms inside checklist items: no margin, flex inline */
-.checklist-item form {
-  margin: 0;
-  padding: 0;
-  display: contents;
-}
-
-/* Checkbox: 22x22, cornerRadius 6 */
 .checklist-box {
   width: 22px;
   height: 22px;
@@ -3686,93 +3642,172 @@ trix-toolbar {
   border-color: #14B8A6;
 }
 
-.checklist-checkbox {
-  appearance: none;
-  background: none;
-  border: none;
-  padding: 0;
+.checklist-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #18181B;
+  flex: 1;
+  cursor: default;
+}
+
+.checklist-text--done {
+  color: #A1A1AA;
+  font-weight: 400;
+}
+
+.checklist-remove {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.checklist-row:hover .checklist-remove {
+  opacity: 1;
+}
+
+/* Inline edit form inside checklist rows */
+.checklist-row .inline-edit-form {
+  display: none;
+  flex: 1;
   margin: 0;
-  cursor: pointer;
+  padding: 0;
+}
+
+/* ===== Notes Section ===== */
+.notes-edit-btn {
   display: flex;
   align-items: center;
-  line-height: 0;
-}
-
-/* Pending text: #18181B, 500 */
-.checklist-name {
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: #18181B;
-  flex: 1;
-}
-
-.checklist-delete-btn {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0;
-  appearance: none;
-  border: none;
-  background: none;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #D4D4D8;
+  background: transparent;
   cursor: pointer;
-  padding: 4px;
-  margin: 0;
-  transition: opacity 0.15s ease;
-}
-
-.checklist-item:hover .checklist-delete-btn {
-  opacity: 1;
-}
-
-.checklist-name {
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
-  color: #18181B;
-  flex: 1;
+  color: #71717A;
+  transition: border-color 0.15s ease, color 0.15s ease;
 }
 
-.checklist-name--done {
-  color: #A1A1AA;
-  text-decoration: line-through;
+.notes-edit-btn:hover {
+  border-color: #8B5CF6;
+  color: #8B5CF6;
 }
 
-.checklist-delete-btn {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0;
-  appearance: none;
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 4px;
-  transition: opacity 0.15s ease;
-}
-
-.checklist-item:hover .checklist-delete-btn {
-  opacity: 1;
-}
-
-/* Notes editor clickable area (Issue 8) */
-.notes-editor-card {
+.notes-content-card {
   background: #F4F4F5;
-  border-radius: 16px;
+  border: 1px solid #D4D4D8;
+  border-radius: 12px;
   padding: 20px;
-  cursor: text;
 }
 
-.notes-editor-card lexxy-editor,
-.notes-editor-card trix-editor {
-  min-height: 80px;
-  border: none !important;
-  background: transparent !important;
-  padding: 0 !important;
-  outline: none !important;
+.notes-content-card .lexxy-content {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #18181B;
 }
+
+.notes-placeholder {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #A1A1AA;
+  font-style: italic;
+}
+
+.notes-editor-wrap {
+  border: 1px solid #D4D4D8;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* ===== Lexxy Editor Theme — matches TODO Item Detail design ===== */
+.notes-editor-wrap lexxy-editor {
+  --lexxy-color-accent-dark: #8B5CF6;
+  --lexxy-color-accent-medium: #A78BFA;
+  --lexxy-color-accent-light: #EDE9FE;
+  --lexxy-color-accent-lightest: #F5F3FF;
+  --lexxy-color-canvas: #F4F4F5;
+  --lexxy-color-ink: #8B5CF6;
+  --lexxy-color-ink-medium: #8B5CF6;
+  --lexxy-color-ink-lighter: #D4D4D8;
+  --lexxy-color-ink-lightest: #F4F4F5;
+  --lexxy-color-text: #18181B;
+  --lexxy-radius: 0;
+  --lexxy-shadow: none;
+  --lexxy-toolbar-gap: 8px;
+  --lexxy-toolbar-icon-size: 18px;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #18181B;
+  line-height: 1.5;
+}
+
+/* Toolbar: padding [10,16], #F4F4F5 bg, gap 8, border top/left/right #D4D4D8 */
+.notes-editor-wrap lexxy-toolbar {
+  background: #F4F4F5;
+  border: none;
+  border-bottom: 1px solid #D4D4D8;
+  border-radius: 0;
+  padding: 10px 16px;
+  gap: 8px;
+}
+
+/* Toolbar buttons: no padding, no bg — just 18px purple icons with 8px gap */
+.notes-editor-wrap .lexxy-editor__toolbar-button {
+  border-radius: 0;
+  padding: 0;
+  background: none;
+  color: #8B5CF6;
+}
+
+.notes-editor-wrap .lexxy-editor__toolbar-button:hover {
+  background: none;
+  opacity: 0.7;
+}
+
+.notes-editor-wrap .lexxy-editor__toolbar-button[aria-pressed="true"],
+.notes-editor-wrap .lexxy-editor__toolbar-button.active {
+  background: none;
+  color: #7C3AED;
+}
+
+/* Separators: 1px × 20px, #D4D4D8 */
+.notes-editor-wrap .lexxy-editor__toolbar-spacer {
+  width: 1px;
+  height: 20px;
+  background: #D4D4D8;
+  flex: none;
+}
+
+/* Undo/redo: muted #A1A1AA */
+.notes-editor-wrap .lexxy-editor__toolbar-spacer ~ .lexxy-editor__toolbar-button {
+  color: #A1A1AA;
+}
+
+/* Editor content area: padding 20, #F4F4F5 bg */
+.notes-editor-wrap .lexxy-content,
+.notes-editor-wrap [role="textbox"] {
+  padding: 20px;
+  min-height: 100px;
+  background: #F4F4F5;
+}
+
+/* Dropdown menus */
+.notes-editor-wrap .lexxy-editor__toolbar-overflow-menu {
+  border: 1px solid #D4D4D8;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Notes: legacy cleanup */
 
 /* Responsive */
 @media (max-width: 768px) {

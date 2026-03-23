@@ -15,8 +15,8 @@
   </div>
   <div class="checklist-items">
     <% item.checklist_items.each do |check_item| %>
-      <div class="checklist-item #{'checklist-item--done' if check_item.completed?}">
-        <%= button_to toggle_todo_list_todo_item_checklist_item_path(todo_list, item, check_item), method: :patch, class: "checklist-checkbox", data: { turbo: false } do %>
+      <div class="checklist-row<%= ' checklist-row--done' if check_item.completed? %>" data-controller="inline-edit">
+        <%= link_to toggle_todo_list_todo_item_checklist_item_path(todo_list, item, check_item), data: { turbo_method: :patch }, class: "checklist-toggle" do %>
           <% if check_item.completed? %>
             <div class="checklist-box checklist-box--checked">
               <wa-icon name="check" style="color: #FFFFFF; font-size: 12px;"></wa-icon>
@@ -25,8 +25,11 @@
             <div class="checklist-box"></div>
           <% end %>
         <% end %>
-        <span class="checklist-name #{'checklist-name--done' if check_item.completed?}"><%= check_item.name %></span>
-        <%= button_to todo_list_todo_item_checklist_item_path(todo_list, item, check_item), method: :delete, class: "checklist-delete-btn", data: { turbo: false } do %>
+        <span class="checklist-text<%= ' checklist-text--done' if check_item.completed? %>" data-inline-edit-target="display" data-action="click->inline-edit#edit"><%= check_item.name %></span>
+        <%= form_with(url: todo_list_todo_item_checklist_item_path(todo_list, item, check_item), method: :patch, class: "inline-edit-form checklist-edit-form", data: { inline_edit_target: "form", turbo: false }) do |f| %>
+          <%= f.text_field :name, value: check_item.name, class: "checklist-edit-input", name: "checklist_item[name]", data: { inline_edit_target: "input", action: "keydown.enter->inline-edit#save keydown.esc->inline-edit#cancel" } %>
+        <% end %>
+        <%= link_to todo_list_todo_item_checklist_item_path(todo_list, item, check_item), data: { turbo_method: :delete, turbo_confirm: "Delete this item?" }, class: "checklist-remove" do %>
           <wa-icon name="xmark" variant="thin" style="color: #A1A1AA;"></wa-icon>
         <% end %>
       </div>

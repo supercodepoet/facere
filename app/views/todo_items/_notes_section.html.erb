@@ -1,9 +1,27 @@
-<div class="detail-section" data-controller="notes-autosave">
+<div class="detail-section" data-controller="notes-edit">
   <div class="detail-section-header">
     <wa-icon name="file-lines" variant="thin" class="detail-section-icon" style="color: #8B5CF6;"></wa-icon>
     <span class="detail-section-title">Notes</span>
+    <div class="detail-section-spacer"></div>
+    <button type="button" class="notes-edit-btn" data-notes-edit-target="editBtn" data-action="click->notes-edit#toggle">
+      <wa-icon name="pen" variant="thin" style="font-size: 14px;"></wa-icon>
+      Edit
+    </button>
   </div>
-  <div class="notes-editor-card">
+
+  <%# View mode: rendered content %>
+  <div class="notes-view" data-notes-edit-target="view">
+    <% if item.notes.present? %>
+      <div class="notes-content-card">
+        <div class="lexxy-content"><%= item.notes %></div>
+      </div>
+    <% else %>
+      <p class="notes-placeholder">Click Edit to add notes...</p>
+    <% end %>
+  </div>
+
+  <%# Edit mode: Lexxy editor with auto-save %>
+  <div class="notes-editor-wrap" data-notes-edit-target="editor" style="display: none;" data-controller="notes-autosave">
     <%= form_with(model: item, url: todo_list_todo_item_path(todo_list, item), method: :patch, data: { notes_autosave_target: "form" }) do |f| %>
       <%= f.rich_text_area :notes, class: "notes-lexxy-editor", data: { action: "lexxy:change->notes-autosave#changed" } %>
     <% end %>

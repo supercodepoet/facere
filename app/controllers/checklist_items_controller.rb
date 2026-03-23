@@ -1,13 +1,21 @@
 class ChecklistItemsController < ApplicationController
   before_action :set_todo_list
   before_action :set_todo_item
-  before_action :set_checklist_item, only: %i[destroy toggle]
+  before_action :set_checklist_item, only: %i[update destroy toggle]
 
   def create
     @checklist_item = @todo_item.checklist_items.build(checklist_item_params)
     @checklist_item.position = @todo_item.checklist_items.count
 
     if @checklist_item.save
+      redirect_to todo_list_todo_item_path(@todo_list, @todo_item)
+    else
+      redirect_to todo_list_todo_item_path(@todo_list, @todo_item), alert: @checklist_item.errors.full_messages.first
+    end
+  end
+
+  def update
+    if @checklist_item.update(checklist_item_params)
       redirect_to todo_list_todo_item_path(@todo_list, @todo_item)
     else
       redirect_to todo_list_todo_item_path(@todo_list, @todo_item), alert: @checklist_item.errors.full_messages.first
