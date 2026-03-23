@@ -9,7 +9,8 @@
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(bin/importmap pin:*)",
-      "Bash(RAILS_LOG_LEVEL=debug bin/rails test test/controllers/checklist_debug_test.rb)"
+      "Bash(RAILS_LOG_LEVEL=debug bin/rails test test/controllers/checklist_debug_test.rb)",
+      "Bash(curl -s -b /dev/null http://localhost:3000)"
     ]
   }
 }

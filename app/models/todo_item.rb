@@ -18,7 +18,7 @@ class TodoItem < ApplicationRecord
     "on_hold" => "On Hold", "done" => "Done"
   }.freeze
   PRIORITY_LABELS = {
-    "none" => "None", "low" => "Low", "normal" => "Normal",
+    "none" => "None", "low" => "Low", "normal" => "Medium",
     "high" => "High", "urgent" => "Urgent"
   }.freeze
 

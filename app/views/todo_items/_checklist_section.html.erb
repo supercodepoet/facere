@@ -1,4 +1,4 @@
-<div class="detail-section">
+<div class="detail-section" data-controller="checklist-add">
   <div class="detail-section-header">
     <wa-icon name="list-check" variant="thin" class="detail-section-icon" style="color: #8B5CF6;"></wa-icon>
     <span class="detail-section-title">Checklist</span>
@@ -8,7 +8,7 @@
       <span class="checklist-progress-badge"><%= done %>/<%= total %></span>
     <% end %>
     <div class="detail-section-spacer"></div>
-    <button class="detail-section-add-btn" onclick="document.getElementById('checklist-add-form-<%= item.id %>').style.display='flex'">
+    <button type="button" class="detail-section-add-btn" data-action="click->checklist-add#show">
       <wa-icon name="plus" variant="thin"></wa-icon>
       Add
     </button>
@@ -32,8 +32,7 @@
       </div>
     <% end %>
   </div>
-  <%= form_with(url: todo_list_todo_item_checklist_items_path(todo_list, item), method: :post, id: "checklist-add-form-#{item.id}", class: "checklist-add-form", style: "display: none;", data: { turbo: false }) do |f| %>
-    <%= f.text_field :name, placeholder: "Add checklist item...", class: "checklist-add-input", name: "checklist_item[name]", autofocus: true %>
-    <%= f.submit "Add", class: "checklist-add-submit" %>
+  <%= form_with(url: todo_list_todo_item_checklist_items_path(todo_list, item), method: :post, class: "checklist-add-form", data: { checklist_add_target: "form", turbo: false }) do |f| %>
+    <%= f.text_field :name, placeholder: "Add checklist item...", class: "checklist-add-input", name: "checklist_item[name]", data: { checklist_add_target: "input", action: "keydown.enter->checklist-add#save keydown.esc->checklist-add#hide" } %>
   <% end %>
 </div>

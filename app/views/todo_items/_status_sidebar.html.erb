@@ -2,7 +2,7 @@
   <span class="detail-card-label">Status</span>
   <div class="status-selector">
     <% TodoItem::STATUSES.each do |status| %>
-      <%= button_to todo_list_todo_item_path(todo_list, item), method: :patch, params: { todo_item: { status: status } }, class: "status-btn #{'status-btn--active' if item.status == status}", data: { turbo_frame: "item_status_#{item.id}" } do %>
+      <%= button_to todo_list_todo_item_path(todo_list, item), method: :patch, params: { todo_item: { status: status } }, class: "status-btn #{'status-btn--active' if item.status == status}", data: { turbo: false } do %>
         <%= TodoItem::STATUS_LABELS[status] %>
       <% end %>
     <% end %>

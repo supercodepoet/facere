@@ -49,7 +49,7 @@ class TodoItemDetailTest < ApplicationSystemTestCase
     visit todo_list_todo_item_path(@todo_list, @todo_item)
     assert_text "Urgent"
     assert_text "High"
-    assert_text "Normal"
+    assert_text "Medium"
     assert_text "Low"
     assert_text "None"
   end

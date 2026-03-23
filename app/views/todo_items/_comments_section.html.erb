@@ -25,7 +25,7 @@
     <div class="comment-avatar" style="background: #8B5CF6;">
       <%= Current.user.initials %>
     </div>
-    <%= form_with(url: todo_list_todo_item_comments_path(todo_list, item), method: :post, class: "comment-form") do |f| %>
+    <%= form_with(url: todo_list_todo_item_comments_path(todo_list, item), method: :post, class: "comment-form", data: { turbo: false }) do |f| %>
       <%= f.text_field :body, placeholder: "Write a comment...", class: "comment-input", name: "comment[body]" %>
       <button type="submit" class="comment-send-btn">
         <wa-icon name="paper-plane"></wa-icon>

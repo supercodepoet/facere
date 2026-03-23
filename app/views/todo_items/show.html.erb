@@ -9,11 +9,11 @@
         <% end %>
         <div class="show-title-group">
           <div class="show-list-icon" style="background: #8B5CF6;">
-            <wa-icon name="list-check" style="color: #FFFFFF;"></wa-icon>
+            <wa-icon name="list-check" style="color: #FFFFFF; font-size: 18px;"></wa-icon>
           </div>
           <h1 class="show-title"><%= @todo_list.name %></h1>
           <%= link_to edit_todo_list_path(@todo_list), class: "show-edit-btn", aria: { label: "Edit list" } do %>
-            <wa-icon name="pen" variant="thin"></wa-icon>
+            <wa-icon name="pen" variant="thin" style="font-size: 14px;"></wa-icon>
           <% end %>
         </div>
       </div>
@@ -24,8 +24,8 @@
         <%# Item Header %>
         <div class="item-header" id="item_header_<%= @todo_item.id %>">
           <div class="item-status-row">
-            <span class="item-badge" style="background: <%= @todo_item.status_color %>20; color: <%= @todo_item.status_color %>;">
-              <span class="item-badge-dot" style="background: <%= @todo_item.status_color %>;"></span>
+            <span class="item-badge" style="background: #8B5CF620; color: #8B5CF6;">
+              <span class="item-badge-dot" style="background: #8B5CF6;"></span>
               <%= @todo_item.status_label %>
             </span>
             <% if @todo_item.priority != "none" %>
@@ -35,7 +35,13 @@
               </span>
             <% end %>
           </div>
-          <h2 class="item-detail-title"><%= @todo_item.name %></h2>
+          <%# Issue 14: Editable item name %>
+          <div data-controller="inline-edit">
+            <h2 class="item-detail-title" data-inline-edit-target="display" data-action="click->inline-edit#edit"><%= @todo_item.name %></h2>
+            <%= form_with(model: @todo_item, url: todo_list_todo_item_path(@todo_list, @todo_item), method: :patch, class: "inline-edit-form", data: { inline_edit_target: "form", turbo: false }) do |f| %>
+              <%= f.text_field :name, value: @todo_item.name, class: "item-title-input", data: { inline_edit_target: "input", action: "keydown.enter->inline-edit#save keydown.esc->inline-edit#cancel" } %>
+            <% end %>
+          </div>
           <div class="item-meta-row">
             <span class="item-meta">
               <wa-icon name="calendar" variant="thin"></wa-icon>
@@ -52,63 +58,52 @@
 
         <div class="item-divider"></div>
 
-        <%# Notes Section %>
         <turbo-frame id="item_notes_<%= @todo_item.id %>">
           <%= render "todo_items/notes_section", item: @todo_item, todo_list: @todo_list %>
         </turbo-frame>
 
         <div class="item-divider"></div>
 
-        <%# Checklist Section %>
         <turbo-frame id="item_checklist_<%= @todo_item.id %>">
           <%= render "todo_items/checklist_section", item: @todo_item, todo_list: @todo_list %>
         </turbo-frame>
 
         <div class="item-divider"></div>
 
-        <%# Attachments Section %>
         <turbo-frame id="item_attachments_<%= @todo_item.id %>">
           <%= render "todo_items/attachments_section", item: @todo_item, todo_list: @todo_list %>
         </turbo-frame>
 
         <div class="item-divider"></div>
 
-        <%# Comments Section %>
         <%= render "todo_items/comments_section", item: @todo_item, todo_list: @todo_list %>
       </div>
 
       <div class="item-detail-right">
-        <%# Status Card %>
         <turbo-frame id="item_status_<%= @todo_item.id %>">
           <%= render "todo_items/status_sidebar", item: @todo_item, todo_list: @todo_list %>
         </turbo-frame>
 
-        <%# Priority Card %>
         <turbo-frame id="item_priority_<%= @todo_item.id %>">
           <%= render "todo_items/priority_card", item: @todo_item, todo_list: @todo_list %>
         </turbo-frame>
 
-        <%# Assignees Card %>
         <turbo-frame id="item_assignees_<%= @todo_item.id %>">
           <%= render "todo_items/assignees_card", item: @todo_item, todo_list: @todo_list %>
         </turbo-frame>
 
-        <%# Due Date Card %>
         <turbo-frame id="item_due_date_<%= @todo_item.id %>">
           <%= render "todo_items/due_date_card", item: @todo_item, todo_list: @todo_list %>
         </turbo-frame>
 
-        <%# Notify on Complete Card %>
         <turbo-frame id="item_notify_<%= @todo_item.id %>">
           <%= render "todo_items/notify_card", item: @todo_item, todo_list: @todo_list %>
         </turbo-frame>
 
-        <%# Tags Card %>
         <turbo-frame id="item_tags_<%= @todo_item.id %>">
           <%= render "todo_items/tags_card", item: @todo_item, todo_list: @todo_list %>
         </turbo-frame>
 
-        <%# Actions Card %>
         <%= render "todo_items/actions_card", item: @todo_item, todo_list: @todo_list %>
       </div>
     </div>
