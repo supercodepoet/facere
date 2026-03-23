@@ -1,24 +1,24 @@
 <div class="detail-section">
   <div class="detail-section-header">
-    <wa-icon name="paperclip" variant="thin" class="detail-section-icon"></wa-icon>
+    <wa-icon name="paperclip" variant="thin" class="detail-section-icon" style="color: #8B5CF6;"></wa-icon>
     <span class="detail-section-title">Attachments</span>
     <% if item.files.attached? %>
-      <span class="attach-count-badge"><%= item.files.count %></span>
+      <span class="attach-count-badge"><%= item.files.size %></span>
     <% end %>
     <div class="detail-section-spacer"></div>
-    <label class="detail-section-add-btn attach-upload-label" for="attachment-upload-<%= item.id %>">
-      <wa-icon name="cloud-arrow-up" variant="thin"></wa-icon>
+    <label class="detail-section-add-btn" for="attachment-upload-<%= item.id %>">
+      <wa-icon name="upload" variant="thin"></wa-icon>
       Upload
     </label>
   </div>
-  <%= form_with(url: todo_list_todo_item_attachments_path(@todo_list || local_assigns[:todo_list], item), method: :post, multipart: true, class: "attach-upload-form", id: "attach-form-#{item.id}") do %>
-    <input type="file" name="files[]" multiple id="attachment-upload-<%= item.id %>" class="attach-file-input" onchange="this.form.requestSubmit()">
+  <%= form_with(url: todo_list_todo_item_attachments_path(todo_list, item), method: :post, multipart: true, class: "attach-upload-form", id: "attach-form-#{item.id}", data: { turbo: false }) do %>
+    <input type="file" name="files[]" multiple id="attachment-upload-<%= item.id %>" class="attach-file-input" onchange="this.form.requestSubmit()" style="display: none;">
   <% end %>
   <% if item.files.attached? %>
     <div class="attach-grid">
       <% item.files.each do |file| %>
         <div class="file-card">
-          <wa-icon name="file" variant="thin" class="file-card-icon"></wa-icon>
+          <wa-icon name="<%= item.file_type_icon(file) %>" style="color: <%= item.file_type_color(file) %>; font-size: 28px;"></wa-icon>
           <span class="file-card-name"><%= file.filename %></span>
           <span class="file-card-size"><%= number_to_human_size(file.byte_size) %></span>
         </div>

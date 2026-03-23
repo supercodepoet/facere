@@ -1,26 +1,29 @@
-<div class="detail-section" data-controller="notes-editor">
+<div class="detail-section" data-controller="notes-edit">
   <div class="detail-section-header">
-    <wa-icon name="file-lines" variant="thin" class="detail-section-icon"></wa-icon>
+    <wa-icon name="file-lines" variant="thin" class="detail-section-icon" style="color: #8B5CF6;"></wa-icon>
     <span class="detail-section-title">Notes</span>
     <div class="detail-section-spacer"></div>
-    <button class="detail-section-edit-btn" data-action="click->notes-editor#toggleEdit" data-notes-editor-target="editBtn">
-      <wa-icon name="pen" variant="thin"></wa-icon>
+    <button type="button" class="notes-edit-btn" data-notes-edit-target="editBtn" data-action="click->notes-edit#toggle">
+      <wa-icon name="pen" variant="thin" style="font-size: 14px;"></wa-icon>
+      Edit
     </button>
   </div>
-  <div class="detail-section-body" data-notes-editor-target="viewMode">
+
+  <%# View mode: rendered content %>
+  <div class="notes-view" data-notes-edit-target="view">
     <% if item.notes.present? %>
-      <div class="notes-content"><%= item.notes %></div>
+      <div class="notes-content-card">
+        <div class="lexxy-content"><%= item.notes %></div>
+      </div>
     <% else %>
-      <p class="notes-placeholder">Click the edit button to add notes...</p>
+      <p class="notes-placeholder">Click Edit to add notes...</p>
     <% end %>
   </div>
-  <div class="notes-edit-form" data-notes-editor-target="editMode" style="display: none;">
-    <%= form_with(model: item, url: todo_list_todo_item_path(item.todo_list, item), method: :patch, data: { turbo: false, notes_editor_target: "form" }) do |f| %>
-      <%= f.rich_text_area :notes, class: "notes-trix-editor" %>
-      <div class="notes-form-actions">
-        <button type="submit" class="notes-save-btn">Save Notes</button>
-        <button type="button" class="notes-cancel-btn" data-action="click->notes-editor#cancelEdit">Cancel</button>
-      </div>
+
+  <%# Edit mode: Lexxy editor with auto-save %>
+  <div class="notes-editor-wrap" data-notes-edit-target="editor" style="display: none;" data-controller="notes-autosave">
+    <%= form_with(model: item, url: todo_list_todo_item_path(todo_list, item), method: :patch, data: { notes_autosave_target: "form" }) do |f| %>
+      <%= f.rich_text_area :notes, class: "notes-lexxy-editor", data: { action: "lexxy:change->notes-autosave#changed" } %>
     <% end %>
   </div>
 </div>

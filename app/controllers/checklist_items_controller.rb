@@ -14,6 +14,14 @@ class ChecklistItemsController < ApplicationController
     end
   end
 
+  def update
+    if @checklist_item.update(checklist_item_params)
+      redirect_to todo_list_todo_item_path(@todo_list, @todo_item)
+    else
+      redirect_to todo_list_todo_item_path(@todo_list, @todo_item), alert: @checklist_item.errors.full_messages.first
+    end
+  end
+
   def toggle
     @checklist_item.toggle_completion!
     redirect_to todo_list_todo_item_path(@todo_list, @todo_item)

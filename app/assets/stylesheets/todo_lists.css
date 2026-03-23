@@ -1146,12 +1146,13 @@ wa-button.form-error-banner-close::part(base):hover {
   min-width: 0;
 }
 
+/* Top bar: left-aligned, matches design exactly */
 .show-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 24px 32px;
-  border-bottom: 1px solid var(--color-zinc-100);
+  height: 64px;
+  padding: 0 32px;
+  border-bottom: 1px solid #D4D4D8;
 }
 
 .show-header-left {
@@ -1166,28 +1167,29 @@ wa-button.form-error-banner-close::part(base):hover {
   justify-content: center;
   width: 36px;
   height: 36px;
-  border: 1px solid var(--color-zinc-200);
-  border-radius: 10px;
-  background: var(--color-white);
-  color: var(--color-zinc-500);
+  border: none;
+  border-radius: 12px;
+  background: #F4F4F5;
+  color: #71717A;
   cursor: pointer;
   text-decoration: none;
+  flex-shrink: 0;
   transition: all 0.15s ease;
 }
 
 .show-back-btn:hover {
-  border-color: var(--color-zinc-300);
-  color: var(--color-zinc-700);
+  background: #E4E4E7;
+  color: #18181B;
 }
 
 .show-title {
-  font-family: var(--font-heading);
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 22px;
   font-weight: 700;
-  color: var(--color-zinc-900);
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  color: #18181B;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
 }
 
 .show-edit-btn {
@@ -1202,10 +1204,11 @@ wa-button.form-error-banner-close::part(base):hover {
   color: var(--color-primary);
 }
 
-.show-header-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* Issue 13: White background for main content area */
+.show-main {
+  background: #FFFFFF;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .show-action-btn {
@@ -1858,10 +1861,6 @@ wa-dialog.delete-dialog::part(overlay) {
   gap: 10px;
 }
 
-.show-title-icon {
-  font-size: 22px;
-}
-
 .show-action-btn-section {
   display: flex;
   align-items: center;
@@ -2125,8 +2124,9 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
   min-width: 0;
 }
 
+/* Issue 2: Wider right column so status buttons fit */
 .item-detail-right {
-  width: 280px;
+  width: 340px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -2295,39 +2295,7 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
 .checklist-items {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-}
-
-.checklist-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 0;
-}
-
-.checklist-checkbox {
-  appearance: none;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: var(--text-tertiary, #A1A1AA);
-  font-size: 18px;
-  padding: 0;
-}
-
-.checklist-checkbox--done {
-  color: var(--accent-teal, #14B8A6);
-}
-
-.checklist-name {
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  color: var(--text-primary, #18181B);
-}
-
-.checklist-name--done {
-  text-decoration: line-through;
-  color: var(--text-tertiary, #A1A1AA);
+  gap: 2px;
 }
 
 /* ===== Attachments ===== */
@@ -2378,21 +2346,25 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
 }
 
 /* ===== Detail Cards (Right Column) ===== */
+/* Design: fill #F4F4F5, cornerRadius 18, padding 20 */
 .detail-card {
-  padding: 16px;
-  border: 1px solid var(--border-standard, #E4E4E7);
-  border-radius: 12px;
+  padding: 20px;
+  background: #F4F4F5;
+  border-radius: 18px;
+  border: none;
 }
 
+/* Design: 11px, 600, #A1A1AA, letterSpacing 1 */
 .detail-card-label {
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-tertiary, #A1A1AA);
-  margin-bottom: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #A1A1AA;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
 }
 
 .detail-card-add-btn {
@@ -2410,34 +2382,54 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
   color: var(--text-muted, #D4D4D8);
 }
 
-/* ===== Status Selector ===== */
+/* button_to forms inside detail cards need full width, no margin */
+.detail-card form {
+  margin: 0;
+}
+
+/* ===== Status Selector — segmented control with gray pill container ===== */
 .status-selector {
   display: flex;
   gap: 4px;
+  background: #E4E4E7;
+  border-radius: 12px;
+  padding: 4px;
+}
+
+/* button_to forms: invisible wrapper */
+.status-selector form {
+  display: contents;
 }
 
 .status-btn {
   flex: 1;
+  min-width: 0;
   padding: 8px 12px;
-  border: 1px solid var(--border-standard, #E4E4E7);
+  border: none;
   border-radius: 8px;
-  background: white;
+  background: transparent;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 500;
-  color: var(--text-secondary, #71717A);
-  transition: background 0.15s ease, border-color 0.15s ease;
+  color: #A1A1AA;
+  transition: background 0.15s ease, color 0.15s ease;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .status-btn:hover {
-  background: var(--bg-surface, #F4F4F5);
+  background: #D4D4D8;
 }
 
 .status-btn--active {
-  background: var(--accent-purple, #8B5CF6);
-  color: white;
-  border-color: var(--accent-purple, #8B5CF6);
+  background: #8B5CF6;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.status-btn--active:hover {
+  background: #7C3AED;
 }
 
 /* ===== Assignees ===== */
@@ -2502,19 +2494,21 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
   gap: 8px;
 }
 
+/* Issue 7: Both action buttons same size */
 .detail-action-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 16px;
-  border-radius: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
   border: none;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 600;
   transition: opacity 0.15s ease;
+  width: 100%;
 }
 
 .detail-action-btn:hover {
@@ -2844,8 +2838,27 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
 }
 
 /* ===== Checklist Functional Styles ===== */
+/* Checklist inline edit */
+.checklist-edit-form {
+  flex: 1;
+}
+
+.checklist-edit-input {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #18181B;
+  border: none;
+  border-bottom: 2px solid #8B5CF6;
+  outline: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
 .checklist-add-form {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 8px;
   padding: 8px 0;
@@ -2882,33 +2895,6 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
 
 .checklist-add-submit:hover {
   background: #7C3AED;
-}
-
-.checklist-item {
-  position: relative;
-}
-
-.checklist-delete-btn {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0;
-  appearance: none;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: var(--text-muted, #A1A1AA);
-  padding: 4px;
-  transition: opacity 0.15s ease;
-}
-
-.checklist-item:hover .checklist-delete-btn {
-  opacity: 1;
-}
-
-.checklist-delete-btn:hover {
-  color: var(--color-danger, #EF4444);
 }
 
 /* ===== Comment Input Functional ===== */
@@ -3033,4 +3019,808 @@ trix-toolbar {
 
 .notes-cancel-btn:hover {
   background: var(--bg-surface, #F4F4F5);
+}
+
+/* ========================================
+   004 - TODO Item Detail Enhancements
+   ======================================== */
+
+/* Item Badge (unified status/priority badges) */
+.item-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.item-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Priority Card */
+.priority-options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* button_to generates a <form> wrapper — full width, no margin */
+.priority-options form {
+  margin: 0;
+  width: 100%;
+}
+
+/* Hidden inputs inside button_to forms */
+.priority-options form input[type="hidden"] {
+  display: none;
+}
+
+.priority-option {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #71717A;
+  transition: background 0.15s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.priority-option:hover {
+  background: #E4E4E7;
+}
+
+.priority-option--selected {
+  font-weight: 600;
+  color: #18181B;
+  background: var(--priority-selected-bg, transparent);
+}
+
+.priority-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Detail Card Header */
+.detail-card-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.detail-card-spacer {
+  flex: 1;
+}
+
+.detail-card-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+}
+
+/* Assignee styles */
+.assignee-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.assignee-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.assignee-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.assignee-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #18181B;
+}
+
+/* Due Date Card */
+.due-date-value {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.due-date-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.due-date-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.due-date-day {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #18181B;
+}
+
+.due-date-countdown {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.due-date-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Notify List */
+.notify-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notify-person-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Notes Lexxy Editor */
+.notes-editor-card {
+  background: #F4F4F5;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.notes-lexxy-editor {
+  width: 100%;
+  min-height: 100px;
+}
+
+.notes-editor-card lexxy-editor {
+  --lexxy-border: none;
+  --lexxy-border-radius: 0;
+  --lexxy-padding: 0;
+  background: transparent;
+}
+
+/* Completed action button state */
+.detail-action-btn--completed {
+  background: #D1FAE5 !important;
+  color: #14B8A6 !important;
+}
+
+/* Show list icon in top bar — design: 32x32, cornerRadius 10 */
+.show-list-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Edit button in title bar — design: 28x28, cornerRadius 8 */
+.show-edit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  color: #A1A1AA;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.show-edit-btn:hover {
+  color: #8B5CF6;
+}
+
+/* Comment styles */
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.comment-item {
+  display: flex;
+  gap: 12px;
+}
+
+.comment-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.comment-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.comment-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.comment-author {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #18181B;
+}
+
+.comment-time {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #A1A1AA;
+}
+
+.comment-edited {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #A1A1AA;
+  font-style: italic;
+}
+
+.comment-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #18181B;
+}
+
+.comment-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.comment-like-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #A1A1AA;
+}
+
+.comment-like-btn--liked wa-icon {
+  color: #F472B6;
+}
+
+.comment-reply-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #8B5CF6;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.comment-replies {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 48px;
+}
+
+.comment-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #F4F4F5;
+  border-radius: 16px;
+  padding: 12px 16px;
+}
+
+.comment-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #18181B;
+  outline: none;
+}
+
+.comment-input::placeholder {
+  color: #A1A1AA;
+}
+
+.comment-send-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: #8B5CF6;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.comment-count-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: #F4F4F5;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #71717A;
+}
+
+/* Tags card */
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tag-add-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #8B5CF6;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* Checklist progress badge */
+.checklist-progress-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: #D1FAE5;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #10B981;
+}
+
+/* Attachment file cards */
+.attach-grid {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.file-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  background: #F4F4F5;
+  border-radius: 14px;
+  flex: 1;
+  min-width: 120px;
+}
+
+.file-card-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #18181B;
+  text-align: center;
+  word-break: break-all;
+}
+
+.file-card-size {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: #A1A1AA;
+}
+
+.attach-count-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: #F4F4F5;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #71717A;
+}
+
+/* Section edit button */
+.detail-section-edit-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #D4D4D8;
+  background: transparent;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #71717A;
+}
+
+.detail-section-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #D4D4D8;
+  background: transparent;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #71717A;
+}
+
+/* Issue 12: Comment form — input and send on same line */
+.comment-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+/* Issue 13: Sidebar gray background */
+.sidebar {
+  background: #F4F4F5 !important;
+}
+
+/* Issue 6: Due date empty state clickable button */
+.detail-card-empty-btn {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: 1px dashed #D4D4D8;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #A1A1AA;
+  width: 100%;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.detail-card-empty-btn:hover {
+  border-color: #8B5CF6;
+  color: #8B5CF6;
+}
+
+/* Inline edit form — hidden by default, no extra spacing */
+.inline-edit-form {
+  display: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Editable item title input — sits in exact same position as the h2 */
+.item-title-input {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #18181B;
+  border: none;
+  border-bottom: 2px solid #8B5CF6;
+  outline: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  line-height: 1.2;
+}
+
+.item-detail-title {
+  cursor: default;
+}
+
+/* ===== Checklist row styles (using link_to, no button_to forms) ===== */
+.checklist-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  position: relative;
+}
+
+.checklist-row--done {
+  background: #F4F4F5;
+}
+
+.checklist-toggle {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.checklist-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid #D4D4D8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: transparent;
+}
+
+.checklist-box--checked {
+  background: #14B8A6;
+  border-color: #14B8A6;
+}
+
+.checklist-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #18181B;
+  flex: 1;
+  cursor: default;
+}
+
+.checklist-text--done {
+  color: #A1A1AA;
+  font-weight: 400;
+}
+
+.checklist-remove {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.checklist-row:hover .checklist-remove {
+  opacity: 1;
+}
+
+/* Inline edit form inside checklist rows */
+.checklist-row .inline-edit-form {
+  display: none;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Notes Section ===== */
+.notes-edit-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #D4D4D8;
+  background: transparent;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #71717A;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.notes-edit-btn:hover {
+  border-color: #8B5CF6;
+  color: #8B5CF6;
+}
+
+.notes-content-card {
+  background: #F4F4F5;
+  border: 1px solid #D4D4D8;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.notes-content-card .lexxy-content {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #18181B;
+}
+
+.notes-placeholder {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #A1A1AA;
+  font-style: italic;
+}
+
+.notes-editor-wrap {
+  border: 1px solid #D4D4D8;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* ===== Lexxy Editor Theme — matches TODO Item Detail design ===== */
+.notes-editor-wrap lexxy-editor {
+  --lexxy-color-accent-dark: #8B5CF6;
+  --lexxy-color-accent-medium: #A78BFA;
+  --lexxy-color-accent-light: #EDE9FE;
+  --lexxy-color-accent-lightest: #F5F3FF;
+  --lexxy-color-canvas: #F4F4F5;
+  --lexxy-color-ink: #8B5CF6;
+  --lexxy-color-ink-medium: #8B5CF6;
+  --lexxy-color-ink-lighter: #D4D4D8;
+  --lexxy-color-ink-lightest: #F4F4F5;
+  --lexxy-color-text: #18181B;
+  --lexxy-radius: 0;
+  --lexxy-shadow: none;
+  --lexxy-toolbar-gap: 8px;
+  --lexxy-toolbar-icon-size: 18px;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #18181B;
+  line-height: 1.5;
+}
+
+/* Toolbar: padding [10,16], #F4F4F5 bg, gap 8, border top/left/right #D4D4D8 */
+.notes-editor-wrap lexxy-toolbar {
+  background: #F4F4F5;
+  border: none;
+  border-bottom: 1px solid #D4D4D8;
+  border-radius: 0;
+  padding: 10px 16px;
+  gap: 8px;
+}
+
+/* Toolbar buttons: no padding, no bg — just 18px purple icons with 8px gap */
+.notes-editor-wrap .lexxy-editor__toolbar-button {
+  border-radius: 0;
+  padding: 0;
+  background: none;
+  color: #8B5CF6;
+}
+
+.notes-editor-wrap .lexxy-editor__toolbar-button:hover {
+  background: none;
+  opacity: 0.7;
+}
+
+.notes-editor-wrap .lexxy-editor__toolbar-button[aria-pressed="true"],
+.notes-editor-wrap .lexxy-editor__toolbar-button.active {
+  background: none;
+  color: #7C3AED;
+}
+
+/* Separators: 1px × 20px, #D4D4D8 */
+.notes-editor-wrap .lexxy-editor__toolbar-spacer {
+  width: 1px;
+  height: 20px;
+  background: #D4D4D8;
+  flex: none;
+}
+
+/* Undo/redo: muted #A1A1AA */
+.notes-editor-wrap .lexxy-editor__toolbar-spacer ~ .lexxy-editor__toolbar-button {
+  color: #A1A1AA;
+}
+
+/* Editor content area: padding 20, #F4F4F5 bg */
+.notes-editor-wrap .lexxy-content,
+.notes-editor-wrap [role="textbox"] {
+  padding: 20px;
+  min-height: 100px;
+  background: #F4F4F5;
+}
+
+/* Dropdown menus */
+.notes-editor-wrap .lexxy-editor__toolbar-overflow-menu {
+  border: 1px solid #D4D4D8;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Notes: legacy cleanup */
+
+/* Responsive */
+@media (max-width: 768px) {
+  .item-detail-content {
+    flex-direction: column;
+  }
+
+  .item-detail-right {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .comment-replies {
+    padding-left: 24px;
+  }
 }

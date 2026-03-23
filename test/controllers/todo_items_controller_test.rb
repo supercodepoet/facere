@@ -133,6 +133,101 @@ class TodoItemsControllerTest < ActionDispatch::IntegrationTest
 
   # --- Parameter injection ---
 
+  # --- Status update tests (US1) ---
+
+  test "update status to in_progress" do
+    sign_in_as(@user)
+    patch todo_list_todo_item_url(@todo_list, @todo_item), params: { todo_item: { status: "in_progress" } }
+    assert_response :redirect
+    assert_equal "in_progress", @todo_item.reload.status
+    assert_not @todo_item.completed
+  end
+
+  test "update status to on_hold" do
+    sign_in_as(@user)
+    patch todo_list_todo_item_url(@todo_list, @todo_item), params: { todo_item: { status: "on_hold" } }
+    assert_response :redirect
+    assert_equal "on_hold", @todo_item.reload.status
+    assert_not @todo_item.completed
+  end
+
+  test "update status to done marks completed" do
+    sign_in_as(@user)
+    patch todo_list_todo_item_url(@todo_list, @todo_item), params: { todo_item: { status: "done" } }
+    assert_response :redirect
+    @todo_item.reload
+    assert_equal "done", @todo_item.status
+    assert @todo_item.completed
+  end
+
+  test "update status away from done unmarks completed" do
+    @todo_item.update!(status: "done", completed: true)
+    sign_in_as(@user)
+    patch todo_list_todo_item_url(@todo_list, @todo_item), params: { todo_item: { status: "todo" } }
+    assert_response :redirect
+    @todo_item.reload
+    assert_equal "todo", @todo_item.status
+    assert_not @todo_item.completed
+  end
+
+  # --- Priority update tests (US1) ---
+
+  test "update priority to urgent" do
+    sign_in_as(@user)
+    patch todo_list_todo_item_url(@todo_list, @todo_item), params: { todo_item: { priority: "urgent" } }
+    assert_response :redirect
+    assert_equal "urgent", @todo_item.reload.priority
+  end
+
+  test "update priority to high" do
+    sign_in_as(@user)
+    patch todo_list_todo_item_url(@todo_list, @todo_item), params: { todo_item: { priority: "high" } }
+    assert_response :redirect
+    assert_equal "high", @todo_item.reload.priority
+  end
+
+  test "update priority to medium" do
+    sign_in_as(@user)
+    patch todo_list_todo_item_url(@todo_list, @todo_item), params: { todo_item: { priority: "medium" } }
+    assert_response :redirect
+    assert_equal "medium", @todo_item.reload.priority
+  end
+
+  test "update priority to low" do
+    sign_in_as(@user)
+    patch todo_list_todo_item_url(@todo_list, @todo_item), params: { todo_item: { priority: "low" } }
+    assert_response :redirect
+    assert_equal "low", @todo_item.reload.priority
+  end
+
+  test "update priority to none" do
+    @todo_item.update!(priority: "high")
+    sign_in_as(@user)
+    patch todo_list_todo_item_url(@todo_list, @todo_item), params: { todo_item: { priority: "none" } }
+    assert_response :redirect
+    assert_equal "none", @todo_item.reload.priority
+  end
+
+  # --- Notes auto-save tests (US2) ---
+
+  test "update notes via patch" do
+    sign_in_as(@user)
+    patch todo_list_todo_item_url(@todo_list, @todo_item), params: { todo_item: { notes: "<p>Updated notes content</p>" } }
+    assert_response :redirect
+    @todo_item.reload
+    assert_includes @todo_item.notes.to_s, "Updated notes content"
+  end
+
+  test "update notes preserves other fields" do
+    @todo_item.update!(status: "in_progress", priority: "high")
+    sign_in_as(@user)
+    patch todo_list_todo_item_url(@todo_list, @todo_item), params: { todo_item: { notes: "<p>Notes only</p>" } }
+    assert_response :redirect
+    @todo_item.reload
+    assert_equal "in_progress", @todo_item.status
+    assert_equal "high", @todo_item.priority
+  end
+
   test "create ignores todo_list_id injection" do
     sign_in_as(@user)
     assert_difference("TodoItem.count", 1) do

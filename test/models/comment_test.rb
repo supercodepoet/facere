@@ -39,4 +39,51 @@ class CommentTest < ActiveSupport::TestCase
     comment = @item.comments.create!(body: "A comment", user: @user)
     assert_equal @user, comment.user
   end
+
+  # --- Reply features (US5) ---
+
+  test "top_level scope returns only root comments" do
+    parent = @item.comments.create!(body: "Parent", user: @user)
+    @item.comments.create!(body: "Reply", user: @user, parent: parent)
+    assert_equal 1, @item.comments.top_level.count
+  end
+
+  test "nesting depth limit prevents deep nesting" do
+    parent = @item.comments.create!(body: "Parent", user: @user)
+    reply = @item.comments.create!(body: "Reply", user: @user, parent: parent)
+    deep = @item.comments.build(body: "Deep reply", user: @user, parent: reply)
+    assert_not deep.valid?
+    assert deep.errors[:parent].any?
+  end
+
+  test "edited? returns true when edited_at is set" do
+    comment = @item.comments.create!(body: "Original", user: @user)
+    assert_not comment.edited?
+    comment.update!(edited_at: Time.current)
+    assert comment.edited?
+  end
+
+  test "liked_by? returns true when user has liked" do
+    comment = @item.comments.create!(body: "Likeable", user: @user)
+    assert_not comment.liked_by?(@user)
+    CommentLike.create!(comment: comment, user: @user)
+    assert comment.liked_by?(@user)
+  end
+
+  test "parent must belong to same todo_item" do
+    other_item = @list.todo_items.create!(name: "Other Item", position: 1)
+    other_comment = other_item.comments.create!(body: "Other", user: @user)
+    reply = @item.comments.build(body: "Cross-item reply", user: @user, parent: other_comment)
+    assert_not reply.valid?
+    assert reply.errors[:parent].any?
+  end
+
+  test "destroying parent cascades to replies" do
+    parent = @item.comments.create!(body: "Parent", user: @user)
+    @item.comments.create!(body: "Reply 1", user: @user, parent: parent)
+    @item.comments.create!(body: "Reply 2", user: @user, parent: parent)
+    assert_difference("Comment.count", -3) do
+      parent.destroy!
+    end
+  end
 end

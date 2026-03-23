@@ -1,0 +1,26 @@
+<div class="detail-card">
+  <div class="detail-card-header">
+    <span class="detail-card-label">Assigned to</span>
+    <span class="detail-card-spacer"></span>
+    <% unless item.assigned_to.present? %>
+      <%= button_to todo_list_todo_item_path(todo_list, item), method: :patch, params: { todo_item: { assigned_to_user_id: Current.user.id } }, class: "detail-card-icon-btn", data: { turbo_frame: "item_assignees_#{item.id}" } do %>
+        <wa-icon name="user-plus" style="color: #8B5CF6;"></wa-icon>
+      <% end %>
+    <% end %>
+  </div>
+  <% if item.assigned_to.present? %>
+    <div class="assignee-row">
+      <div class="assignee-avatar" style="background: #F472B6;">
+        <%= item.assigned_to.initials %>
+      </div>
+      <div class="assignee-info">
+        <span class="assignee-name"><%= item.assigned_to.name %></span>
+      </div>
+      <%= button_to todo_list_todo_item_path(todo_list, item), method: :patch, params: { todo_item: { assigned_to_user_id: "" } }, class: "detail-card-icon-btn", data: { turbo_frame: "item_assignees_#{item.id}" } do %>
+        <wa-icon name="xmark" style="color: #A1A1AA;"></wa-icon>
+      <% end %>
+    </div>
+  <% else %>
+    <span class="detail-card-empty">No one assigned</span>
+  <% end %>
+</div>

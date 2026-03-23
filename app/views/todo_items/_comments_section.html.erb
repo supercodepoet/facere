@@ -1,32 +1,36 @@
-<div class="detail-section">
+<div class="detail-section" id="comments_section_<%= item.id %>">
   <div class="detail-section-header">
-    <wa-icon name="message-lines" variant="thin" class="detail-section-icon"></wa-icon>
+    <wa-icon name="comment" variant="thin" class="detail-section-icon" style="color: #8B5CF6;"></wa-icon>
     <span class="detail-section-title">Comments</span>
-    <% if item.comments.any? %>
-      <span class="comments-count-badge"><%= item.comments.size %></span>
+    <% comment_count = item.comments.size %>
+    <% if comment_count > 0 %>
+      <span class="comment-count-badge"><%= comment_count %></span>
     <% end %>
   </div>
+
   <div class="comments-list">
-    <% item.comments.includes(:user).each do |comment| %>
-      <div class="comment-row">
-        <div class="comment-avatar" style="background: var(--list-color-<%= todo_list.color %>);">
-          <%= comment.user.initials %>
+    <% item.comments.top_level.ordered.each do |comment| %>
+      <%= render "todo_items/comment", comment: comment, item: item, todo_list: todo_list %>
+      <% if comment.replies.any? %>
+        <div class="comment-replies">
+          <% comment.replies.ordered.each do |reply| %>
+            <%= render "todo_items/comment", comment: reply, item: item, todo_list: todo_list %>
+          <% end %>
         </div>
-        <div class="comment-body">
-          <div class="comment-header">
-            <span class="comment-author"><%= comment.user.name %></span>
-            <span class="comment-time"><%= time_ago_in_words(comment.created_at) %> ago</span>
-          </div>
-          <p class="comment-text"><%= comment.body %></p>
-        </div>
-      </div>
+      <% end %>
     <% end %>
   </div>
-  <%= form_with(url: todo_list_todo_item_comments_path(todo_list, item), method: :post, class: "comment-input-row") do |f| %>
-    <div class="comment-avatar comment-avatar--self" style="background: var(--list-color-<%= todo_list.color %>);">
+
+  <div class="comment-input-bar">
+    <div class="comment-avatar" style="background: #8B5CF6;">
       <%= Current.user.initials %>
     </div>
-    <%= f.text_field :body, placeholder: "Write a comment...", class: "comment-input-field", name: "comment[body]" %>
-    <%= f.submit "Send", class: "comment-send-btn" %>
-  <% end %>
+    <%= form_with(url: todo_list_todo_item_comments_path(todo_list, item), method: :post, class: "comment-form", data: { turbo: false }) do |f| %>
+      <%= f.text_field :body, placeholder: "Write a comment...", class: "comment-input", name: "comment[body]" %>
+      <button type="submit" class="comment-send-btn">
+        <wa-icon name="paper-plane"></wa-icon>
+        Send
+      </button>
+    <% end %>
+  </div>
 </div>

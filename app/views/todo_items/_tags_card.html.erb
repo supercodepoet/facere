@@ -5,10 +5,26 @@
       <% if tag.color.present? && tag.color.match?(/\A#[0-9a-fA-F]{3,8}\z/) %>
         <span class="tag-pill" style="background: <%= tag.color %>20; color: <%= tag.color %>;">
           <%= tag.name %>
+          <%= button_to todo_list_todo_item_tag_path(todo_list, item, tag), method: :delete, class: "detail-card-icon-btn", style: "margin-left: 4px;", data: { turbo_frame: "item_tags_#{item.id}" } do %>
+            <wa-icon name="xmark" style="font-size: 10px;"></wa-icon>
+          <% end %>
         </span>
       <% else %>
-        <span class="tag-pill"><%= tag.name %></span>
+        <span class="tag-pill" style="background: #F4F4F5; color: #71717A;">
+          <%= tag.name %>
+        </span>
       <% end %>
     <% end %>
   </div>
+  <%= form_with(url: todo_list_todo_item_tags_path(todo_list, item), method: :post, class: "tag-add-form", data: { turbo_frame: "item_tags_#{item.id}" }) do |f| %>
+    <div class="tag-add-link" onclick="this.nextElementSibling.style.display='flex'; this.style.display='none';">
+      <wa-icon name="plus" style="color: #8B5CF6;"></wa-icon>
+      Add tag
+    </div>
+    <div class="tag-add-input-row" style="display: none;">
+      <%= f.text_field :name, placeholder: "Tag name...", class: "checklist-add-input", name: "tag[name]", style: "flex: 1;" %>
+      <%= f.color_field :color, name: "tag[color]", value: "#8B5CF6", class: "tag-color-input" %>
+      <%= f.submit "Add", class: "checklist-add-submit" %>
+    </div>
+  <% end %>
 </div>

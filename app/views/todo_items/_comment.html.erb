@@ -1,0 +1,33 @@
+<turbo-frame id="comment_<%= comment.id %>">
+  <div class="comment-item">
+    <div class="comment-avatar" style="background: <%= comment.parent_id.present? ? '#14B8A6' : '#F472B6' %>;">
+      <%= comment.user.initials %>
+    </div>
+    <div class="comment-body">
+      <div class="comment-meta">
+        <span class="comment-author"><%= comment.user.name %></span>
+        <span class="comment-time"><%= time_ago_in_words(comment.created_at) %> ago</span>
+        <% if comment.edited? %>
+          <span class="comment-edited">(edited)</span>
+        <% end %>
+      </div>
+      <p class="comment-text"><%= comment.body %></p>
+      <div class="comment-actions">
+        <% current_user_like = comment.comment_likes.loaded? ? comment.comment_likes.find { |l| l.user_id == Current.user.id } : comment.comment_likes.find_by(user: Current.user) %>
+        <% liked = current_user_like.present? %>
+        <%= button_to liked ? todo_list_todo_item_comment_like_path(todo_list, item, comment, current_user_like) : todo_list_todo_item_comment_likes_path(todo_list, item, comment),
+              method: liked ? :delete : :post,
+              class: "comment-like-btn #{'comment-like-btn--liked' if liked}",
+              data: { turbo: false } do %>
+          <wa-icon name="heart" variant="<%= liked ? 'solid' : 'thin' %>"></wa-icon>
+          <span><%= comment.likes_count %></span>
+        <% end %>
+        <% if comment.user == Current.user %>
+          <%= button_to todo_list_todo_item_comment_path(todo_list, item, comment), method: :delete, class: "comment-reply-btn", style: "color: #EF4444;", data: { turbo_confirm: "Delete this comment?" } do %>
+            Delete
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</turbo-frame>

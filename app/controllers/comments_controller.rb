@@ -13,8 +13,22 @@ class CommentsController < ApplicationController
     end
   end
 
+  def update
+    @comment = @todo_item.comments.find(params[:id])
+    return head(:not_found) unless @comment.user == Current.user
+
+    @comment.edited_at = Time.current
+    if @comment.update(comment_params)
+      redirect_to todo_list_todo_item_path(@todo_list, @todo_item)
+    else
+      redirect_to todo_list_todo_item_path(@todo_list, @todo_item), alert: @comment.errors.full_messages.first
+    end
+  end
+
   def destroy
     @comment = @todo_item.comments.find(params[:id])
+    return head(:not_found) unless @comment.user == Current.user
+
     @comment.destroy!
     redirect_to todo_list_todo_item_path(@todo_list, @todo_item)
   end
@@ -30,6 +44,6 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:body)
+    params.require(:comment).permit(:body, :parent_id)
   end
 end

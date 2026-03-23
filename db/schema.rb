@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_22_040408) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_23_012459) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -59,12 +59,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_22_040408) do
     t.index ["todo_item_id"], name: "index_checklist_items_on_todo_item_id"
   end
 
+  create_table "comment_likes", force: :cascade do |t|
+    t.integer "comment_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["comment_id", "user_id"], name: "index_comment_likes_on_comment_id_and_user_id", unique: true
+    t.index ["comment_id"], name: "index_comment_likes_on_comment_id"
+    t.index ["user_id"], name: "index_comment_likes_on_user_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.datetime "created_at", null: false
+    t.datetime "edited_at"
+    t.integer "likes_count", default: 0
+    t.integer "parent_id"
     t.integer "todo_item_id", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
+    t.index ["parent_id"], name: "index_comments_on_parent_id"
     t.index ["todo_item_id"], name: "index_comments_on_todo_item_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
@@ -76,6 +90,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_22_040408) do
     t.datetime "updated_at", null: false
     t.index ["tag_id"], name: "index_item_tags_on_tag_id"
     t.index ["todo_item_id", "tag_id"], name: "index_item_tags_on_todo_item_id_and_tag_id", unique: true
+  end
+
+  create_table "notify_people", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "todo_item_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["todo_item_id", "user_id"], name: "index_notify_people_on_todo_item_id_and_user_id", unique: true
+    t.index ["todo_item_id"], name: "index_notify_people_on_todo_item_id"
+    t.index ["user_id"], name: "index_notify_people_on_user_id"
   end
 
   create_table "oauth_identities", force: :cascade do |t|
@@ -124,7 +148,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_22_040408) do
     t.date "due_date"
     t.string "name", null: false
     t.integer "position", default: 0, null: false
-    t.string "priority", default: "none", null: false
+    t.string "priority", default: "medium", null: false
     t.string "status", default: "todo", null: false
     t.integer "todo_list_id", null: false
     t.integer "todo_section_id"
@@ -184,10 +208,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_22_040408) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "checklist_items", "todo_items"
+  add_foreign_key "comment_likes", "comments"
+  add_foreign_key "comment_likes", "users"
   add_foreign_key "comments", "todo_items"
   add_foreign_key "comments", "users"
   add_foreign_key "item_tags", "tags"
   add_foreign_key "item_tags", "todo_items"
+  add_foreign_key "notify_people", "todo_items"
+  add_foreign_key "notify_people", "users"
   add_foreign_key "oauth_identities", "users"
   add_foreign_key "recovery_codes", "users"
   add_foreign_key "sessions", "users"
