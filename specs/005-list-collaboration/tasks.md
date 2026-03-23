@@ -337,3 +337,42 @@ Stream C (P2 — Communication):
 - The existing comment system requires minimal changes — authorization is the main addition
 - The `assigned_to_user_id` → `item_assignees` migration requires data migration — test with existing data
 - ActionCable connection auth is already implemented — no new infrastructure needed for WebSocket broadcasting
+
+## Completion Summary
+
+**Status**: All tasks complete | **Date**: 2026-03-23
+
+### Test Coverage Added (not in original task list)
+
+99 new tests across 8 test files:
+
+| File | Tests | Coverage |
+|------|-------|---------|
+| `test/models/list_collaborator_test.rb` | 8 | Validations, associations, owner guard |
+| `test/models/list_invitation_test.rb` | 22 | Token generation, accept!, scopes, expiry, validations |
+| `test/models/item_assignee_test.rb` | 4 | Associations, uniqueness |
+| `test/models/todo_list_collaboration_test.rb` | 10 | role_for, all_members, limit, cascade delete |
+| `test/controllers/list_invitations_controller_test.rb` | 14 | Create, accept, destroy, resend, limit, auth |
+| `test/controllers/list_collaborators_controller_test.rb` | 11 | CRUD, role changes, leave, comment preservation |
+| `test/controllers/item_assignees_controller_test.rb` | 7 | Create/destroy, role auth, member validation |
+| `test/controllers/collaboration_authorization_test.rb` | 24 | Cross-cutting editor/viewer/outsider access |
+
+**Full suite**: 400 unit/integration + 23 system = 423 tests, 0 failures
+
+### Issues Found During Implementation
+
+1. `wa-input` shadow DOM doesn't submit form values → replaced with plain `<input>`
+2. `deliver_later` needs `:async` adapter in dev → added to `development.rb`
+3. `broadcast_replace_to` fails when partials use controller helpers → switched to `broadcast_refresh_to`
+4. Duplicate Stimulus controller on panel → removed from partial, kept on parent
+5. Brakeman flags `:role` as mass assignment → extract and validate manually
+6. `after_registration_url` was dead code → simplified redirect logic
+7. `invitation_params` didn't default role → defaults to "editor" when omitted
+
+### Deviations from Original Plan
+
+- **No custom ActionCable channel**: Plan originally listed `todo_list_channel.rb`. Research decided `Turbo::StreamsChannel` with signed stream names is sufficient. No custom channel was created.
+- **No `todo_list_channel_controller.js`**: `turbo_stream_from` handles ActionCable subscriptions automatically — no Stimulus controller needed.
+- **`broadcast_refresh_to` instead of `broadcast_replace_to`**: Plan assumed partial-based broadcasting. Implementation discovered controller helpers aren't available in broadcast context. `broadcast_refresh_to` (Turbo 8 morph refresh) was used instead.
+- **`deliver_now` → `deliver_later`**: Initially switched to `deliver_now` for debugging, then reverted to `deliver_later` with async adapter per Copilot review.
+- **Test files added**: Original task generation excluded tests. 99 tests were added in a follow-up pass covering models, controllers, and cross-cutting authorization.

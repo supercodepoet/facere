@@ -2,7 +2,7 @@
 
 **Feature Branch**: `005-list-collaboration`
 **Created**: 2026-03-23
-**Status**: Implementation Complete
+**Status**: Implementation Complete (with learnings encoded)
 **Input**: User description: "Add collaboration support for TODO Lists — invite collaborators, assign items, manage permissions, comment, and notify on completion."
 
 ## Design Decision: List-Level Invitations (Not Workspaces)
@@ -227,3 +227,30 @@ Collaborators see shared lists in their sidebar and on the "My Lists" overview p
 - **Real-time updates via WebSocket broadcasting**: Changes made by any collaborator (item creates, updates, completions, comments, etc.) are broadcast in real-time to all other collaborators currently viewing the same list or item. This requires WebSocket infrastructure (e.g., ActionCable) beyond the existing single-session Turbo Streams.
 - **Email-only notifications**: All notifications (completion alerts, invitation emails) are delivered via email. There is no in-app notification UI for this feature. A full in-app notification subsystem (bell icon, notification inbox, read/unread tracking) is planned as a separate future feature.
 - **No per-field permissions**: Editor role grants access to all editable fields on an item (status, priority, tags, due date, notes, checklist, assignments, notify list). There is no granular per-field permission model. This was an explicit design decision — the simplicity of two roles (editor/viewer) covers the vast majority of collaboration needs without the complexity of field-level access control.
+
+## Implementation Learnings
+
+Captured during implementation and code review of feature 005:
+
+- **`wa-input` does not submit in forms**: Shadow DOM prevents `wa-input` name/value from reaching `FormData`. Use plain `<input>` elements for form fields that must submit data. This was discovered when invitation emails were not sending — the email param was nil.
+- **`deliver_later` requires async adapter in development**: Without `config.active_job.queue_adapter = :async` in `development.rb`, Solid Queue jobs are enqueued but never processed (no worker running). The `:async` adapter processes jobs in a thread pool within the same process.
+- **`broadcast_refresh_to` over `broadcast_replace_to`**: Partials that reference controller helper methods (`list_editor?`, `list_owner?`) cannot render inside model broadcast callbacks (no controller context). `broadcast_refresh_to` triggers Turbo 8 morph-based page refresh, avoiding the partial rendering issue entirely.
+- **Brakeman flags `:role` in `permit()`**: Even though `role` is validated at the model level, Brakeman treats it as a mass assignment risk. Fix by extracting the param and validating against an allowlist before merging into permitted params.
+- **Invitation resend vs. duplicate error**: The unique partial index `(todo_list_id, email) WHERE status='pending'` prevents duplicate pending invitations. Instead of surfacing a DB uniqueness error, check for existing active invitations first and resend the email.
+- **Invitation token invalidation**: `generates_token_for :acceptance` keyed on `status` means the token auto-invalidates when the invitation is accepted, cancelled, or expired. No manual token revocation needed.
+- **Integration tests use `assert_response :not_found`**: Rails rescues `ActiveRecord::RecordNotFound` in integration tests and returns 404. Do NOT use `assert_raises` — it won't catch the rescued exception.
+- **`assigned_to_user_id` → `item_assignees` migration**: The reversible migration copies existing single-assignment data to the join table before dropping the column. All views and controllers referencing `assigned_to` must be updated simultaneously.
+- **Stimulus controller scope**: `data-controller` must be on an ancestor of all targets. When the collaboration panel partial declared its own `data-controller="collaboration"`, it created a second instance that shadowed the parent — the toggle button on the header couldn't find the panel target.
+
+## Future Features (Out of Scope)
+
+Features identified during implementation that should be built in future iterations:
+
+1. **In-app notification system** — Bell icon, notification inbox, read/unread tracking. Currently all notifications are email-only. This is the most requested follow-up feature. Should cover: invitation received, item completed, comment mention, role changed, removed from list.
+2. **Ownership transfer** — Allow a list owner to transfer ownership to another collaborator. Currently the owner is permanent and cannot be changed.
+3. **Notification preferences** — Allow users to opt out of specific email notification types (e.g., completion emails) or set digest frequency (immediate vs. daily summary).
+4. **Real-time presence indicators** — Show which collaborators are currently viewing the same list or item (avatar dots, "X is viewing" label).
+5. **Workspace/organization layer** — If collaboration usage grows beyond individual list sharing, a workspace model could group lists and provide org-level roles. The current list-level invitation model was chosen for simplicity and can evolve into workspaces later.
+6. **Comment mentions (@user)** — Allow mentioning collaborators in comments with `@name` syntax, triggering an email notification to the mentioned user.
+7. **Activity feed / audit log** — Track who did what on a shared list (created items, changed status, added comments) with timestamps. Useful for accountability in team settings.
+8. **Bulk invitation** — Allow inviting multiple email addresses at once (comma-separated or pasted list) instead of one at a time.
