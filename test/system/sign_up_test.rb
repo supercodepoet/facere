@@ -30,9 +30,9 @@ class SignUpTest < ApplicationSystemTestCase
   test "sign up page shows password fields" do
     visit sign_up_path
 
-    assert_css "wa-input[label='Password']"
-    assert_css "wa-input[label='Confirm Password']"
-    assert_css "wa-input[minlength='8']"
+    assert_css "input[name='user[password]']"
+    assert_css "input[name='user[password_confirmation]']"
+    assert_css "input[minlength='8']"
   end
 
   test "sign up page switches to sign in via turbo frame" do

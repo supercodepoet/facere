@@ -2,7 +2,7 @@
   <%# List Name %>
   <div class="form-field<%= ' form-field-error' if todo_list.errors[:name].any? %>">
     <label class="form-label" for="todo_list_name">List Name</label>
-    <wa-input id="todo_list_name" name="todo_list[name]" value="<%= todo_list.name %>" placeholder="e.g., Weekend Project, Grocery Run..." size="medium" pill></wa-input>
+    <input type="text" id="todo_list_name" name="todo_list[name]" class="form-name-input" placeholder="e.g., Weekend Project, Grocery Run..." value="<%= todo_list.name %>" />
     <% if todo_list.errors[:name].any? %>
       <div class="form-error-text">
         <i class="fa-light fa-circle-exclamation"></i>

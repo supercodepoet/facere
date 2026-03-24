@@ -11,11 +11,10 @@ class TodoListsTest < ApplicationSystemTestCase
       email_verified_at: Time.current
     )
 
-    # Sign in — wa-input web components require JS to set values
     visit sign_in_path
-    set_wa_input("email_address", "system@example.com")
-    set_wa_input("password", "Password1!")
-    page.execute_script("document.querySelector('form').requestSubmit()")
+    fill_in "email_address", with: "system@example.com"
+    fill_in "password", with: "Password1!"
+    find("button.auth-primary-btn").click
     assert_no_text "Welcome back!", wait: 10
   end
 
@@ -28,8 +27,8 @@ class TodoListsTest < ApplicationSystemTestCase
     click_link "Create My First List"
     assert_text "Create a new list"
 
-    set_wa_input_by_id("todo_list_name", "My First List")
-    click_wa_button("Create List")
+    fill_in "todo_list[name]", with: "My First List"
+    find("button[type='submit']", text: "Create List").click
 
     assert_text "List created successfully", wait: 5
     assert_text "My First List"
@@ -40,12 +39,11 @@ class TodoListsTest < ApplicationSystemTestCase
     click_link "Create My First List"
     assert_text "Create a new list"
 
-    set_wa_input_by_id("todo_list_name", "Project Plan")
-    # Set the template hidden input directly since wa-button + Stimulus may not wire up
+    fill_in "todo_list[name]", with: "Project Plan"
     page.execute_script <<~JS
       document.querySelector('input[name="todo_list[template]"]').value = 'project';
     JS
-    click_wa_button("Create List")
+    find("button[type='submit']", text: "Create List").click
 
     assert_text "List created successfully", wait: 5
     assert_text "Planning"
@@ -67,8 +65,8 @@ class TodoListsTest < ApplicationSystemTestCase
     visit edit_todo_list_path(list)
 
     assert_text "Edit list"
-    set_wa_input_by_id("todo_list_name", "New Name")
-    click_wa_button("Save Changes")
+    fill_in "todo_list[name]", with: "New Name"
+    find("button[type='submit']", text: "Save Changes").click
 
     assert_text "List updated successfully", wait: 5
     assert_text "New Name"
@@ -78,11 +76,9 @@ class TodoListsTest < ApplicationSystemTestCase
     list = @user.todo_lists.create!(name: "To Delete", color: "pink", template: "blank")
     visit todo_list_path(list)
 
-    # Click the trash icon button to open the delete dialog
     find("button.show-action-btn-danger", wait: 5).click
 
-    # Confirm deletion inside the wa-dialog
-    within "wa-dialog" do
+    within ".delete-modal-overlay" do
       find("button.delete-confirm-btn", wait: 5).click
     end
 
@@ -94,50 +90,9 @@ class TodoListsTest < ApplicationSystemTestCase
     @user.todo_lists.create!(name: "Existing", color: "purple", template: "blank")
     visit new_todo_list_path
 
-    set_wa_input_by_id("todo_list_name", "Existing")
-    click_wa_button("Create List")
+    fill_in "todo_list[name]", with: "Existing"
+    find("button[type='submit']", text: "Create List").click
 
     assert_text "has already been taken", wait: 5
-  end
-
-  private
-
-  # Set a wa-input value by its name attribute and dispatch events
-  def set_wa_input(name, value)
-    find("wa-input[name='#{name}']", wait: 5)
-    page.execute_script <<~JS
-      const input = document.querySelector('wa-input[name="#{name}"]');
-      input.value = '#{value}';
-      input.dispatchEvent(new Event('wa-input', { bubbles: true }));
-      input.dispatchEvent(new Event('wa-change', { bubbles: true }));
-      input.dispatchEvent(new Event('input', { bubbles: true }));
-      input.dispatchEvent(new Event('change', { bubbles: true }));
-    JS
-  end
-
-  # Set a wa-input value by its id attribute and dispatch events
-  def set_wa_input_by_id(id, value)
-    find("##{id}", wait: 5)
-    page.execute_script <<~JS
-      const input = document.querySelector('##{id}');
-      input.value = '#{value}';
-      input.dispatchEvent(new Event('wa-input', { bubbles: true }));
-      input.dispatchEvent(new Event('wa-change', { bubbles: true }));
-      input.dispatchEvent(new Event('input', { bubbles: true }));
-      input.dispatchEvent(new Event('change', { bubbles: true }));
-    JS
-  end
-
-  # Click a wa-button by its text content
-  def click_wa_button(text)
-    page.execute_script <<~JS
-      const buttons = document.querySelectorAll('wa-button');
-      for (const btn of buttons) {
-        if (btn.textContent.trim().includes('#{text}')) {
-          btn.click();
-          break;
-        }
-      }
-    JS
   end
 end

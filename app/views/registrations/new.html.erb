@@ -11,44 +11,26 @@
   <%= form_with model: @user, url: sign_up_path, data: { action: "submit->form-validation#validateForm", turbo_frame: "_top" } do |f| %>
     <div class="auth-fields">
       <div class="auth-field">
-        <wa-input
-          label="Name"
-          name="user[name]"
-          value="<%= @user.name %>"
-          required
-          data-form-validation-target="name"
-          data-action="wa-input->form-validation#clearError"
-        >
+        <label class="auth-field-label">Name</label>
+        <div class="auth-input-wrap">
           <i class="fa-light fa-user" style="color: var(--color-zinc-400);"></i>
-        </wa-input>
+          <input type="text" name="user[name]" value="<%= @user.name %>" required data-form-validation-target="name" data-action="input->form-validation#clearError" class="auth-input" />
+        </div>
       </div>
 
       <div class="auth-field">
-        <wa-input
-          label="Email address"
-          name="user[email_address]"
-          type="email"
-          value="<%= @user.email_address %>"
-          required
-          data-form-validation-target="email"
-          data-action="wa-input->form-validation#validateEmail"
-        >
+        <label class="auth-field-label">Email address</label>
+        <div class="auth-input-wrap">
           <i class="fa-light fa-envelope" style="color: var(--color-zinc-400);"></i>
-        </wa-input>
+          <input type="email" name="user[email_address]" value="<%= @user.email_address %>" required data-form-validation-target="email" data-action="input->form-validation#validateEmail" class="auth-input" />
+        </div>
       </div>
 
       <div class="auth-field" data-controller="password-visibility">
-        <wa-input
-          label="Password"
-          name="user[password]"
-          type="password"
-          required
-          minlength="8"
-          data-form-validation-target="password"
-          data-password-visibility-target="input"
-          data-action="wa-input->form-validation#validatePassword"
-        >
+        <label class="auth-field-label">Password</label>
+        <div class="auth-input-wrap">
           <i class="fa-light fa-lock" style="color: var(--color-zinc-400);"></i>
+          <input type="password" name="user[password]" required minlength="8" data-form-validation-target="password" data-password-visibility-target="input" data-action="input->form-validation#validatePassword" class="auth-input" />
           <i
             class="fa-light fa-eye-slash"
             data-action="click->password-visibility#toggle"
@@ -58,20 +40,14 @@
             tabindex="0"
             aria-label="Toggle password visibility"
           ></i>
-        </wa-input>
+        </div>
       </div>
 
       <div class="auth-field" data-controller="password-visibility">
-        <wa-input
-          label="Confirm Password"
-          name="user[password_confirmation]"
-          type="password"
-          required
-          data-form-validation-target="passwordConfirmation"
-          data-password-visibility-target="input"
-          data-action="wa-input->form-validation#validatePasswordConfirmation"
-        >
+        <label class="auth-field-label">Confirm Password</label>
+        <div class="auth-input-wrap">
           <i class="fa-light fa-lock" style="color: var(--color-zinc-400);"></i>
+          <input type="password" name="user[password_confirmation]" required data-form-validation-target="passwordConfirmation" data-password-visibility-target="input" data-action="input->form-validation#validatePasswordConfirmation" class="auth-input" />
           <i
             class="fa-light fa-eye-slash"
             data-action="click->password-visibility#toggle"
@@ -81,29 +57,25 @@
             tabindex="0"
             aria-label="Toggle password visibility"
           ></i>
-        </wa-input>
+        </div>
       </div>
 
     </div>
 
     <div class="auth-checkbox-row">
-      <wa-checkbox
-        name="user[terms_accepted]"
-        value="1"
-        required
-        data-form-validation-target="terms"
-      >
+      <label class="auth-checkbox-label">
+        <input type="checkbox" name="user[terms_accepted]" value="1" required data-form-validation-target="terms" class="auth-checkbox" />
         I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
-      </wa-checkbox>
+      </label>
     </div>
 
     <% if @user.errors.any? %>
-      <wa-callout variant="danger" open>
+      <div class="auth-callout auth-callout--danger">
         <i class="fa-light fa-circle-exclamation"></i>
         <% @user.errors.full_messages.each do |msg| %>
           <div><%= msg %></div>
         <% end %>
-      </wa-callout>
+      </div>
     <% end %>
 
     <button

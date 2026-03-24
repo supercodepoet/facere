@@ -772,20 +772,27 @@
 }
 
 /* Name input — pill attribute handles rounded corners */
-.form-fields wa-input {
+.form-name-input {
   width: 100%;
-  --wa-input-border-color: transparent;
-  --wa-input-background-color: var(--color-zinc-100);
-  --wa-input-font-family: var(--font-body);
-  --wa-input-font-size-medium: 15px;
-  --wa-input-height-medium: 48px;
-  --wa-input-spacing-medium: 18px;
-  --wa-input-placeholder-color: var(--color-zinc-400);
+  border: 1.5px solid transparent;
+  background: var(--color-zinc-100);
+  font-family: var(--font-body);
+  font-size: 15px;
+  height: 48px;
+  padding: 0 18px;
+  border-radius: 24px;
+  color: var(--color-zinc-900);
+  outline: none;
 }
 
-.form-fields wa-input::part(base):focus-within {
+.form-name-input::placeholder {
+  color: var(--color-zinc-400);
+}
+
+.form-name-input:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px var(--color-primary-soft);
+  background: var(--color-white);
 }
 
 /* Error state */
@@ -793,13 +800,13 @@
   color: var(--color-danger);
 }
 
-.form-field-error wa-input::part(base) {
+.form-field-error .form-name-input {
   border-color: var(--color-danger);
   border-width: 2px;
   background: #fef2f2;
 }
 
-.form-field-error wa-input::part(base):focus-within {
+.form-field-error .form-name-input:focus {
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
 }
 
@@ -1123,10 +1130,21 @@ wa-button.form-error-banner-close::part(base):hover {
   padding: 0 16px 16px;
 }
 
-.sidebar-search wa-input::part(base) {
+.sidebar-search-input {
+  width: 100%;
   border-radius: 10px;
   font-size: 13px;
-  border-color: var(--color-zinc-200);
+  font-family: var(--font-body);
+  border: 1px solid var(--color-zinc-200);
+  background: var(--color-white);
+  padding: 8px 12px;
+  outline: none;
+  color: var(--color-zinc-900);
+}
+
+.sidebar-search-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-focus);
 }
 
 .sidebar-heading {

@@ -5,19 +5,10 @@
   <%= form_with url: password_path(params[:token]), method: :patch do |f| %>
     <div class="auth-fields">
       <div class="auth-field" data-controller="password-visibility">
-        <wa-input
-          label="New Password"
-          name="password"
-          type="password"
-          required
-          minlength="8"
-          autocomplete="new-password"
-          maxlength="72"
-          data-form-validation-target="password"
-          data-password-visibility-target="input"
-          data-action="wa-input->form-validation#validatePassword"
-        >
+        <label class="auth-field-label">New Password</label>
+        <div class="auth-input-wrap">
           <i class="fa-light fa-lock" style="color: var(--color-zinc-400);"></i>
+          <input type="password" name="password" required minlength="8" autocomplete="new-password" maxlength="72" data-form-validation-target="password" data-password-visibility-target="input" data-action="input->form-validation#validatePassword" class="auth-input" />
           <i
             class="fa-light fa-eye-slash"
             data-action="click->password-visibility#toggle"
@@ -27,7 +18,7 @@
             tabindex="0"
             aria-label="Toggle password visibility"
           ></i>
-        </wa-input>
+        </div>
         <div class="password-requirements" data-form-validation-target="requirements">
           <small data-req="length">At least 8 characters</small>
           <small data-req="uppercase">One uppercase letter</small>
@@ -38,18 +29,10 @@
       </div>
 
       <div class="auth-field" data-controller="password-visibility">
-        <wa-input
-          label="Confirm Password"
-          name="password_confirmation"
-          type="password"
-          required
-          autocomplete="new-password"
-          maxlength="72"
-          data-form-validation-target="passwordConfirmation"
-          data-password-visibility-target="input"
-          data-action="wa-input->form-validation#validatePasswordConfirmation"
-        >
+        <label class="auth-field-label">Confirm Password</label>
+        <div class="auth-input-wrap">
           <i class="fa-light fa-lock" style="color: var(--color-zinc-400);"></i>
+          <input type="password" name="password_confirmation" required autocomplete="new-password" maxlength="72" data-form-validation-target="passwordConfirmation" data-password-visibility-target="input" data-action="input->form-validation#validatePasswordConfirmation" class="auth-input" />
           <i
             class="fa-light fa-eye-slash"
             data-action="click->password-visibility#toggle"
@@ -59,7 +42,7 @@
             tabindex="0"
             aria-label="Toggle password visibility"
           ></i>
-        </wa-input>
+        </div>
       </div>
     </div>
 

@@ -5,20 +5,11 @@
   <%= form_with url: confirm_two_factor_path do |f| %>
     <div class="auth-fields">
       <div class="auth-field">
-        <wa-input
-          label="Verification Code"
-          name="code"
-          inputmode="numeric"
-          pattern="[0-9]*"
-          maxlength="6"
-          required
-          autofocus
-          autocomplete="one-time-code"
-          data-two-factor-target="codeInput"
-          data-action="wa-input->two-factor#checkCode"
-        >
+        <label class="auth-field-label">Verification Code</label>
+        <div class="auth-input-wrap">
           <i class="fa-light fa-shield-halved" style="color: var(--color-zinc-400);"></i>
-        </wa-input>
+          <input type="text" name="code" inputmode="numeric" pattern="[0-9]*" maxlength="6" required autofocus autocomplete="one-time-code" data-two-factor-target="codeInput" data-action="input->two-factor#checkCode" class="auth-input" />
+        </div>
       </div>
     </div>
 

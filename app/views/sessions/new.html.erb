@@ -11,30 +11,18 @@
     <%= form_with url: sign_in_path, data: { turbo: true, turbo_frame: "_top" } do |f| %>
       <div class="auth-fields">
         <div class="auth-field">
-          <wa-input
-            label="Email address"
-            name="email_address"
-            type="email"
-            value="<%= params[:email_address] %>"
-            required
-            autofocus
-            autocomplete="username"
-          >
+          <label class="auth-field-label">Email address</label>
+          <div class="auth-input-wrap">
             <i class="fa-light fa-envelope" style="color: var(--color-zinc-400);"></i>
-          </wa-input>
+            <input type="email" name="email_address" value="<%= params[:email_address] %>" required autofocus autocomplete="username" class="auth-input" />
+          </div>
         </div>
 
         <div class="auth-field" data-controller="password-visibility">
-          <wa-input
-            label="Password"
-            name="password"
-            type="password"
-            required
-            autocomplete="current-password"
-            maxlength="72"
-            data-password-visibility-target="input"
-          >
+          <label class="auth-field-label">Password</label>
+          <div class="auth-input-wrap">
             <i class="fa-light fa-lock" style="color: var(--color-zinc-400);"></i>
+            <input type="password" name="password" required autocomplete="current-password" maxlength="72" data-password-visibility-target="input" class="auth-input" />
             <i
               class="fa-light fa-eye-slash"
               data-action="click->password-visibility#toggle"
@@ -44,7 +32,7 @@
               tabindex="0"
               aria-label="Toggle password visibility"
             ></i>
-          </wa-input>
+          </div>
         </div>
       </div>
 

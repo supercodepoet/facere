@@ -19,9 +19,9 @@ class TodoItemDetailTest < ApplicationSystemTestCase
     )
 
     visit sign_in_path
-    set_wa_input("email_address", "detail_test@example.com")
-    set_wa_input("password", "Password1!")
-    page.execute_script("document.querySelector('form').requestSubmit()")
+    fill_in "email_address", with: "detail_test@example.com"
+    fill_in "password", with: "Password1!"
+    find("button.auth-primary-btn").click
     assert_no_text "Welcome back!", wait: 10
   end
 
@@ -52,19 +52,5 @@ class TodoItemDetailTest < ApplicationSystemTestCase
     assert_text "Medium"
     assert_text "Low"
     assert_text "None"
-  end
-
-  private
-
-  def set_wa_input(name, value)
-    find("wa-input[name='#{name}']", wait: 5)
-    page.execute_script <<~JS
-      const input = document.querySelector('wa-input[name="#{name}"]');
-      input.value = '#{value}';
-      input.dispatchEvent(new Event('wa-input', { bubbles: true }));
-      input.dispatchEvent(new Event('wa-change', { bubbles: true }));
-      input.dispatchEvent(new Event('input', { bubbles: true }));
-      input.dispatchEvent(new Event('change', { bubbles: true }));
-    JS
   end
 end

@@ -10,9 +10,10 @@
   <%= form_with url: auth_terms_path do |f| %>
     <div class="auth-fields">
       <div class="auth-checkbox-row">
-        <wa-checkbox name="terms_accepted" value="1" required>
+        <label class="auth-checkbox-label">
+          <input type="checkbox" name="terms_accepted" value="1" required class="auth-checkbox" />
           I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
-        </wa-checkbox>
+        </label>
       </div>
     </div>
 
