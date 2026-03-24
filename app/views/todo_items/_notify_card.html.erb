@@ -1,10 +1,7 @@
-<div class="detail-card">
+<div class="detail-card" id="item_notify_<%= item.id %>">
   <div class="detail-card-header">
     <span class="detail-card-label">Notify on Complete</span>
     <span class="detail-card-spacer"></span>
-    <%= button_to todo_list_todo_item_notify_people_path(todo_list, item), params: { notify_person: { user_id: Current.user.id } }, class: "detail-card-icon-btn" do %>
-      <wa-icon name="bell-plus" style="color: #8B5CF6;"></wa-icon>
-    <% end %>
   </div>
   <% if item.notify_people.any? %>
     <div class="notify-list">
@@ -14,13 +11,35 @@
             <%= np.user.initials %>
           </div>
           <span class="assignee-name"><%= np.user.name %></span>
-          <%= button_to todo_list_todo_item_notify_person_path(todo_list, item, np), method: :delete, class: "detail-card-icon-btn" do %>
-            <wa-icon name="xmark" style="color: #A1A1AA;"></wa-icon>
+          <% if list_editor? %>
+            <%= button_to todo_list_todo_item_notify_person_path(todo_list, item, np), method: :delete, class: "detail-card-icon-btn" do %>
+              <wa-icon name="xmark" style="color: #A1A1AA;"></wa-icon>
+            <% end %>
           <% end %>
         </div>
       <% end %>
     </div>
   <% else %>
     <span class="detail-card-empty">No notifications set</span>
+  <% end %>
+  <% if list_editor? %>
+    <% notified_ids = item.notify_people.map(&:user_id) %>
+    <% available_members = todo_list.all_members.where.not(id: notified_ids) %>
+    <% if available_members.any? %>
+      <div class="assignee-add">
+        <% available_members.each do |member| %>
+          <%= form_with url: todo_list_todo_item_notify_people_path(todo_list, item), method: :post, class: "assignee-add-form" do %>
+            <input type="hidden" name="user_id" value="<%= member.id %>">
+            <button type="submit" class="assignee-add-btn">
+              <div class="assignee-avatar assignee-avatar-sm" style="background: #D1D5DB;">
+                <%= member.initials %>
+              </div>
+              <span><%= member.name %></span>
+              <wa-icon name="bell-plus" variant="thin" style="color: #8B5CF6; margin-left: auto;"></wa-icon>
+            </button>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 </div>

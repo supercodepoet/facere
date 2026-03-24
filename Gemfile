@@ -52,7 +52,7 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 
 # Modern rich text editor (Trix successor) for ActionText
-gem "lexxy", "~> 0.1.26.beta"
+gem "lexxy", "0.9.0.beta"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

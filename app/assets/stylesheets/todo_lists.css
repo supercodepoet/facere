@@ -2341,17 +2341,50 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
 }
 
 .file-card-icon {
-  font-size: 20px;
-  color: var(--text-tertiary, #A1A1AA);
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.file-card-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
 }
 
 .file-card-name {
   font-family: 'Inter', sans-serif;
   font-size: 13px;
+  font-weight: 500;
   color: var(--text-primary, #18181B);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-decoration: none;
+}
+
+.file-card-name:hover {
+  color: #8B5CF6;
+}
+
+.file-card-delete {
+  background: none;
+  border: none;
+  color: #D1D5DB;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.file-card-delete:hover {
+  color: #EF4444;
+  background: #FEE2E2;
 }
 
 /* ===== Detail Cards (Right Column) ===== */
@@ -2997,13 +3030,13 @@ trix-toolbar {
 }
 
 .notes-save-btn {
-  padding: 8px 20px;
+  padding: 10px 20px;
   border: none;
-  border-radius: 8px;
-  background: var(--accent-purple, #8B5CF6);
-  color: white;
+  border-radius: 14px;
+  background: #8B5CF6;
+  color: #FFFFFF;
   font-family: 'Inter', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s ease;
@@ -3013,14 +3046,20 @@ trix-toolbar {
   background: #7C3AED;
 }
 
+.notes-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 0;
+}
+
 .notes-cancel-btn {
-  padding: 8px 20px;
-  border: 1px solid var(--border-standard, #E4E4E7);
-  border-radius: 8px;
-  background: white;
-  color: var(--text-secondary, #71717A);
+  padding: 10px 16px;
+  border: none;
+  border-radius: 14px;
+  background: none;
+  color: #71717A;
   font-family: 'Inter', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: background 0.15s ease;
@@ -3231,12 +3270,6 @@ trix-toolbar {
   min-height: 100px;
 }
 
-.notes-editor-card lexxy-editor {
-  --lexxy-border: none;
-  --lexxy-border-radius: 0;
-  --lexxy-padding: 0;
-  background: transparent;
-}
 
 /* Completed action button state */
 .detail-action-btn--completed {
@@ -3716,12 +3749,6 @@ trix-toolbar {
   padding: 20px;
 }
 
-.notes-content-card .lexxy-content {
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #18181B;
-}
 
 .notes-placeholder {
   font-family: 'Inter', sans-serif;
@@ -3736,84 +3763,32 @@ trix-toolbar {
   overflow: hidden;
 }
 
-/* ===== Lexxy Editor Theme — matches TODO Item Detail design ===== */
-.notes-editor-wrap lexxy-editor {
-  --lexxy-color-accent-dark: #8B5CF6;
-  --lexxy-color-accent-medium: #A78BFA;
-  --lexxy-color-accent-light: #EDE9FE;
-  --lexxy-color-accent-lightest: #F5F3FF;
-  --lexxy-color-canvas: #F4F4F5;
-  --lexxy-color-ink: #8B5CF6;
-  --lexxy-color-ink-medium: #8B5CF6;
-  --lexxy-color-ink-lighter: #D4D4D8;
-  --lexxy-color-ink-lightest: #F4F4F5;
-  --lexxy-color-text: #18181B;
-  --lexxy-radius: 0;
-  --lexxy-shadow: none;
-  --lexxy-toolbar-gap: 8px;
-  --lexxy-toolbar-icon-size: 18px;
-  border: none;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  color: #18181B;
-  line-height: 1.5;
+/* ===== Lexxy Editor — Fizzy-style: transparent buttons, zero gap ===== */
+.notes-editor-wrap {
+  display: flex;
+  flex-direction: column;
 }
 
-/* Toolbar: padding [10,16], #F4F4F5 bg, gap 8, border top/left/right #D4D4D8 */
-.notes-editor-wrap lexxy-toolbar {
-  background: #F4F4F5;
-  border: none;
-  border-bottom: 1px solid #D4D4D8;
-  border-radius: 0;
-  padding: 10px 16px;
-  gap: 8px;
-}
 
-/* Toolbar buttons: no padding, no bg — just 18px purple icons with 8px gap */
-.notes-editor-wrap .lexxy-editor__toolbar-button {
-  border-radius: 0;
-  padding: 0;
-  background: none;
-  color: #8B5CF6;
-}
-
-.notes-editor-wrap .lexxy-editor__toolbar-button:hover {
-  background: none;
-  opacity: 0.7;
-}
-
-.notes-editor-wrap .lexxy-editor__toolbar-button[aria-pressed="true"],
-.notes-editor-wrap .lexxy-editor__toolbar-button.active {
-  background: none;
-  color: #7C3AED;
-}
-
-/* Separators: 1px × 20px, #D4D4D8 */
-.notes-editor-wrap .lexxy-editor__toolbar-spacer {
-  width: 1px;
-  height: 20px;
-  background: #D4D4D8;
-  flex: none;
-}
-
-/* Undo/redo: muted #A1A1AA */
-.notes-editor-wrap .lexxy-editor__toolbar-spacer ~ .lexxy-editor__toolbar-button {
-  color: #A1A1AA;
-}
-
-/* Editor content area: padding 20, #F4F4F5 bg */
-.notes-editor-wrap .lexxy-content,
-.notes-editor-wrap [role="textbox"] {
-  padding: 20px;
-  min-height: 100px;
-  background: #F4F4F5;
-}
-
-/* Dropdown menus */
-.notes-editor-wrap .lexxy-editor__toolbar-overflow-menu {
+/* Bottom row with Save/Cancel — inside the editor card */
+.notes-bottom-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  background: #FFFFFF;
   border: 1px solid #D4D4D8;
-  border-radius: 10px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+}
+
+.notes-bottom-spacer {
+  flex: 1;
+}
+
+.notes-bottom-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 /* Notes: legacy cleanup */

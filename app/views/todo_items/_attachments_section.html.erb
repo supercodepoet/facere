@@ -6,21 +6,34 @@
       <span class="attach-count-badge"><%= item.files.size %></span>
     <% end %>
     <div class="detail-section-spacer"></div>
-    <label class="detail-section-add-btn" for="attachment-upload-<%= item.id %>">
-      <wa-icon name="upload" variant="thin"></wa-icon>
-      Upload
-    </label>
+    <% if list_editor? %>
+      <label class="detail-section-add-btn" for="attachment-upload-<%= item.id %>">
+        <wa-icon name="upload" variant="thin"></wa-icon>
+        Upload
+      </label>
+    <% end %>
   </div>
-  <%= form_with(url: todo_list_todo_item_attachments_path(todo_list, item), method: :post, multipart: true, class: "attach-upload-form", id: "attach-form-#{item.id}", data: { turbo: false }) do %>
-    <input type="file" name="files[]" multiple id="attachment-upload-<%= item.id %>" class="attach-file-input" onchange="this.form.requestSubmit()" style="display: none;">
+  <% if list_editor? %>
+    <%= form_with(url: todo_list_todo_item_attachments_path(todo_list, item), method: :post, multipart: true, class: "attach-upload-form", id: "attach-form-#{item.id}", data: { turbo: false }) do %>
+      <input type="file" name="files[]" multiple id="attachment-upload-<%= item.id %>" class="attach-file-input" onchange="this.form.requestSubmit()" style="display: none;">
+    <% end %>
   <% end %>
   <% if item.files.attached? %>
     <div class="attach-grid">
       <% item.files.each do |file| %>
         <div class="file-card">
-          <wa-icon name="<%= item.file_type_icon(file) %>" style="color: <%= item.file_type_color(file) %>; font-size: 28px;"></wa-icon>
-          <span class="file-card-name"><%= file.filename %></span>
-          <span class="file-card-size"><%= number_to_human_size(file.byte_size) %></span>
+          <div class="file-card-icon" style="background: <%= item.file_type_color(file) %>20;">
+            <wa-icon name="<%= item.file_type_icon(file) %>" style="color: <%= item.file_type_color(file) %>; font-size: 28px;"></wa-icon>
+          </div>
+          <div class="file-card-info">
+            <%= link_to file.filename, rails_blob_path(file, disposition: "attachment"), class: "file-card-name" %>
+            <span class="file-card-size"><%= number_to_human_size(file.byte_size) %></span>
+          </div>
+          <% if list_editor? %>
+            <%= button_to todo_list_todo_item_attachment_path(todo_list, item, file), method: :delete, class: "file-card-delete" do %>
+              <wa-icon name="xmark" variant="thin"></wa-icon>
+            <% end %>
+          <% end %>
         </div>
       <% end %>
     </div>

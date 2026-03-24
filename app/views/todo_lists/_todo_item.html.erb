@@ -3,10 +3,10 @@
     <% if list_editor? %>
       <wa-icon name="grip-dots-vertical" variant="thin" class="drag-handle"></wa-icon>
       <%= button_to toggle_todo_list_todo_item_path(todo_list, item), method: :patch, class: "todo-item-checkbox" do %>
-        <div class="todo-item-check-circle"></div>
+        <div class="todo-item-check-circle" style="border-color: <%= item.status_color %>;"></div>
       <% end %>
     <% else %>
-      <div class="todo-item-check-circle todo-item-check-disabled"></div>
+      <div class="todo-item-check-circle todo-item-check-disabled" style="border-color: <%= item.status_color %>;"></div>
     <% end %>
     <%= link_to item.name, todo_list_todo_item_path(todo_list, item), class: "todo-item-title", data: { turbo_frame: "_top" } %>
     <% if item.due_date.present? %>
