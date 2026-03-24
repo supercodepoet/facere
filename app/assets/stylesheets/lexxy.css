@@ -1,0 +1,203 @@
+@import url("lexxy-variables.css");
+@import url("lexxy-content.css");
+@import url("lexxy-editor.css");
+
+:root {
+  --lexxy-color-ink: #18181B;
+  --lexxy-color-ink-medium: #18181B;
+  --lexxy-color-ink-light: #71717A;
+  --lexxy-color-ink-lighter: #D4D4D8;
+  --lexxy-color-ink-lightest: #E4E4E7;
+  --lexxy-color-ink-inverted: #FFFFFF;
+
+  --lexxy-color-canvas: #FFFFFF;
+
+  --lexxy-color-accent-dark: #18181B;
+  --lexxy-color-accent-medium: #71717A;
+  --lexxy-color-accent-light: #D4D4D8;
+  --lexxy-color-accent-lightest: #E4E4E7;
+
+  --lexxy-color-selected: rgba(59, 130, 246, 0.2);
+  --lexxy-color-selected-dark: #3B82F6;
+
+  --lexxy-focus-ring-offset: 2px;
+}
+
+/* Editor */
+
+lexxy-editor {
+  --lexxy-border-color: #D4D4D8;
+  --lexxy-editor-padding: 0;
+  --lexxy-toolbar-button-size: 2rem;
+
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+}
+
+lexxy-toolbar {
+  border-color: var(--lexxy-border-color);
+  gap: 0;
+}
+
+.lexxy-editor__toolbar-button,
+.lexxy-editor__toolbar-dropdown {
+  background: transparent;
+}
+
+.lexxy-editor__toolbar-dropdown:not(.lexxy-editor__toolbar-dropdown--chevron) > .lexxy-editor__toolbar-button {
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.lexxy-editor__toolbar-button[aria-pressed="true"],
+[open] > .lexxy-editor__toolbar-button {
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+@media(any-hover: hover) {
+  .lexxy-editor__toolbar-button:hover:not([aria-pressed="true"]) {
+    background-color: rgba(24, 24, 27, 0.2);
+  }
+}
+
+lexxy-link-dropdown {
+  --lexxy-toolbar-spacing: 1.5ch;
+}
+
+lexxy-link-dropdown .lexxy-editor__toolbar-button {
+  border-radius: 99rem;
+}
+
+@media(any-hover: hover) {
+  lexxy-link-dropdown .lexxy-editor__toolbar-button:hover {
+    filter: brightness(0.9);
+    opacity: 1;
+  }
+}
+
+lexxy-link-dropdown .lexxy-editor__toolbar-button[type="submit"],
+lexxy-link-dropdown .lexxy-editor__toolbar-button[type="submit"]:hover {
+  background-color: #3B82F6;
+}
+
+lexxy-link-dropdown .lexxy-editor__toolbar-button[type="button"] {
+  border: 1px solid #D4D4D8;
+}
+
+.lexxy-editor__content {
+  margin-block-start: 0.5lh;
+}
+
+.lexxy-code-language-picker {
+  border-radius: 99rem;
+}
+
+lexxy-table-tools {
+  font-size: 13px;
+}
+
+[data-lexical-cursor] {
+  animation: blink 1s step-end infinite;
+  block-size: 1lh;
+  border-inline-start: 1px solid currentColor;
+  line-height: inherit;
+  margin-block: 1em;
+}
+
+/* Content */
+
+.lexxy-content {
+  --lexxy-content-margin: 0.5lh;
+
+  color: currentColor;
+}
+
+.lexxy-content h1, .lexxy-content h2, .lexxy-content h3,
+.lexxy-content h4, .lexxy-content h5, .lexxy-content h6 {
+  font-weight: 800;
+  letter-spacing: -0.02ch;
+  line-height: 1.1;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+.lexxy-content ol, .lexxy-content ul {
+  padding-inline-start: 1ch;
+}
+
+.lexxy-content blockquote {
+  border-inline-start: 0.25em solid #D4D4D8;
+  padding-block: 0;
+}
+
+.lexxy-content code {
+  background: #FFFFFF;
+  border: 1px solid #D4D4D8;
+}
+
+.lexxy-content .horizontal-divider {
+  padding-block: var(--lexxy-content-margin);
+}
+
+.lexxy-content .horizontal-divider hr {
+  margin: 0;
+}
+
+.lexxy-content hr {
+  border: 0;
+  border-block-end: 2px solid currentColor;
+  color: currentColor;
+  inline-size: 20%;
+  margin: calc(var(--lexxy-content-margin) * 2) 0;
+}
+
+.lexxy-content table th, .lexxy-content table td {
+  font-size: 13px;
+  padding-block: 0.75ch;
+}
+
+.lexxy-content .attachment {
+  margin-inline: auto;
+}
+
+.attachment {
+  margin-inline: 0;
+}
+
+.attachment-gallery .attachment {
+  display: inline-block;
+  inline-size: calc(33.333% - 0.8ch);
+}
+
+.attachment-gallery.attachment-gallery--2 .attachment,
+.attachment-gallery.attachment-gallery--4 .attachment {
+  inline-size: calc(50% - 0.8ch);
+}
+
+/* Facere notes-specific overrides */
+
+.notes-editor-wrap lexxy-toolbar {
+  background-color: #E4E4E7;
+  border-radius: 12px 12px 0 0;
+}
+
+.notes-editor-wrap .lexxy-content,
+.notes-editor-wrap [role="textbox"] {
+  min-height: 120px;
+  padding: 20px;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+  color: #18181B;
+  background: #FFFFFF;
+  border-left: 1px solid #D4D4D8;
+  border-right: 1px solid #D4D4D8;
+}
+
+.notes-content-card .lexxy-content {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #18181B;
+}

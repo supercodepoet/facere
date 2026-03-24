@@ -3,7 +3,7 @@
     <wa-icon name="file-lines" variant="thin" class="detail-section-icon" style="color: #8B5CF6;"></wa-icon>
     <span class="detail-section-title">Notes</span>
     <div class="detail-section-spacer"></div>
-    <button type="button" class="notes-edit-btn" data-notes-edit-target="editBtn" data-action="click->notes-edit#toggle">
+    <button type="button" class="notes-edit-btn" data-notes-edit-target="editBtn" data-action="click->notes-edit#enterEdit">
       <wa-icon name="pen" variant="thin" style="font-size: 14px;"></wa-icon>
       Edit
     </button>
@@ -20,10 +20,21 @@
     <% end %>
   </div>
 
-  <%# Edit mode: Lexxy editor with auto-save %>
+  <%# Edit mode: Lexxy editor with Save/Cancel %>
   <div class="notes-editor-wrap" data-notes-edit-target="editor" style="display: none;" data-controller="notes-autosave">
     <%= form_with(model: item, url: todo_list_todo_item_path(todo_list, item), method: :patch, data: { notes_autosave_target: "form" }) do |f| %>
       <%= f.rich_text_area :notes, class: "notes-lexxy-editor", data: { action: "lexxy:change->notes-autosave#changed" } %>
     <% end %>
+    <div class="notes-bottom-row">
+      <div class="notes-bottom-spacer"></div>
+      <div class="notes-bottom-actions">
+        <button type="button" class="notes-cancel-btn" data-action="click->notes-edit#cancel">
+          Cancel
+        </button>
+        <button type="button" class="notes-save-btn" data-action="click->notes-edit#save">
+          Save
+        </button>
+      </div>
+    </div>
   </div>
 </div>

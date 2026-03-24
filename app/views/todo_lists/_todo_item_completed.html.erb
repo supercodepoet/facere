@@ -1,11 +1,35 @@
-<%= turbo_frame_tag dom_id(item), class: "todo-item-frame", draggable: "true", data: { item_id: item.id, section_id: item.todo_section_id } do %>
+<%= turbo_frame_tag dom_id(item), class: "todo-item-frame", draggable: list_editor? ? "true" : "false", data: { item_id: item.id, section_id: item.todo_section_id } do %>
   <div class="todo-item todo-item--completed">
-    <wa-icon name="grip-dots-vertical" variant="thin" class="drag-handle"></wa-icon>
-    <%= button_to toggle_todo_list_todo_item_path(todo_list, item), method: :patch, class: "todo-item-checkbox todo-item-checkbox--done" do %>
+    <% if list_editor? %>
+      <wa-icon name="grip-dots-vertical" variant="thin" class="drag-handle"></wa-icon>
+      <%= button_to toggle_todo_list_todo_item_path(todo_list, item), method: :patch, class: "todo-item-checkbox todo-item-checkbox--done" do %>
+        <div class="todo-item-check-done">
+          <wa-icon name="check" variant="solid" class="todo-item-check-icon"></wa-icon>
+        </div>
+      <% end %>
+    <% else %>
       <div class="todo-item-check-done">
         <wa-icon name="check" variant="solid" class="todo-item-check-icon"></wa-icon>
       </div>
     <% end %>
-    <span class="todo-item-title todo-item-title--done"><%= item.name %></span>
+    <%= link_to item.name, todo_list_todo_item_path(todo_list, item), class: "todo-item-title todo-item-title--done", data: { turbo_frame: "_top" } %>
+    <% if item.due_date.present? %>
+      <span class="due-badge due-badge--<%= item.due_date_style %>">
+        <%= item.due_date.strftime("%b %-d") %>
+      </span>
+    <% end %>
+    <% if item.assignees.any? %>
+      <% item.assignees.first(2).each do |assignee| %>
+        <div class="todo-item-avatar" style="background-color: var(--list-color-<%= todo_list.color %>); opacity: 0.6;">
+          <%= assignee.initials %>
+        </div>
+      <% end %>
+    <% end %>
+    <% if item.priority != "none" %>
+      <div class="priority-dot priority-dot--<%= item.priority %>" style="opacity: 0.5;"></div>
+    <% end %>
+    <% if list_editor? %>
+      <%= render "todo_lists/item_context_menu", item: item, todo_list: todo_list %>
+    <% end %>
   </div>
 <% end %>

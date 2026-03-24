@@ -31,8 +31,9 @@ export default class extends Controller {
     fetch(this.formTarget.action, {
       method: "PATCH",
       body: formData,
+      redirect: "manual",
       headers: {
-        "Accept": "text/html",
+        "Accept": "text/vnd.turbo-stream.html",
         "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content
       }
     })

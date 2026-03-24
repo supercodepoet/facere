@@ -793,7 +793,7 @@
                               "id": "R6rc4",
                               "name": "Due Badge",
                               "height": 24,
-                              "fill": "#FEF3C7",
+                              "fill": "$bg-elevated",
                               "cornerRadius": 8,
                               "padding": [
                                 0,
@@ -805,34 +805,11 @@
                                   "type": "text",
                                   "id": "vjQp3",
                                   "name": "due1Text",
-                                  "fill": "#92400E",
+                                  "fill": "$text-secondary",
                                   "content": "Mar 8",
                                   "fontFamily": "Inter",
                                   "fontSize": 11,
                                   "fontWeight": "500"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "vrcn1",
-                              "name": "Avatar",
-                              "width": 24,
-                              "height": 24,
-                              "fill": "$accent-purple",
-                              "cornerRadius": 12,
-                              "justifyContent": "center",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "OXvcy",
-                                  "name": "av1Text",
-                                  "fill": "$white",
-                                  "content": "JD",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 10,
-                                  "fontWeight": "600"
                                 }
                               ]
                             }
@@ -889,10 +866,35 @@
                             },
                             {
                               "type": "frame",
+                              "id": "SFtkD",
+                              "name": "highPill",
+                              "height": 22,
+                              "fill": "#FEF3C7",
+                              "cornerRadius": 100,
+                              "padding": [
+                                4,
+                                8
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "93d6k",
+                                  "name": "highLabel",
+                                  "fill": "#92400E",
+                                  "content": "High",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "600"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
                               "id": "5brYS",
                               "name": "Due Badge",
                               "height": 24,
-                              "fill": "#DBEAFE",
+                              "fill": "$bg-elevated",
                               "cornerRadius": 8,
                               "padding": [
                                 0,
@@ -904,21 +906,13 @@
                                   "type": "text",
                                   "id": "0y6aO",
                                   "name": "due2Text",
-                                  "fill": "#1E40AF",
+                                  "fill": "$text-secondary",
                                   "content": "Mar 6",
                                   "fontFamily": "Inter",
                                   "fontSize": 11,
                                   "fontWeight": "500"
                                 }
                               ]
-                            },
-                            {
-                              "type": "ellipse",
-                              "id": "eAps0",
-                              "name": "priority2",
-                              "fill": "$accent-orange",
-                              "width": 8,
-                              "height": 8
                             }
                           ]
                         }
@@ -1109,6 +1103,31 @@
                             },
                             {
                               "type": "frame",
+                              "id": "Pt03Y",
+                              "name": "Priority Pill",
+                              "height": 22,
+                              "fill": "$danger-soft",
+                              "cornerRadius": 100,
+                              "padding": [
+                                4,
+                                8
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "CMFQ8",
+                                  "name": "priorityText1",
+                                  "fill": "#991B1B",
+                                  "content": "Urgent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "600"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
                               "id": "3OUhj",
                               "name": "Due Badge",
                               "height": 24,
@@ -1131,22 +1150,6 @@
                                   "fontWeight": "500"
                                 }
                               ]
-                            },
-                            {
-                              "type": "ellipse",
-                              "id": "lUfaK",
-                              "name": "pi1Priority",
-                              "fill": "$danger",
-                              "width": 8,
-                              "height": 8
-                            },
-                            {
-                              "type": "ellipse",
-                              "id": "NKJ9l",
-                              "name": "pi1PriorityNew",
-                              "fill": "$danger",
-                              "width": 8,
-                              "height": 8
                             }
                           ]
                         },
@@ -1208,10 +1211,35 @@
                             },
                             {
                               "type": "frame",
+                              "id": "29SRi",
+                              "name": "Priority Pill",
+                              "height": 22,
+                              "fill": "#DBEAFE",
+                              "cornerRadius": 100,
+                              "padding": [
+                                4,
+                                8
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "n9Oxt",
+                                  "name": "priorityText2",
+                                  "fill": "#1E40AF",
+                                  "content": "Medium",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "600"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
                               "id": "pFfSV",
                               "name": "Due Badge",
                               "height": 24,
-                              "fill": "#DBEAFE",
+                              "fill": "$bg-elevated",
                               "cornerRadius": 8,
                               "padding": [
                                 0,
@@ -1223,44 +1251,13 @@
                                   "type": "text",
                                   "id": "vNrpe",
                                   "name": "pi2DueText",
-                                  "fill": "#1E40AF",
+                                  "fill": "$text-secondary",
                                   "content": "Mar 10",
                                   "fontFamily": "Inter",
                                   "fontSize": 11,
                                   "fontWeight": "500"
                                 }
                               ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "0wKxA",
-                              "name": "Avatar",
-                              "width": 24,
-                              "height": 24,
-                              "fill": "$accent-teal",
-                              "cornerRadius": 12,
-                              "justifyContent": "center",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "WgbZm",
-                                  "name": "av2Text",
-                                  "fill": "$white",
-                                  "content": "SK",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 10,
-                                  "fontWeight": "600"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "ellipse",
-                              "id": "Inctd",
-                              "name": "pi2PriorityNew",
-                              "fill": "$accent-orange",
-                              "width": 8,
-                              "height": 8
                             }
                           ]
                         },
@@ -1575,10 +1572,34 @@
                             },
                             {
                               "type": "frame",
+                              "id": "oaMNK",
+                              "name": "Priority Pill",
+                              "fill": "#FEF3C7",
+                              "cornerRadius": 100,
+                              "padding": [
+                                4,
+                                8
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "AtbCT",
+                                  "name": "p1t",
+                                  "fill": "#92400E",
+                                  "content": "High",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "600"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
                               "id": "ypdBn",
                               "name": "Due Badge",
                               "height": 24,
-                              "fill": "#FEF3C7",
+                              "fill": "$bg-elevated",
                               "cornerRadius": 8,
                               "padding": [
                                 0,
@@ -1590,44 +1611,13 @@
                                   "type": "text",
                                   "id": "T3dBL",
                                   "name": "ei1DueText",
-                                  "fill": "#92400E",
+                                  "fill": "$text-secondary",
                                   "content": "Mar 12",
                                   "fontFamily": "Inter",
                                   "fontSize": 11,
                                   "fontWeight": "500"
                                 }
                               ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "VzZgw",
-                              "name": "Avatar",
-                              "width": 24,
-                              "height": 24,
-                              "fill": "$accent-purple",
-                              "cornerRadius": 12,
-                              "justifyContent": "center",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "OjHKC",
-                                  "name": "av3Text",
-                                  "fill": "$white",
-                                  "content": "JD",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 10,
-                                  "fontWeight": "600"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "ellipse",
-                              "id": "7n7N9",
-                              "name": "ei1PriorityNew",
-                              "fill": "$danger",
-                              "width": 8,
-                              "height": 8
                             }
                           ]
                         },
@@ -1689,10 +1679,34 @@
                             },
                             {
                               "type": "frame",
+                              "id": "TE9o6",
+                              "name": "Priority Pill",
+                              "fill": "#DBEAFE",
+                              "cornerRadius": 100,
+                              "padding": [
+                                4,
+                                8
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "KXgpx",
+                                  "name": "p2t",
+                                  "fill": "#1E40AF",
+                                  "content": "Medium",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "600"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
                               "id": "AdJCB",
                               "name": "Due Badge",
                               "height": 24,
-                              "fill": "#DBEAFE",
+                              "fill": "$bg-elevated",
                               "cornerRadius": 8,
                               "padding": [
                                 0,
@@ -1704,21 +1718,13 @@
                                   "type": "text",
                                   "id": "0c7ZQ",
                                   "name": "ei2DueText",
-                                  "fill": "#1E40AF",
+                                  "fill": "$text-secondary",
                                   "content": "Mar 13",
                                   "fontFamily": "Inter",
                                   "fontSize": 11,
                                   "fontWeight": "500"
                                 }
                               ]
-                            },
-                            {
-                              "type": "ellipse",
-                              "id": "vzGVm",
-                              "name": "ei2Priority",
-                              "fill": "$accent-orange",
-                              "width": 8,
-                              "height": 8
                             }
                           ]
                         },
@@ -1780,10 +1786,34 @@
                             },
                             {
                               "type": "frame",
+                              "id": "1UF4X",
+                              "name": "Priority Pill",
+                              "fill": "$danger-soft",
+                              "cornerRadius": 100,
+                              "padding": [
+                                4,
+                                8
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "gZ2eT",
+                                  "name": "p3t",
+                                  "fill": "$danger",
+                                  "content": "Urgent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "600"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
                               "id": "2rVEz",
                               "name": "Due Badge",
                               "height": 24,
-                              "fill": "#FEF3C7",
+                              "fill": "$bg-elevated",
                               "cornerRadius": 8,
                               "padding": [
                                 0,
@@ -1795,44 +1825,13 @@
                                   "type": "text",
                                   "id": "Xd3dL",
                                   "name": "ei3DueText",
-                                  "fill": "#92400E",
+                                  "fill": "$text-secondary",
                                   "content": "Mar 14",
                                   "fontFamily": "Inter",
                                   "fontSize": 11,
                                   "fontWeight": "500"
                                 }
                               ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "BIaKG",
-                              "name": "Avatar",
-                              "width": 24,
-                              "height": 24,
-                              "fill": "$accent-teal",
-                              "cornerRadius": 12,
-                              "justifyContent": "center",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "kTtB9",
-                                  "name": "av4Text",
-                                  "fill": "$white",
-                                  "content": "SK",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 10,
-                                  "fontWeight": "600"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "ellipse",
-                              "id": "Q3tpz",
-                              "name": "ei3PriorityNew",
-                              "fill": "$danger",
-                              "width": 8,
-                              "height": 8
                             }
                           ]
                         },
@@ -1894,10 +1893,34 @@
                             },
                             {
                               "type": "frame",
+                              "id": "TaHSL",
+                              "name": "Priority Pill",
+                              "fill": "$success-soft",
+                              "cornerRadius": 100,
+                              "padding": [
+                                4,
+                                8
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "AB5Bd",
+                                  "name": "p4t",
+                                  "fill": "$success",
+                                  "content": "Low",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "600"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
                               "id": "RBz9u",
                               "name": "Due Badge",
                               "height": 24,
-                              "fill": "#D1FAE5",
+                              "fill": "$bg-elevated",
                               "cornerRadius": 8,
                               "padding": [
                                 0,
@@ -1909,21 +1932,13 @@
                                   "type": "text",
                                   "id": "aoIcA",
                                   "name": "ei4DueText",
-                                  "fill": "#065F46",
+                                  "fill": "$text-secondary",
                                   "content": "Mar 15",
                                   "fontFamily": "Inter",
                                   "fontSize": 11,
                                   "fontWeight": "500"
                                 }
                               ]
-                            },
-                            {
-                              "type": "ellipse",
-                              "id": "zadFT",
-                              "name": "ei4Priority",
-                              "fill": "$accent-teal",
-                              "width": 8,
-                              "height": 8
                             }
                           ]
                         }
@@ -1944,8 +1959,8 @@
       "y": 987,
       "name": "TODO Item Detail",
       "clip": true,
-      "width": 1509,
-      "height": 1438,
+      "width": 1557,
+      "height": 1667,
       "fill": "$bg-white",
       "layout": "vertical",
       "children": [
@@ -2849,16 +2864,14 @@
                                   "stroke": {
                                     "align": "inside",
                                     "thickness": {
-                                      "top": 1,
-                                      "right": 1,
-                                      "left": 1
+                                      "bottom": 1
                                     },
                                     "fill": "$border-standard"
                                   },
                                   "gap": 8,
                                   "padding": [
                                     10,
-                                    16
+                                    14
                                   ],
                                   "alignItems": "center",
                                   "children": [
@@ -2870,7 +2883,7 @@
                                       "height": 18,
                                       "iconFontName": "image",
                                       "iconFontFamily": "lucide",
-                                      "fill": "$accent-purple"
+                                      "fill": "$text-primary"
                                     },
                                     {
                                       "type": "icon_font",
@@ -2880,7 +2893,7 @@
                                       "height": 18,
                                       "iconFontName": "paperclip",
                                       "iconFontFamily": "lucide",
-                                      "fill": "$accent-purple"
+                                      "fill": "$text-primary"
                                     },
                                     {
                                       "type": "frame",
@@ -2894,7 +2907,7 @@
                                       "type": "text",
                                       "id": "5cWJE",
                                       "name": "boldText",
-                                      "fill": "$accent-purple",
+                                      "fill": "$text-primary",
                                       "content": "B",
                                       "fontFamily": "Inter",
                                       "fontSize": 16,
@@ -2904,7 +2917,7 @@
                                       "type": "text",
                                       "id": "VyElb",
                                       "name": "italicText",
-                                      "fill": "$accent-purple",
+                                      "fill": "$text-primary",
                                       "content": "I",
                                       "fontFamily": "Inter",
                                       "fontSize": 16,
@@ -2922,7 +2935,7 @@
                                           "type": "text",
                                           "id": "RJsj3",
                                           "name": "ttText",
-                                          "fill": "$accent-purple",
+                                          "fill": "$text-primary",
                                           "content": "Tt",
                                           "fontFamily": "Inter",
                                           "fontSize": 15,
@@ -2936,7 +2949,7 @@
                                           "height": 12,
                                           "iconFontName": "chevron-down",
                                           "iconFontFamily": "lucide",
-                                          "fill": "$accent-purple"
+                                          "fill": "$text-primary"
                                         }
                                       ]
                                     },
@@ -2955,7 +2968,7 @@
                                           "height": 18,
                                           "iconFontName": "list",
                                           "iconFontFamily": "lucide",
-                                          "fill": "$accent-purple"
+                                          "fill": "$text-primary"
                                         },
                                         {
                                           "type": "icon_font",
@@ -2965,7 +2978,7 @@
                                           "height": 12,
                                           "iconFontName": "chevron-down",
                                           "iconFontFamily": "lucide",
-                                          "fill": "$accent-purple"
+                                          "fill": "$text-primary"
                                         }
                                       ]
                                     },
@@ -2984,7 +2997,7 @@
                                           "height": 18,
                                           "iconFontName": "paintbrush",
                                           "iconFontFamily": "lucide",
-                                          "fill": "$accent-purple"
+                                          "fill": "$text-primary"
                                         },
                                         {
                                           "type": "icon_font",
@@ -2994,7 +3007,7 @@
                                           "height": 12,
                                           "iconFontName": "chevron-down",
                                           "iconFontFamily": "lucide",
-                                          "fill": "$accent-purple"
+                                          "fill": "$text-primary"
                                         }
                                       ]
                                     },
@@ -3006,7 +3019,7 @@
                                       "height": 18,
                                       "iconFontName": "link",
                                       "iconFontFamily": "lucide",
-                                      "fill": "$accent-purple"
+                                      "fill": "$text-primary"
                                     },
                                     {
                                       "type": "icon_font",
@@ -3016,7 +3029,7 @@
                                       "height": 18,
                                       "iconFontName": "quote",
                                       "iconFontFamily": "lucide",
-                                      "fill": "$accent-purple"
+                                      "fill": "$text-primary"
                                     },
                                     {
                                       "type": "icon_font",
@@ -3026,7 +3039,7 @@
                                       "height": 18,
                                       "iconFontName": "code",
                                       "iconFontFamily": "lucide",
-                                      "fill": "$accent-purple"
+                                      "fill": "$text-primary"
                                     },
                                     {
                                       "type": "frame",
@@ -3044,7 +3057,7 @@
                                       "height": 18,
                                       "iconFontName": "table",
                                       "iconFontFamily": "lucide",
-                                      "fill": "$accent-purple"
+                                      "fill": "$text-primary"
                                     },
                                     {
                                       "type": "icon_font",
@@ -3054,7 +3067,7 @@
                                       "height": 18,
                                       "iconFontName": "menu",
                                       "iconFontFamily": "lucide",
-                                      "fill": "$accent-purple"
+                                      "fill": "$text-primary"
                                     },
                                     {
                                       "type": "frame",
@@ -3090,7 +3103,8 @@
                                   "id": "y4ECY",
                                   "name": "Notes Body",
                                   "width": "fill_container",
-                                  "fill": "$bg-surface",
+                                  "height": 200,
+                                  "fill": "$bg-white",
                                   "cornerRadius": [
                                     0,
                                     0,
@@ -3103,17 +3117,18 @@
                                     "fill": "$border-standard"
                                   },
                                   "layout": "vertical",
-                                  "gap": 12,
-                                  "padding": 20,
+                                  "gap": 16,
+                                  "padding": 16,
+                                  "justifyContent": "space_between",
                                   "children": [
                                     {
                                       "type": "text",
-                                      "id": "EPMnT",
-                                      "name": "noteP1",
-                                      "fill": "$text-primary",
+                                      "id": "CUZl5",
+                                      "name": "Placeholder",
+                                      "fill": "$text-tertiary",
                                       "textGrowth": "fixed-width",
                                       "width": "fill_container",
-                                      "content": "The landing page needs to reflect our new brand identity. Key areas to focus on:",
+                                      "content": "Type your note...",
                                       "lineHeight": 1.5,
                                       "fontFamily": "Inter",
                                       "fontSize": 14,
@@ -3121,85 +3136,37 @@
                                     },
                                     {
                                       "type": "frame",
-                                      "id": "wjoK6",
-                                      "name": "Note List",
+                                      "id": "c9mDE",
+                                      "name": "Bottom Row",
                                       "width": "fill_container",
-                                      "layout": "vertical",
-                                      "gap": 6,
-                                      "padding": [
-                                        0,
-                                        0,
-                                        0,
-                                        16
-                                      ],
+                                      "alignItems": "end",
                                       "children": [
                                         {
-                                          "type": "text",
-                                          "id": "rYBKU",
-                                          "name": "noteItem1",
-                                          "fill": "$text-primary",
-                                          "textGrowth": "fixed-width",
-                                          "width": "fill_container",
-                                          "content": "• Hero section with new illustration style",
-                                          "lineHeight": 1.5,
-                                          "fontFamily": "Inter",
-                                          "fontSize": 14,
-                                          "fontWeight": "normal"
-                                        },
-                                        {
-                                          "type": "text",
-                                          "id": "eeCil",
-                                          "name": "noteItem2",
-                                          "fill": "$text-primary",
-                                          "textGrowth": "fixed-width",
-                                          "width": "fill_container",
-                                          "content": "• Updated testimonials carousel",
-                                          "lineHeight": 1.5,
-                                          "fontFamily": "Inter",
-                                          "fontSize": 14,
-                                          "fontWeight": "normal"
-                                        },
-                                        {
-                                          "type": "text",
-                                          "id": "c7RlE",
-                                          "name": "noteItem3",
-                                          "fill": "$text-primary",
-                                          "textGrowth": "fixed-width",
-                                          "width": "fill_container",
-                                          "content": "• Pricing table with comparison view",
-                                          "lineHeight": 1.5,
-                                          "fontFamily": "Inter",
-                                          "fontSize": 14,
-                                          "fontWeight": "normal"
-                                        },
-                                        {
-                                          "type": "text",
-                                          "id": "2O8Tq",
-                                          "name": "noteItem4",
-                                          "fill": "$text-primary",
-                                          "textGrowth": "fixed-width",
-                                          "width": "fill_container",
-                                          "content": "• CTA buttons with new gradient style",
-                                          "lineHeight": 1.5,
-                                          "fontFamily": "Inter",
-                                          "fontSize": 14,
-                                          "fontWeight": "normal"
+                                          "type": "frame",
+                                          "id": "ojOaD",
+                                          "name": "Save Btn",
+                                          "fill": "$bg-elevated",
+                                          "cornerRadius": 100,
+                                          "padding": [
+                                            10,
+                                            20
+                                          ],
+                                          "justifyContent": "center",
+                                          "alignItems": "center",
+                                          "children": [
+                                            {
+                                              "type": "text",
+                                              "id": "Nt5s5",
+                                              "name": "postText",
+                                              "fill": "$text-tertiary",
+                                              "content": "Save",
+                                              "fontFamily": "Inter",
+                                              "fontSize": 14,
+                                              "fontWeight": "600"
+                                            }
+                                          ]
                                         }
                                       ]
-                                    },
-                                    {
-                                      "type": "text",
-                                      "id": "79350",
-                                      "name": "noteP2",
-                                      "fill": "$text-secondary",
-                                      "textGrowth": "fixed-width",
-                                      "width": "fill_container",
-                                      "content": "Deadline is tight — let's prioritize the hero and pricing sections first.",
-                                      "lineHeight": 1.5,
-                                      "fontFamily": "Inter",
-                                      "fontSize": 14,
-                                      "fontWeight": "normal",
-                                      "fontStyle": "italic"
                                     }
                                   ]
                                 }
@@ -3905,7 +3872,7 @@
                                               "id": "tyEJW",
                                               "name": "comment1Time",
                                               "fill": "$text-tertiary",
-                                              "content": "2 hours ago",
+                                              "content": "Thursday, March 5, 8:56 AM",
                                               "fontFamily": "Inter",
                                               "fontSize": 12,
                                               "fontWeight": "normal"
@@ -3924,55 +3891,6 @@
                                           "fontFamily": "Inter",
                                           "fontSize": 14,
                                           "fontWeight": "normal"
-                                        },
-                                        {
-                                          "type": "frame",
-                                          "id": "3Q6OG",
-                                          "name": "Actions",
-                                          "width": "fill_container",
-                                          "gap": 16,
-                                          "alignItems": "center",
-                                          "children": [
-                                            {
-                                              "type": "frame",
-                                              "id": "HK8hM",
-                                              "name": "likeBtn",
-                                              "gap": 4,
-                                              "alignItems": "center",
-                                              "children": [
-                                                {
-                                                  "type": "icon_font",
-                                                  "id": "TofHW",
-                                                  "name": "likeIcon",
-                                                  "width": 14,
-                                                  "height": 14,
-                                                  "iconFontName": "heart",
-                                                  "iconFontFamily": "lucide",
-                                                  "fill": "$text-tertiary"
-                                                },
-                                                {
-                                                  "type": "text",
-                                                  "id": "c7Uaf",
-                                                  "name": "likeText",
-                                                  "fill": "$text-tertiary",
-                                                  "content": "2",
-                                                  "fontFamily": "Inter",
-                                                  "fontSize": 12,
-                                                  "fontWeight": "normal"
-                                                }
-                                              ]
-                                            },
-                                            {
-                                              "type": "text",
-                                              "id": "MvH8a",
-                                              "name": "replyBtn",
-                                              "fill": "$accent-purple",
-                                              "content": "Reply",
-                                              "fontFamily": "Inter",
-                                              "fontSize": 12,
-                                              "fontWeight": "500"
-                                            }
-                                          ]
                                         }
                                       ]
                                     }
@@ -4037,7 +3955,7 @@
                                               "id": "NmX2n",
                                               "name": "comment2Time",
                                               "fill": "$text-tertiary",
-                                              "content": "1 hour ago",
+                                              "content": "Thursday, March 5, 1:54 PM",
                                               "fontFamily": "Inter",
                                               "fontSize": 12,
                                               "fontWeight": "normal"
@@ -4056,55 +3974,6 @@
                                           "fontFamily": "Inter",
                                           "fontSize": 14,
                                           "fontWeight": "normal"
-                                        },
-                                        {
-                                          "type": "frame",
-                                          "id": "BomRW",
-                                          "name": "Actions",
-                                          "width": "fill_container",
-                                          "gap": 16,
-                                          "alignItems": "center",
-                                          "children": [
-                                            {
-                                              "type": "frame",
-                                              "id": "kYNR8",
-                                              "name": "like2Btn",
-                                              "gap": 4,
-                                              "alignItems": "center",
-                                              "children": [
-                                                {
-                                                  "type": "icon_font",
-                                                  "id": "E7KTi",
-                                                  "name": "like2Icon",
-                                                  "width": 14,
-                                                  "height": 14,
-                                                  "iconFontName": "heart",
-                                                  "iconFontFamily": "lucide",
-                                                  "fill": "$accent-pink"
-                                                },
-                                                {
-                                                  "type": "text",
-                                                  "id": "r4ivX",
-                                                  "name": "like2Text",
-                                                  "fill": "$text-tertiary",
-                                                  "content": "1",
-                                                  "fontFamily": "Inter",
-                                                  "fontSize": 12,
-                                                  "fontWeight": "normal"
-                                                }
-                                              ]
-                                            },
-                                            {
-                                              "type": "text",
-                                              "id": "1BrkN",
-                                              "name": "reply2Btn",
-                                              "fill": "$accent-purple",
-                                              "content": "Reply",
-                                              "fontFamily": "Inter",
-                                              "fontSize": 12,
-                                              "fontWeight": "500"
-                                            }
-                                          ]
                                         }
                                       ]
                                     }
@@ -4114,88 +3983,346 @@
                             },
                             {
                               "type": "frame",
-                              "id": "WLo2G",
-                              "name": "Comment Input",
+                              "id": "tTDSg",
+                              "name": "Comment Input Row",
                               "width": "fill_container",
-                              "fill": "$bg-surface",
-                              "cornerRadius": 16,
                               "gap": 12,
-                              "padding": [
-                                12,
-                                16
-                              ],
-                              "alignItems": "center",
                               "children": [
                                 {
                                   "type": "frame",
-                                  "id": "eYAqm",
+                                  "id": "FQv6M",
                                   "name": "My Avatar",
-                                  "width": 32,
-                                  "height": 32,
+                                  "width": 36,
+                                  "height": 36,
                                   "fill": "$accent-purple",
                                   "cornerRadius": 100,
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
                                   "children": [
                                     {
                                       "type": "text",
-                                      "id": "q1Sn4",
-                                      "name": "inputAvatarText",
+                                      "id": "6duvx",
+                                      "name": "avatarText",
                                       "fill": "$white",
                                       "content": "J",
                                       "fontFamily": "Inter",
-                                      "fontSize": 13,
+                                      "fontSize": 14,
                                       "fontWeight": "600"
                                     }
                                   ]
                                 },
                                 {
-                                  "type": "text",
-                                  "id": "sCBDZ",
-                                  "name": "inputPlaceholder",
-                                  "fill": "$text-tertiary",
-                                  "content": "Write a comment...",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 14,
-                                  "fontWeight": "normal"
-                                },
-                                {
                                   "type": "frame",
-                                  "id": "MwyS8",
-                                  "name": "inputSpacer",
+                                  "id": "fOVAr",
+                                  "name": "Rich Comment Editor",
                                   "width": "fill_container",
-                                  "height": 1
-                                },
-                                {
-                                  "type": "frame",
-                                  "id": "Ygbpd",
-                                  "name": "Send",
-                                  "fill": "$accent-purple",
-                                  "cornerRadius": 10,
-                                  "gap": 6,
-                                  "padding": [
-                                    8,
-                                    16
-                                  ],
-                                  "alignItems": "center",
+                                  "fill": "$bg-white",
+                                  "cornerRadius": 12,
+                                  "stroke": {
+                                    "align": "inside",
+                                    "thickness": 1,
+                                    "fill": "$border-standard"
+                                  },
+                                  "layout": "vertical",
                                   "children": [
                                     {
-                                      "type": "icon_font",
-                                      "id": "utLsi",
-                                      "name": "sendIcon",
-                                      "width": 14,
-                                      "height": 14,
-                                      "iconFontName": "send",
-                                      "iconFontFamily": "lucide",
-                                      "fill": "$white"
+                                      "type": "frame",
+                                      "id": "Lneqi",
+                                      "name": "Comment Toolbar",
+                                      "width": "fill_container",
+                                      "fill": "$bg-surface",
+                                      "cornerRadius": [
+                                        12,
+                                        12,
+                                        0,
+                                        0
+                                      ],
+                                      "stroke": {
+                                        "align": "inside",
+                                        "thickness": {
+                                          "bottom": 1
+                                        },
+                                        "fill": "$border-standard"
+                                      },
+                                      "gap": 8,
+                                      "padding": [
+                                        10,
+                                        14
+                                      ],
+                                      "alignItems": "center",
+                                      "children": [
+                                        {
+                                          "type": "icon_font",
+                                          "id": "T3XvS",
+                                          "name": "imgIcon",
+                                          "width": 18,
+                                          "height": 18,
+                                          "iconFontName": "image",
+                                          "iconFontFamily": "lucide",
+                                          "fill": "$text-primary"
+                                        },
+                                        {
+                                          "type": "icon_font",
+                                          "id": "UcdAX",
+                                          "name": "clipIcon",
+                                          "width": 18,
+                                          "height": 18,
+                                          "iconFontName": "paperclip",
+                                          "iconFontFamily": "lucide",
+                                          "fill": "$text-primary"
+                                        },
+                                        {
+                                          "type": "frame",
+                                          "id": "TS60k",
+                                          "name": "Sep",
+                                          "width": 1,
+                                          "height": 20,
+                                          "fill": "$border-standard"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "3cmzA",
+                                          "name": "boldT",
+                                          "fill": "$text-primary",
+                                          "content": "B",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 16,
+                                          "fontWeight": "700"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "VIS6D",
+                                          "name": "italicT",
+                                          "fill": "$text-primary",
+                                          "content": "I",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 16,
+                                          "fontWeight": "500",
+                                          "fontStyle": "italic"
+                                        },
+                                        {
+                                          "type": "frame",
+                                          "id": "OZmcq",
+                                          "name": "ttWrap",
+                                          "gap": 2,
+                                          "alignItems": "center",
+                                          "children": [
+                                            {
+                                              "type": "text",
+                                              "id": "buhjb",
+                                              "name": "ttText",
+                                              "fill": "$text-primary",
+                                              "content": "Tt",
+                                              "fontFamily": "Inter",
+                                              "fontSize": 15,
+                                              "fontWeight": "600"
+                                            },
+                                            {
+                                              "type": "icon_font",
+                                              "id": "cUsxV",
+                                              "name": "ttChev",
+                                              "width": 12,
+                                              "height": 12,
+                                              "iconFontName": "chevron-down",
+                                              "iconFontFamily": "lucide",
+                                              "fill": "$text-primary"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "frame",
+                                          "id": "buXda",
+                                          "name": "listWrap",
+                                          "gap": 2,
+                                          "alignItems": "center",
+                                          "children": [
+                                            {
+                                              "type": "icon_font",
+                                              "id": "KN4nB",
+                                              "name": "listIcon",
+                                              "width": 18,
+                                              "height": 18,
+                                              "iconFontName": "list",
+                                              "iconFontFamily": "lucide",
+                                              "fill": "$text-primary"
+                                            },
+                                            {
+                                              "type": "icon_font",
+                                              "id": "FqO8N",
+                                              "name": "listChev",
+                                              "width": 12,
+                                              "height": 12,
+                                              "iconFontName": "chevron-down",
+                                              "iconFontFamily": "lucide",
+                                              "fill": "$text-primary"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "frame",
+                                          "id": "lhxct",
+                                          "name": "colorWrap",
+                                          "gap": 2,
+                                          "alignItems": "center",
+                                          "children": [
+                                            {
+                                              "type": "icon_font",
+                                              "id": "oHP76",
+                                              "name": "colorIcon",
+                                              "width": 18,
+                                              "height": 18,
+                                              "iconFontName": "paintbrush",
+                                              "iconFontFamily": "lucide",
+                                              "fill": "$text-primary"
+                                            },
+                                            {
+                                              "type": "icon_font",
+                                              "id": "4QnS6",
+                                              "name": "colorChev",
+                                              "width": 12,
+                                              "height": 12,
+                                              "iconFontName": "chevron-down",
+                                              "iconFontFamily": "lucide",
+                                              "fill": "$text-primary"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "icon_font",
+                                          "id": "ngc3m",
+                                          "name": "linkIcon",
+                                          "width": 18,
+                                          "height": 18,
+                                          "iconFontName": "link",
+                                          "iconFontFamily": "lucide",
+                                          "fill": "$text-primary"
+                                        },
+                                        {
+                                          "type": "icon_font",
+                                          "id": "D9j7V",
+                                          "name": "quoteIcon",
+                                          "width": 18,
+                                          "height": 18,
+                                          "iconFontName": "quote",
+                                          "iconFontFamily": "lucide",
+                                          "fill": "$text-primary"
+                                        },
+                                        {
+                                          "type": "icon_font",
+                                          "id": "8QGRD",
+                                          "name": "codeIcon",
+                                          "width": 18,
+                                          "height": 18,
+                                          "iconFontName": "code",
+                                          "iconFontFamily": "lucide",
+                                          "fill": "$text-primary"
+                                        },
+                                        {
+                                          "type": "frame",
+                                          "id": "hYGbu",
+                                          "name": "Sep2",
+                                          "width": 1,
+                                          "height": 20,
+                                          "fill": "$border-standard"
+                                        },
+                                        {
+                                          "type": "icon_font",
+                                          "id": "ZNACp",
+                                          "name": "tableIcon",
+                                          "width": 18,
+                                          "height": 18,
+                                          "iconFontName": "table",
+                                          "iconFontFamily": "lucide",
+                                          "fill": "$text-primary"
+                                        },
+                                        {
+                                          "type": "icon_font",
+                                          "id": "OmhXu",
+                                          "name": "menuIcon",
+                                          "width": 18,
+                                          "height": 18,
+                                          "iconFontName": "menu",
+                                          "iconFontFamily": "lucide",
+                                          "fill": "$text-primary"
+                                        },
+                                        {
+                                          "type": "frame",
+                                          "id": "RQIps",
+                                          "name": "Spacer",
+                                          "width": "fill_container",
+                                          "height": 1
+                                        },
+                                        {
+                                          "type": "icon_font",
+                                          "id": "GHCGA",
+                                          "name": "undoIcon",
+                                          "width": 18,
+                                          "height": 18,
+                                          "iconFontName": "undo-2",
+                                          "iconFontFamily": "lucide",
+                                          "fill": "$text-tertiary"
+                                        },
+                                        {
+                                          "type": "icon_font",
+                                          "id": "EiUKM",
+                                          "name": "redoIcon",
+                                          "width": 18,
+                                          "height": 18,
+                                          "iconFontName": "redo-2",
+                                          "iconFontFamily": "lucide",
+                                          "fill": "$text-tertiary"
+                                        }
+                                      ]
                                     },
                                     {
-                                      "type": "text",
-                                      "id": "iBV4X",
-                                      "name": "sendText",
-                                      "fill": "$white",
-                                      "content": "Send",
-                                      "fontFamily": "Inter",
-                                      "fontSize": 12,
-                                      "fontWeight": "600"
+                                      "type": "frame",
+                                      "id": "bkgT9",
+                                      "name": "Text Area",
+                                      "width": "fill_container",
+                                      "height": 160,
+                                      "layout": "vertical",
+                                      "padding": 16,
+                                      "justifyContent": "space_between",
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "kSxDL",
+                                          "name": "placeholder",
+                                          "fill": "$text-tertiary",
+                                          "textGrowth": "fixed-width",
+                                          "width": "fill_container",
+                                          "content": "Type your comment...",
+                                          "lineHeight": 1.5,
+                                          "fontFamily": "Inter",
+                                          "fontSize": 14,
+                                          "fontWeight": "normal"
+                                        },
+                                        {
+                                          "type": "frame",
+                                          "id": "KFFvK",
+                                          "name": "Post Btn",
+                                          "fill": "$bg-elevated",
+                                          "cornerRadius": 100,
+                                          "padding": [
+                                            10,
+                                            20
+                                          ],
+                                          "justifyContent": "center",
+                                          "alignItems": "center",
+                                          "children": [
+                                            {
+                                              "type": "text",
+                                              "id": "jS02D",
+                                              "name": "postText",
+                                              "fill": "$text-tertiary",
+                                              "content": "Post",
+                                              "fontFamily": "Inter",
+                                              "fontSize": 14,
+                                              "fontWeight": "600"
+                                            }
+                                          ]
+                                        }
+                                      ]
                                     }
                                   ]
                                 }
