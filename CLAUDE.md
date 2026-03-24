@@ -1,6 +1,6 @@
 # Facere Development Guidelines
 
-Auto-generated from all feature plans. Last updated: 2026-03-05
+Auto-generated from all feature plans. Last updated: 2026-03-24
 
 ## Active Technologies
 - Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Stimulus), Font Awesome Pro (CDN kit), bcrypt (existing) (002-todo-lists)
@@ -12,7 +12,10 @@ Auto-generated from all feature plans. Last updated: 2026-03-05
 
 - Ruby 4.0.1 / Rails 8.1.2 (001-user-auth)
 - Hotwire: Turbo Drive, Turbo Frames, Turbo Streams, Stimulus
-- UI: Font Awesome Pro (CDN kit)
+- UI: Font Awesome Pro (CDN kit) — standard `<i>` tags only, NO Web Awesome `wa-*` elements
+- Icons: `fa-light` (default), `fa-solid` (emphasis/active states)
+- Dropdowns: Custom `dropdown_controller.js` Stimulus controller
+- Modals: Custom `modal_controller.js` Stimulus controller
 - Auth: bcrypt, OmniAuth (google-oauth2, facebook, apple), rotp, rqrcode
 - Database: SQLite (all environments)
 - Asset Pipeline: Propshaft + Importmap
@@ -57,7 +60,8 @@ bin/rails credentials:edit # Edit encrypted credentials
 - Stimulus controllers for DOM only; server logic via Turbo
 
 ## Recent Changes
-- 006-detail-screen-polish: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), Font Awesome Pro (CDN kit), Lexxy (rich text), Active Storage (file uploads), ActionTex
+- 007-ui-component-modernization: Removed all Web Awesome components (wa-icon, wa-button, wa-dropdown, wa-dialog). Added Lexxy editor to Notes and Comments. Moved item actions to top bar. Created dropdown and modal Stimulus controllers. Changed icon weight from fa-thin to fa-light.
+- 006-detail-screen-polish: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), Font Awesome Pro (CDN kit), Lexxy (rich text), Active Storage (file uploads), ActionText
 - 005-list-collaboration: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), ActionCable (already configured — connection + auth in place, no channels yet), Action Mailer (existing mailers for email verification and password reset), Font Awesome Pro (CDN kit), Lexxy, Active Storage, ActionTex
 - 004-todo-item-detail: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Turbo Streams + Turbo Frames + Stimulus), Font Awesome Pro (CDN kit), Lexxy (~> 0.1.26.beta, new), ActionText (Rails built-in), Active Storage (Rails built-in)
 

@@ -71,7 +71,11 @@ and MUST NOT feel generic or utilitarian.
 - MUST be fully responsive across all mobile devices and desktop screens
 - MUST use Font Awesome Pro (https://fontawesome.com) for all iconography;
   icons use standard `<i>` tags with Font Awesome classes
-  (e.g. `<i class="fa-thin fa-icon-name"></i>`)
+  (e.g. `<i class="fa-light fa-icon-name"></i>`)
+- MUST NOT use Web Awesome custom elements (`wa-icon`, `wa-button`,
+  `wa-dropdown`, `wa-dialog`, `wa-input`, etc.) — use standard HTML
+  elements instead. Web Awesome was removed in feature 007 due to
+  styling conflicts and inconsistent kit loading across layouts
 - MUST prioritize micro-interactions, animations, and visual polish
   that convey friendliness
 - MUST NOT ship generic, unstyled, or purely functional interfaces
@@ -160,7 +164,10 @@ justified by current requirements, not hypothetical future needs.
 - **Front-End Interactivity**: Hotwire (Turbo Drive, Turbo Frames,
   Turbo Streams, Stimulus)
 - **Iconography**: Font Awesome Pro (CDN kit); icons use standard `<i>` tags
-  with Font Awesome classes (e.g. `<i class="fa-thin fa-icon-name"></i>`)
+  with Font Awesome classes (e.g. `<i class="fa-light fa-icon-name"></i>`).
+  Use `fa-light` (300 weight) as the default icon style — `fa-thin` (100)
+  is too light for readability. Use `fa-solid` for emphasis (e.g., active
+  states, context menu trigger dots)
 - **Database**: SQLite (Rails 8.1 default for development); production
   database per deployment configuration
 - **Asset Pipeline**: Propshaft + Importmap (Rails 8.1 defaults)
@@ -199,6 +206,20 @@ Learned through implementation of TODO Item Detail feature (004):
 - **Lexxy auto-save**: Listen for `lexxy:change` event in a Stimulus
   controller, debounce 2 seconds, submit form via `fetch()`. Save
   immediately on `disconnect()` to prevent data loss during navigation
+- **Lexxy editor in cards**: Wrap `f.rich_text_area` in a
+  `.notes-editor-wrap` (or `.comment-editor-wrap`) div with
+  `border: 1px solid #D4D4D8; border-radius: 12px; overflow: hidden`.
+  Style toolbar and bottom bar with `#F4F4F5` background and
+  `border-top/bottom: 1px solid #D4D4D8` for visual separation.
+  Set `.lexxy-editor__content` padding and min-height via scoped CSS
+- **Lexxy editor text size**: Set `font-size: 14px; line-height: 1.6`
+  on `.lexxy-editor__content` to match the view/display mode text size.
+  Lexxy's default font size may differ from the content display
+- **Lexxy for comments (dual-field)**: When adding rich text to an
+  existing plain-text model, add `has_rich_text :rich_body` alongside
+  the existing `body` column. Make `body` validation conditional
+  (`unless: :rich_body?`). Display uses `rich_body` with `body` fallback.
+  This avoids a data migration for existing records
 
 ### Turbo & Stimulus Integration Rules
 
@@ -244,6 +265,42 @@ Learned through implementation of TODO List Items feature (003):
   `before_action` already loads a record and `show` needs eager loading,
   use `Preloader.new(records: [@record], associations: [...]).call`
   instead of re-fetching with `includes(...).find()`
+
+### Custom Dropdown & Modal Patterns
+
+Learned through UI component modernization (007):
+
+- **Dropdown pattern**: Use `dropdown_controller.js` Stimulus controller
+  with `.dropdown-wrap` > trigger button + `.dropdown-menu` div. The
+  controller handles toggle, close-on-outside-click, and dispatches
+  `dropdown:select` events with `{ detail: { item: { value } } }`
+- **Modal pattern**: Use `modal_controller.js` with
+  `.delete-modal-overlay` > `.delete-modal-panel`. Open by adding
+  `.delete-modal--open` class. Close via `data-action="click->modal#close"`
+  or backdrop click. Use `stopPropagation` on the panel to prevent
+  backdrop close when clicking inside
+- **Dropdown z-index**: Set to `9999` to ensure dropdowns render above
+  all content including sticky headers and overflow:hidden containers
+- **Confirmation modals over turbo_confirm**: For destructive actions
+  (delete item, delete list), use a styled modal with Cancel + Delete
+  buttons rather than the browser's native `confirm()` dialog. This
+  provides a consistent, on-brand UX
+
+### Stimulus Controller Scope Rules
+
+Learned through inline item hint fix (007):
+
+- **Target scope**: `data-{controller}-target` attributes MUST be
+  descendants of the element with `data-controller`. Sibling elements
+  outside the controller element will NOT be found as targets
+- **Template cloning**: When a `<template>` is cloned and inserted into
+  the DOM, Stimulus `connect()` fires immediately. If checking for
+  existing DOM elements (e.g., `.todo-item`), also schedule a
+  `requestAnimationFrame` callback as a fallback for timing edge cases
+- **Form vs wrapper controller**: If a Stimulus controller needs targets
+  both inside and outside a `<form>`, place the controller on a common
+  ancestor wrapper div, not on the form itself. Use
+  `this.element.querySelector("form").requestSubmit()` to submit
 
 ### Collaboration & Multi-User Authorization Rules
 
@@ -403,4 +460,4 @@ implementation plans MUST verify compliance with these principles.
   (generated from `agent-file-template.md`) for day-to-day development
   reference
 
-**Version**: 1.5.0 | **Ratified**: 2026-03-05 | **Last Amended**: 2026-03-23
+**Version**: 1.6.0 | **Ratified**: 2026-03-05 | **Last Amended**: 2026-03-24
