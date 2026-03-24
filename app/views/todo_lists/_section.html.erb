@@ -2,13 +2,13 @@
   <div class="section-group" data-controller="section-collapse">
     <div class="section-header">
       <% if list_editor? %>
-        <wa-icon name="grip-dots-vertical" variant="thin" class="drag-handle"></wa-icon>
+        <i class="fa-light fa-grip-dots-vertical drag-handle"></i>
       <% end %>
       <button class="section-chevron" data-action="click->section-collapse#toggle" data-section-collapse-target="chevron">
-        <wa-icon name="chevron-down" variant="thin"></wa-icon>
+        <i class="fa-light fa-chevron-down"></i>
       </button>
       <% if section.icon.present? %>
-        <wa-icon name="<%= section.icon %>" variant="thin" class="section-icon" style="color: var(--list-color-<%= todo_list.color %>);"></wa-icon>
+        <i class="fa-light fa-<%= section.icon %> section-icon" style="color: var(--list-color-<%= todo_list.color %>);"></i>
       <% end %>
       <span class="section-name"><%= section.name %></span>
       <% active_items = section.todo_items.active %>
@@ -17,7 +17,7 @@
       </span>
       <% if list_editor? %>
         <button class="section-add-item" data-action="click->section-collapse#addItem" data-section-id="<%= section.id %>" data-list-id="<%= todo_list.id %>">
-          <wa-icon name="plus" variant="thin"></wa-icon>
+          <i class="fa-light fa-plus"></i>
           Add item
         </button>
         <%= render "todo_lists/section_context_menu", section: section, todo_list: todo_list %>

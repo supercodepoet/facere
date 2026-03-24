@@ -124,8 +124,8 @@
 
 ### Implementation for Phase 5
 
-- [x] T045 [US3] Create `_inline_section_input.html.erb` partial in `app/views/todo_lists/`: active section input row with icon picker trigger (current icon + chevron), text input (autofocus), keyboard hint ("Enter to create"). Include `wa-dropdown` with icon grid for icon selection. Match design from node `kxC0I`.
-- [x] T046 [US3] Create `inline_section_controller.js` Stimulus controller in `app/javascript/controllers/`: connect auto-focuses input, keydown Enter handler (POST via fetch to sections create endpoint), keydown Esc handler (remove input), selectIcon action (set selected icon value and update icon display via wa-dropdown wa-select event). Values: listId.
+- [x] T045 [US3] Create `_inline_section_input.html.erb` partial in `app/views/todo_lists/`: active section input row with icon picker trigger (current icon + chevron), text input (autofocus), keyboard hint ("Enter to create"). Include dropdown with icon grid for icon selection. Match design from node `kxC0I`.
+- [x] T046 [US3] Create `inline_section_controller.js` Stimulus controller in `app/javascript/controllers/`: connect auto-focuses input, keydown Enter handler (POST via fetch to sections create endpoint), keydown Esc handler (remove input), selectIcon action (set selected icon value and update icon display via dropdown select event). Values: listId.
 - [x] T047 [US3] Implement create action in TodoSectionsController `app/controllers/todo_sections_controller.rb`: accept turbo_stream format, on success respond with turbo_stream.append (new section partial with empty state) + turbo_stream.remove (inline input). Set position based on existing section count.
 - [x] T048 [US3] Wire "Add Section" button in show.html.erb top bar: clicking appends `_inline_section_input` partial below existing content.
 - [x] T049 [US3] Add CSS for inline section input (icon picker trigger, icon grid dropdown styling, section creation animation). Match design icon grid layout (5 icons per row, 40px button size).
@@ -147,11 +147,11 @@
 
 ### Implementation for Phase 6
 
-- [x] T052 [US4] Create `_item_context_menu.html.erb` partial in `app/views/todo_lists/`: `wa-dropdown` with `wa-dropdown-item` elements for Edit, Move..., Copy..., divider, Archive, Delete (variant="danger"), divider, Insert a to-do. Match design from node `9xhXA`.
-- [x] T053 [P] [US4] Create `_section_context_menu.html.erb` partial in `app/views/todo_lists/`: `wa-dropdown` with items for Edit, Move..., Copy..., divider, New list from group, divider, Archive group, Delete group (variant="danger"), divider, Insert a to-do. Match design from node `Df59j`.
-- [x] T054 [US4] Create `context_menu_controller.js` Stimulus controller in `app/javascript/controllers/`: listen for `wa-select` event on dropdown, dispatch actions based on `event.detail.item.value`. Handle: edit (toggle inline editing on item/section name), archive (PATCH archive endpoint via fetch), delete (open wa-dialog confirmation), insertTodo (insert inline item input at position). Move and Copy dispatch to respective modals (implemented in Phase 14).
+- [x] T052 [US4] Create `_item_context_menu.html.erb` partial in `app/views/todo_lists/`: dropdown menu with items for Edit, Move..., Copy..., divider, Archive, Delete (danger style), divider, Insert a to-do. Match design from node `9xhXA`.
+- [x] T053 [P] [US4] Create `_section_context_menu.html.erb` partial in `app/views/todo_lists/`: dropdown menu with items for Edit, Move..., Copy..., divider, New list from group, divider, Archive group, Delete group (danger style), divider, Insert a to-do. Match design from node `Df59j`.
+- [x] T054 [US4] Create `context_menu_controller.js` Stimulus controller in `app/javascript/controllers/`: listen for click events on dropdown items, dispatch actions based on item value. Handle: edit (toggle inline editing on item/section name), archive (PATCH archive endpoint via fetch), delete (open confirmation dialog), insertTodo (insert inline item input at position). Move and Copy dispatch to respective modals (implemented in Phase 14).
 - [x] T055 [US4] Implement update actions in TodoItemsController and TodoSectionsController: accept turbo_stream format, respond with turbo_stream.replace updating the item/section partial with new values.
-- [x] T056 [US13] Implement destroy actions in TodoItemsController and TodoSectionsController: accept turbo_stream format, respond with turbo_stream.remove. Section destroy cascades to all contained items. Add wa-dialog confirmation partial for delete confirmation.
+- [x] T056 [US13] Implement destroy actions in TodoItemsController and TodoSectionsController: accept turbo_stream format, respond with turbo_stream.remove. Section destroy cascades to all contained items. Add confirmation dialog partial for delete confirmation.
 - [x] T057 [US4] Add `archive` action to TodoItemsController and TodoSectionsController: PATCH sets archived flag, responds with turbo_stream.remove (hides from view). Section archive cascades to all items.
 - [x] T058 [US4] Add inline editing behavior: context_menu_controller edit action replaces item title/section name with an input field, Enter saves (PATCH), Esc cancels. Use Turbo Frame for seamless update.
 - [x] T059 [US4] Add CSS for context menu positioning, inline edit state (input replaces title text), delete confirmation dialog styling. Add fadeOut animation for deleted/archived items.
@@ -173,7 +173,7 @@
 
 ### Implementation for Phase 7
 
-- [x] T062 [US5] Create `drag_reorder_controller.js` Stimulus controller in `app/javascript/controllers/`: dragstart (add dragging class with rotation/shadow/purple border, show wa-tooltip hint), dragover (calculate drop position, show insertion indicator line, prevent default), dragend (remove all effects), drop (extract new position + section_id, send PATCH to reorder endpoint via fetch with Turbo Stream). Support dragging items within sections, between sections, and into/out of unsectioned area. Support dragging section headers to reorder entire sections.
+- [x] T062 [US5] Create `drag_reorder_controller.js` Stimulus controller in `app/javascript/controllers/`: dragstart (add dragging class with rotation/shadow/purple border, show tooltip hint), dragover (calculate drop position, show insertion indicator line, prevent default), dragend (remove all effects), drop (extract new position + section_id, send PATCH to reorder endpoint via fetch with Turbo Stream). Support dragging items within sections, between sections, and into/out of unsectioned area. Support dragging section headers to reorder entire sections.
 - [x] T063 [US5] Add `reorder` collection action to TodoItemsController in `app/controllers/todo_items_controller.rb`: accept `{ id, position, section_id }` params, update item position and section assignment in a transaction, recalculate positions for affected items, respond with turbo_stream updates.
 - [x] T064 [US5] Add `reorder` collection action to TodoSectionsController in `app/controllers/todo_sections_controller.rb`: accept `{ id, position }` params, update section position in a transaction, recalculate positions, respond with turbo_stream.
 - [x] T065 [US5] Add `draggable="true"` and drag controller data attributes to `_todo_item.html.erb`, `_todo_item_completed.html.erb`, and `_section.html.erb` partials. Add drag handle styling.
@@ -196,8 +196,8 @@
 
 ### Implementation for Phase 8
 
-- [x] T069 [US10] Wire quick action buttons in `_quick_actions.html.erb`: "Due date" button opens a native date input (type="date") or wa-input date picker, "Priority" button opens a wa-dropdown with None/Low/Medium/High options. Values set during inline creation via hidden fields in the create form.
-- [x] T070 [US10] Create `quick_actions_controller.js` Stimulus controller in `app/javascript/controllers/`: setDueDate action (show/toggle date input, update hidden field), setPriority action (wa-dropdown with priority options, update hidden field), assign action (single-user stub — show current user avatar).
+- [x] T069 [US10] Wire quick action buttons in `_quick_actions.html.erb`: "Due date" button opens a native date input (type="date"), "Priority" button opens a dropdown with None/Low/Medium/High options. Values set during inline creation via hidden fields in the create form.
+- [x] T070 [US10] Create `quick_actions_controller.js` Stimulus controller in `app/javascript/controllers/`: setDueDate action (show/toggle date input, update hidden field), setPriority action (dropdown with priority options, update hidden field), assign action (single-user stub — show current user avatar).
 - [x] T071 [US10] Update TodoItemsController create and update actions to accept due_date and priority params in strong params.
 - [x] T072 [US10] Update `_todo_item.html.erb` to render due date badge with color-coded styling (overdue/upcoming/future/far-future) and priority dot with correct color (none=hidden, low=teal, medium=orange, high=red). Use `item.due_date_style` helper method.
 - [x] T073 [US10] Add CSS for due date badge color variants (`.due-badge--danger`, `.due-badge--warning`, `.due-badge--info`, `.due-badge--success`) and priority dot colors (`.priority-dot--low`, `.priority-dot--medium`, `.priority-dot--high`). Add subtle pulse animation on overdue badges.
@@ -332,7 +332,7 @@
 - [x] T102 [US14] Implement `move` member action in TodoItemsController `app/controllers/todo_items_controller.rb`: accept target_section_id (nil for unsectioned) and target_position params, update item's section and position in transaction, recalculate positions, respond with Turbo Stream (remove from old location, append to new).
 - [x] T103 [US14] Implement `copy` member action in TodoItemsController: duplicate item attributes (name, due_date, priority, status) to target section/position, respond with Turbo Stream append.
 - [x] T104 [US14] Implement `move` action in TodoSectionsController: accept target_position, update section position in transaction.
-- [x] T105 [US14] Create move/copy destination picker: `wa-dialog` with list of sections (+ "Items without section" option) as selectable items. Opened by context_menu_controller when Move/Copy actions are selected. Include section icons and item counts.
+- [x] T105 [US14] Create move/copy destination picker: modal dialog with list of sections (+ "Items without section" option) as selectable items. Opened by context_menu_controller when Move/Copy actions are selected. Include section icons and item counts.
 - [x] T106 [US14] Update `context_menu_controller.js` to wire Move and Copy actions to open the destination picker dialog, capture selection, and send appropriate PATCH/POST request.
 - [x] T107 [US14] Add CSS for destination picker dialog: section list items with icons, selected state, confirm/cancel buttons.
 
@@ -532,6 +532,6 @@ Phase 8 (Due Date/Priority) — Developer B (after Phase 6)
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
 - All UI must be validated against `todo-list-item-screens.pen` design reference
-- Web Awesome components: wa-dropdown, wa-dropdown-item, wa-dialog, wa-tooltip, wa-button, wa-icon, wa-input
+- Standard HTML elements with CSS styling. Font Awesome Pro icons via `<i>` tags (e.g., `<i class="fa-thin fa-icon-name"></i>`)
 - Font Awesome icons throughout (variant="thin" for list items)
 - ActionText/Trix for notes (D1 in plan.md — Fizzy is NOT an editor)

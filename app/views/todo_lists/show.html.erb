@@ -7,16 +7,16 @@
     <div class="show-header">
       <div class="show-header-left">
         <%= link_to todo_lists_path, class: "show-back-btn", aria: { label: "Back to lists" } do %>
-          <wa-icon name="arrow-left" variant="thin"></wa-icon>
+          <i class="fa-light fa-arrow-left"></i>
         <% end %>
         <div class="show-title-group">
           <% if @todo_list.icon.present? %>
-            <wa-icon name="<%= @todo_list.icon %>" variant="thin" class="show-title-icon" style="color: var(--list-color-<%= @todo_list.color %>);"></wa-icon>
+            <i class="fa-light fa-<%= @todo_list.icon %> show-title-icon" style="color: var(--list-color-<%= @todo_list.color %>);"></i>
           <% end %>
           <h1 class="show-title"><%= @todo_list.name %></h1>
           <% if list_owner? %>
             <%= link_to edit_todo_list_path(@todo_list), class: "show-edit-btn", aria: { label: "Edit list" } do %>
-              <wa-icon name="pen" variant="thin"></wa-icon>
+              <i class="fa-light fa-pen"></i>
             <% end %>
           <% end %>
         </div>
@@ -25,21 +25,21 @@
       <div class="show-header-right">
         <% if list_editor? %>
           <button class="show-action-btn show-action-btn-section" data-action="click->show-actions#addSection">
-            <wa-icon name="folder-plus" variant="thin"></wa-icon>
+            <i class="fa-light fa-folder-plus"></i>
             Add Section
           </button>
           <button class="show-action-btn show-action-btn-primary" data-action="click->show-actions#addItem">
-            <wa-icon name="plus" variant="thin"></wa-icon>
+            <i class="fa-light fa-plus"></i>
             Add Item
           </button>
         <% end %>
         <button class="show-action-btn" data-action="click->collaboration#toggle" aria-label="Collaboration">
-          <wa-icon name="users" variant="thin"></wa-icon>
+          <i class="fa-light fa-users"></i>
           Share
         </button>
         <% if list_owner? %>
-          <button class="show-action-btn show-action-btn-danger" onclick="document.getElementById('delete-dialog-<%= @todo_list.id %>').show()" aria-label="Delete list">
-            <wa-icon name="trash" variant="thin"></wa-icon>
+          <button class="show-action-btn show-action-btn-danger" onclick="document.getElementById('delete-dialog-<%= @todo_list.id %>').classList.add('delete-modal--open')" aria-label="Delete list">
+            <i class="fa-light fa-trash"></i>
           </button>
         <% end %>
       </div>
@@ -55,17 +55,17 @@
 
     <div class="empty-list-slate" data-show-actions-target="emptySlate" <% if has_content %>style="display: none;"<% end %>>
       <div class="empty-list-illustration">
-        <wa-icon name="party-horn" variant="thin"></wa-icon>
+        <i class="fa-light fa-party-horn"></i>
       </div>
       <h2>Your list is ready! ✏️</h2>
       <p>"<%= @todo_list.name %>" has been created. Start adding items and sections to bring it to life!</p>
       <div class="empty-list-actions">
         <button class="show-action-btn show-action-btn-primary" data-action="click->show-actions#addItem">
-          <wa-icon name="plus" variant="thin"></wa-icon>
+          <i class="fa-light fa-plus"></i>
           Add First Item
         </button>
         <button class="show-action-btn" data-action="click->show-actions#addSection">
-          <wa-icon name="folder-plus" variant="thin"></wa-icon>
+          <i class="fa-light fa-folder-plus"></i>
           Add Section
         </button>
       </div>

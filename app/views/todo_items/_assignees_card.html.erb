@@ -16,7 +16,7 @@
           <% item_assignee = item.item_assignees.find { |ia| ia.user_id == assignee.id } %>
           <% if item_assignee %>
             <%= button_to todo_list_todo_item_item_assignee_path(todo_list, item, item_assignee), method: :delete, class: "detail-card-icon-btn" do %>
-              <wa-icon name="xmark" style="color: #A1A1AA;"></wa-icon>
+              <i class="fa-solid fa-xmark" style="color: #A1A1AA;"></i>
             <% end %>
           <% end %>
         <% end %>
@@ -37,7 +37,7 @@
                 <%= member.initials %>
               </div>
               <span><%= member.name %></span>
-              <wa-icon name="plus" variant="thin" style="color: #8B5CF6; margin-left: auto;"></wa-icon>
+              <i class="fa-light fa-plus" style="color: #8B5CF6; margin-left: auto;"></i>
             </button>
           <% end %>
         <% end %>

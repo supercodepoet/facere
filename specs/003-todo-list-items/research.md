@@ -19,20 +19,18 @@ ActionText with Trix is the safest, most Rails-conventional choice. When Lexxy r
 - Plain textarea + markdown parser (no WYSIWYG editing, poor UX)
 - Third-party editors (SimpleMDE, EasyMDE) — violates Library-First principle when Rails has ActionText built in
 
-## R2: Web Awesome Components for Context Menus
+## R2: Context Menu Implementation
 
-**Decision**: Use `wa-dropdown` + `wa-dropdown-item`
+**Decision**: Use custom HTML dropdown menus with Stimulus controllers
 
-**Rationale**: Web Awesome Pro does NOT have `wa-menu` or `wa-menu-item` components (404 on docs). The `wa-dropdown` component with `wa-dropdown-item` children serves as the menu system. Key features:
-- `variant="danger"` for destructive actions (Delete)
-- `wa-select` event for action dispatch (bubbles, works with Stimulus)
-- Built-in transitions and focus management
-- Trigger slot for button that opens the dropdown
+**Rationale**: Custom HTML dropdown menus provide full control over styling and behavior. Key features:
+- CSS classes for destructive actions (Delete shown in red)
+- Click events for action dispatch (work with Stimulus)
+- CSS transitions for show/hide
+- Trigger button that opens the dropdown
 
 **Alternatives considered**:
-- Custom HTML/CSS menu (violates Library-First; WA component exists)
-- `wa-popup` (low-level positioning utility, no accessibility built-in)
-- `wa-popover` (designed for interactive content but not menu patterns)
+- Third-party dropdown libraries: Rejected — custom HTML with Stimulus is simpler and sufficient
 
 ## R3: Drag-and-Drop Implementation
 

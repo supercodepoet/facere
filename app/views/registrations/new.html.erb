@@ -19,7 +19,7 @@
           data-form-validation-target="name"
           data-action="wa-input->form-validation#clearError"
         >
-          <wa-icon slot="start" name="user" variant="thin" style="color: var(--color-zinc-400);"></wa-icon>
+          <i class="fa-light fa-user" style="color: var(--color-zinc-400);"></i>
         </wa-input>
       </div>
 
@@ -33,7 +33,7 @@
           data-form-validation-target="email"
           data-action="wa-input->form-validation#validateEmail"
         >
-          <wa-icon slot="start" name="envelope" variant="thin" style="color: var(--color-zinc-400);"></wa-icon>
+          <i class="fa-light fa-envelope" style="color: var(--color-zinc-400);"></i>
         </wa-input>
       </div>
 
@@ -48,18 +48,16 @@
           data-password-visibility-target="input"
           data-action="wa-input->form-validation#validatePassword"
         >
-          <wa-icon slot="start" name="lock" variant="thin" style="color: var(--color-zinc-400);"></wa-icon>
-          <wa-icon
-            slot="end"
-            name="eye-slash"
-            variant="thin"
+          <i class="fa-light fa-lock" style="color: var(--color-zinc-400);"></i>
+          <i
+            class="fa-light fa-eye-slash"
             data-action="click->password-visibility#toggle"
             data-password-visibility-target="toggle"
             style="color: var(--color-zinc-400); cursor: pointer; padding: 4px;"
             role="button"
             tabindex="0"
             aria-label="Toggle password visibility"
-          ></wa-icon>
+          ></i>
         </wa-input>
       </div>
 
@@ -73,18 +71,16 @@
           data-password-visibility-target="input"
           data-action="wa-input->form-validation#validatePasswordConfirmation"
         >
-          <wa-icon slot="start" name="lock" variant="thin" style="color: var(--color-zinc-400);"></wa-icon>
-          <wa-icon
-            slot="end"
-            name="eye-slash"
-            variant="thin"
+          <i class="fa-light fa-lock" style="color: var(--color-zinc-400);"></i>
+          <i
+            class="fa-light fa-eye-slash"
             data-action="click->password-visibility#toggle"
             data-password-visibility-target="toggle"
             style="color: var(--color-zinc-400); cursor: pointer; padding: 4px;"
             role="button"
             tabindex="0"
             aria-label="Toggle password visibility"
-          ></wa-icon>
+          ></i>
         </wa-input>
       </div>
 
@@ -103,21 +99,20 @@
 
     <% if @user.errors.any? %>
       <wa-callout variant="danger" open>
-        <wa-icon slot="icon" name="circle-exclamation" variant="thin"></wa-icon>
+        <i class="fa-light fa-circle-exclamation"></i>
         <% @user.errors.full_messages.each do |msg| %>
           <div><%= msg %></div>
         <% end %>
       </wa-callout>
     <% end %>
 
-    <wa-button
-      variant="brand"
+    <button
       class="auth-primary-btn"
       type="submit"
       data-turbo-submits-with="Creating account..."
     >
       Create Account
-    </wa-button>
+    </button>
   <% end %>
 
   <div class="auth-divider">

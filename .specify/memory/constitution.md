@@ -69,11 +69,9 @@ makes users want to return. The UI/UX is the primary differentiator
 and MUST NOT feel generic or utilitarian.
 
 - MUST be fully responsive across all mobile devices and desktop screens
-- MUST use Web Awesome Pro (https://webawesome.com) for all UI
-  components, theming, and the design system
-- MUST use Font Awesome Pro (https://fontawesome.com) for all iconography
-- MUST ensure Web Awesome components integrate cleanly with Stimulus
-  controllers
+- MUST use Font Awesome Pro (https://fontawesome.com) for all iconography;
+  icons use standard `<i>` tags with Font Awesome classes
+  (e.g. `<i class="fa-thin fa-icon-name"></i>`)
 - MUST prioritize micro-interactions, animations, and visual polish
   that convey friendliness
 - MUST NOT ship generic, unstyled, or purely functional interfaces
@@ -161,8 +159,8 @@ justified by current requirements, not hypothetical future needs.
 - **Ruby Version**: Per `.ruby-version` in repository root
 - **Front-End Interactivity**: Hotwire (Turbo Drive, Turbo Frames,
   Turbo Streams, Stimulus)
-- **UI Components & Theming**: Web Awesome Pro
-- **Iconography**: Font Awesome Pro
+- **Iconography**: Font Awesome Pro (CDN kit); icons use standard `<i>` tags
+  with Font Awesome classes (e.g. `<i class="fa-thin fa-icon-name"></i>`)
 - **Database**: SQLite (Rails 8.1 default for development); production
   database per deployment configuration
 - **Asset Pipeline**: Propshaft + Importmap (Rails 8.1 defaults)
@@ -176,45 +174,6 @@ justified by current requirements, not hypothetical future needs.
 All technology choices MUST align with the Vanilla Rails First
 principle. Deviations require explicit justification in the relevant
 plan document's Complexity Tracking table.
-
-### Web Awesome Pro Integration Rules
-
-Learned through implementation of TODO Lists feature (002):
-
-- **No `wa-icon-button`**: This component does not exist. For icon-only
-  buttons, use `<wa-button>` with a `<wa-icon>` in the default slot
-- **Slots**: Use `slot="start"` and `slot="end"` for icons inside
-  `wa-button` and `wa-input` — NOT `slot="prefix"` or `slot="suffix"`
-- **Appearance**: Use `appearance="outlined"` attribute — NOT boolean
-  `outline` attribute
-- **Stimulus events on custom elements**: `wa-button` has NO default
-  Stimulus event. MUST use explicit `click->controller#method` syntax
-  on all `wa-button` data-action attributes. Omitting the event
-  silently fails
-- **`wa-input` styling**: Use the `pill` attribute for rounded corners.
-  Style via CSS custom properties (`--wa-input-height-medium`,
-  `--wa-input-spacing-medium`), NOT `::part(base)` padding overrides
-  which clip placeholder text
-- **`wa-input` in system tests**: Shadow DOM prevents Capybara from
-  using `fill_in`. Use `find()` to wait for element presence, then
-  `execute_script` to set `.value` and dispatch `wa-change` event.
-  Never use top-level `await` in `execute_script`
-- **`wa-dropdown` for menus**: No `wa-menu` or `wa-menu-item` components
-  exist. Use `<wa-dropdown>` + `<wa-dropdown-item>` for all menu/context
-  menu patterns. Listen for `wa-select` event on the dropdown.
-  `variant="danger"` for destructive actions
-- **Stimulus controller scope**: `data-controller` MUST be on an ancestor
-  element of ALL `data-*-target` elements. Targets CANNOT be siblings.
-  When combining `wa-dropdown` with hidden form targets, wrap both in a
-  container `<div>` with the controller attribute
-- **`wa-input` in form submissions**: Shadow DOM means `wa-input`
-  `name` attributes do NOT submit values in regular HTML forms. The
-  value stays inside the shadow root and never reaches `FormData`.
-  For forms that must submit data (invitation forms, search filters),
-  use plain `<input>` elements instead. Reserve `wa-input` for
-  display-only contexts or Stimulus-controlled forms where JavaScript
-  reads the value explicitly
-- **Reference**: https://webawesome.com/docs/components/button/
 
 ### Lexxy Integration Rules
 
@@ -268,9 +227,6 @@ Learned through implementation of TODO List Items feature (003):
   default scope (e.g., `-> { active }`), controller `find` calls
   will exclude scoped-out records. Use an unscoped association
   for lookups that should operate on all records (e.g., archived)
-- **System tests with Web Awesome**: When setting `wa-input` values,
-  dispatch multiple events (`wa-input`, `wa-change`, `input`,
-  `change`) to ensure form data syncs through shadow DOM
 - **`button_to` in flex layouts**: `button_to` generates `<form><button>`
   wrappers. Inside flex containers, these `<form>` elements break layout
   (block elements with default margins, hidden inputs leak into flex
@@ -372,7 +328,6 @@ Learned through implementation of List Collaboration feature (005):
 - **Code Review**: All changes MUST pass review against constitution
   principles before merge
 - **Accessibility**: UI components MUST meet WCAG 2.1 AA standards
-  as supported by Web Awesome Pro
 - **Performance**: Pages MUST render server-side HTML via Turbo; avoid
   full-page reloads for in-app navigation
 - **Security**: Follow Rails security best practices (CSRF protection,

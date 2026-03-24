@@ -10,7 +10,7 @@ Build a comprehensive TODO item detail screen with two-column layout supporting:
 ## Technical Context
 
 **Language/Version**: Ruby 4.0.1 / Rails 8.1.2
-**Primary Dependencies**: Hotwire (Turbo Drive + Turbo Streams + Turbo Frames + Stimulus), Web Awesome Pro (CDN), Font Awesome Pro (CDN), Lexxy (~> 0.1.26.beta, new), ActionText (Rails built-in), Active Storage (Rails built-in)
+**Primary Dependencies**: Hotwire (Turbo Drive + Turbo Streams + Turbo Frames + Stimulus), Font Awesome Pro (CDN kit), Lexxy (~> 0.1.26.beta, new), ActionText (Rails built-in), Active Storage (Rails built-in)
 **Storage**: SQLite (all environments)
 **Testing**: Minitest + Capybara + Selenium
 **Target Platform**: Web application (desktop + responsive mobile)
@@ -116,7 +116,7 @@ test/
 
 **Structure Decision**: Standard Rails monolith structure, following existing patterns. New files follow the established naming conventions. No new directories needed beyond what Rails conventions provide.
 
-**Icon Mapping Note**: The .pen design file uses Lucide icon names. Implementation MUST use Font Awesome Pro icons via `<wa-icon>` per constitution. A mapping from design names to Font Awesome names is required (e.g., `trash-2` → `trash`, `send` → `paper-plane`, `x` → `xmark`).
+**Icon Mapping Note**: The .pen design file uses Lucide icon names. Implementation MUST use Font Awesome Pro icons via `<i>` tags with Font Awesome classes (e.g., `<i class="fa-thin fa-trash"></i>`). A mapping from design names to Font Awesome names is required (e.g., `trash-2` → `trash`, `send` → `paper-plane`, `x` → `xmark`).
 
 ## Complexity Tracking
 

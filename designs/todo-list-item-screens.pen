@@ -2561,6 +2561,91 @@
                           ]
                         }
                       ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "YvJ63",
+                      "name": "Top Bar Right",
+                      "gap": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "QEe0P",
+                          "name": "Mark Complete",
+                          "fill": "$accent-teal",
+                          "cornerRadius": 10,
+                          "gap": 6,
+                          "padding": [
+                            8,
+                            16
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "Icibf",
+                              "name": "completeIcon",
+                              "width": 16,
+                              "height": 16,
+                              "iconFontName": "circle-check",
+                              "iconFontFamily": "lucide",
+                              "fill": "$white"
+                            },
+                            {
+                              "type": "text",
+                              "id": "DLnWG",
+                              "name": "completeText",
+                              "fill": "$white",
+                              "content": "Mark Complete",
+                              "fontFamily": "Inter",
+                              "fontSize": 13,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "rCKKh",
+                          "name": "Delete Item",
+                          "cornerRadius": 10,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 1,
+                            "fill": "$danger-soft"
+                          },
+                          "gap": 6,
+                          "padding": [
+                            8,
+                            12
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "9G8U3",
+                              "name": "deleteIcon",
+                              "width": 15,
+                              "height": 15,
+                              "iconFontName": "trash-2",
+                              "iconFontFamily": "lucide",
+                              "fill": "$danger"
+                            },
+                            {
+                              "type": "text",
+                              "id": "iO5RW",
+                              "name": "deleteText",
+                              "fill": "$danger",
+                              "content": "Delete",
+                              "fontFamily": "Inter",
+                              "fontSize": 13,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 },
@@ -5332,94 +5417,6 @@
                                   "content": "Add tag",
                                   "fontFamily": "Inter",
                                   "fontSize": 12,
-                                  "fontWeight": "500"
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "QuYin",
-                          "name": "Actions Card",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "KUJOv",
-                              "name": "Mark Complete",
-                              "width": "fill_container",
-                              "fill": "$accent-teal",
-                              "cornerRadius": 14,
-                              "gap": 8,
-                              "padding": [
-                                14,
-                                0
-                              ],
-                              "justifyContent": "center",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "icon_font",
-                                  "id": "r8fAH",
-                                  "name": "markCompleteIcon",
-                                  "width": 18,
-                                  "height": 18,
-                                  "iconFontName": "circle-check",
-                                  "iconFontFamily": "lucide",
-                                  "fill": "$white"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "CkmQk",
-                                  "name": "markCompleteText",
-                                  "fill": "$white",
-                                  "content": "Mark Complete",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 14,
-                                  "fontWeight": "600"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "pMVPE",
-                              "name": "Delete Item",
-                              "width": "fill_container",
-                              "cornerRadius": 14,
-                              "stroke": {
-                                "align": "inside",
-                                "thickness": 1,
-                                "fill": "$danger-soft"
-                              },
-                              "gap": 8,
-                              "padding": [
-                                14,
-                                0
-                              ],
-                              "justifyContent": "center",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "icon_font",
-                                  "id": "FkGTd",
-                                  "name": "deleteItemIcon",
-                                  "width": 16,
-                                  "height": 16,
-                                  "iconFontName": "trash-2",
-                                  "iconFontFamily": "lucide",
-                                  "fill": "$danger"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "RCrVR",
-                                  "name": "deleteItemText",
-                                  "fill": "$danger",
-                                  "content": "Delete Item",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 14,
                                   "fontWeight": "500"
                                 }
                               ]

@@ -10,7 +10,7 @@ Polish the TODO List Detail and TODO Item Detail screens to match the visual ref
 ## Technical Context
 
 **Language/Version**: Ruby 4.0.1 / Rails 8.1.2
-**Primary Dependencies**: Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), Web Awesome Pro (CDN), Font Awesome Pro (CDN), Lexxy (rich text), Active Storage (file uploads), ActionText
+**Primary Dependencies**: Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), Font Awesome Pro (CDN kit), Lexxy (rich text), Active Storage (file uploads), ActionText
 **Storage**: SQLite (all environments)
 **Testing**: Minitest + Capybara + Selenium
 **Target Platform**: Web (responsive — desktop + mobile)
@@ -26,7 +26,7 @@ Polish the TODO List Detail and TODO Item Detail screens to match the visual ref
 | Principle | Status | Notes |
 |-----------|--------|-------|
 | I. Vanilla Rails First | **PASS** | All changes use ERB, Stimulus, Turbo — no new JS frameworks |
-| II. Library-First | **PASS** | Using existing Web Awesome Pro components (wa-dropdown, wa-icon) |
+| II. Library-First | **PASS** | Using Font Awesome Pro icons via `<i>` tags with Font Awesome classes |
 | III. Joyful User Experience | **PASS** | Entire feature is about matching the polished .pen design |
 | IV. Clean Architecture & DDD | **PASS** | View-only changes, no business logic modifications |
 | V. Code Quality & Readability | **PASS** | Partials stay under 200 lines, Stimulus controllers focused |

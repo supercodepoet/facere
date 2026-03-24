@@ -2,22 +2,24 @@
      data-controller="inline-section"
      data-inline-section-list-id-value="<%= todo_list.id %>">
   <div class="active-section-input">
-    <wa-dropdown placement="bottom-start" data-inline-section-target="iconDropdown">
-      <button slot="trigger" type="button" class="section-icon-picker-btn">
-        <wa-icon name="folder" variant="thin" data-inline-section-target="iconDisplay" class="section-icon-picker-icon"></wa-icon>
-        <wa-icon name="chevron-down" variant="thin" class="section-icon-picker-chevron"></wa-icon>
+    <div class="dropdown-wrap" data-controller="dropdown" data-inline-section-target="iconDropdown">
+      <button type="button" class="section-icon-picker-btn" data-action="click->dropdown#toggle">
+        <i class="fa-light fa-folder section-icon-picker-icon" data-inline-section-target="iconDisplay"></i>
+        <i class="fa-light fa-chevron-down section-icon-picker-chevron"></i>
       </button>
-      <div class="section-icon-dropdown">
-        <span class="section-icon-dropdown-label">Choose an icon</span>
-        <div class="section-icon-grid">
-          <% %w[cart-shopping briefcase house heart book-open code palette wrench star bolt].each do |icon_name| %>
-            <button type="button" class="section-icon-grid-btn" data-action="click->inline-section#selectIcon" data-icon="<%= icon_name %>">
-              <wa-icon name="<%= icon_name %>" variant="thin"></wa-icon>
-            </button>
-          <% end %>
+      <div class="dropdown-menu dropdown-menu--left" data-dropdown-target="menu">
+        <div class="section-icon-dropdown">
+          <span class="section-icon-dropdown-label">Choose an icon</span>
+          <div class="section-icon-grid">
+            <% %w[cart-shopping briefcase house heart book-open code palette wrench star bolt].each do |icon_name| %>
+              <button type="button" class="section-icon-grid-btn" data-action="click->inline-section#selectIcon" data-icon="<%= icon_name %>">
+                <i class="fa-light fa-<%= icon_name %>"></i>
+              </button>
+            <% end %>
+          </div>
         </div>
       </div>
-    </wa-dropdown>
+    </div>
     <input type="text" class="inline-section-text" placeholder="Section name..."
            data-inline-section-target="input"
            data-action="keydown->inline-section#handleKeydown"

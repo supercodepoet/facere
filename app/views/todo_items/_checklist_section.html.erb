@@ -1,6 +1,6 @@
 <div class="detail-section" data-controller="checklist-add">
   <div class="detail-section-header">
-    <wa-icon name="list-check" variant="thin" class="detail-section-icon" style="color: #8B5CF6;"></wa-icon>
+    <i class="fa-light fa-list-check detail-section-icon" style="color: #8B5CF6;"></i>
     <span class="detail-section-title">Checklist</span>
     <% total = item.checklist_items.size %>
     <% done = item.checklist_items.count(&:completed?) %>
@@ -9,7 +9,7 @@
     <% end %>
     <div class="detail-section-spacer"></div>
     <button type="button" class="detail-section-add-btn" data-action="click->checklist-add#show">
-      <wa-icon name="plus" variant="thin"></wa-icon>
+      <i class="fa-light fa-plus"></i>
       Add
     </button>
   </div>
@@ -19,7 +19,7 @@
         <%= link_to toggle_todo_list_todo_item_checklist_item_path(todo_list, item, check_item), data: { turbo_method: :patch }, class: "checklist-toggle" do %>
           <% if check_item.completed? %>
             <div class="checklist-box checklist-box--checked">
-              <wa-icon name="check" style="color: #FFFFFF; font-size: 12px;"></wa-icon>
+              <i class="fa-solid fa-check" style="color: #FFFFFF; font-size: 12px;"></i>
             </div>
           <% else %>
             <div class="checklist-box"></div>
@@ -30,7 +30,7 @@
           <%= f.text_field :name, value: check_item.name, class: "checklist-edit-input", name: "checklist_item[name]", data: { inline_edit_target: "input", action: "keydown.enter->inline-edit#save keydown.esc->inline-edit#cancel" } %>
         <% end %>
         <%= link_to todo_list_todo_item_checklist_item_path(todo_list, item, check_item), data: { turbo_method: :delete, turbo_confirm: "Delete this item?" }, class: "checklist-remove" do %>
-          <wa-icon name="xmark" variant="thin" style="color: #A1A1AA;"></wa-icon>
+          <i class="fa-light fa-xmark" style="color: #A1A1AA;"></i>
         <% end %>
       </div>
     <% end %>

@@ -1,20 +1,22 @@
-<wa-dialog id="delete-dialog-<%= todo_list.id %>" class="delete-dialog" label="Delete confirmation">
-  <div class="delete-modal-content">
-    <div class="delete-modal-icon">
-      <wa-icon name="trash" variant="thin"></wa-icon>
-    </div>
+<div id="delete-dialog-<%= todo_list.id %>" class="delete-modal-overlay" data-controller="modal" data-action="click->modal#backdropClose">
+  <div class="delete-modal-panel" data-action="click->modal#stopPropagation">
+    <div class="delete-modal-content">
+      <div class="delete-modal-icon">
+        <i class="fa-light fa-trash"></i>
+      </div>
 
-    <h2>Delete this list?</h2>
-    <p>This will permanently delete all tasks in this list. You won't be able to undo this action.</p>
+      <h2>Delete this list?</h2>
+      <p>This will permanently delete all tasks in this list. You won't be able to undo this action.</p>
 
-    <div class="delete-modal-actions">
-      <button class="delete-cancel-btn" onclick="this.closest('wa-dialog').hide()">
-        Cancel
-      </button>
-      <%= button_to todo_list_path(todo_list), method: :delete, class: "delete-confirm-btn" do %>
-        <wa-icon name="trash" variant="thin"></wa-icon>
-        Delete
-      <% end %>
+      <div class="delete-modal-actions">
+        <button class="delete-cancel-btn" data-action="click->modal#close">
+          Cancel
+        </button>
+        <%= button_to todo_list_path(todo_list), method: :delete, class: "delete-confirm-btn" do %>
+          <i class="fa-light fa-trash"></i>
+          Delete
+        <% end %>
+      </div>
     </div>
   </div>
-</wa-dialog>
+</div>

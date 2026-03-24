@@ -52,9 +52,9 @@
 
 ### Implementation for User Story 2
 
-- [x] T010 [P] [US2] Read and update app/views/todo_lists/_section_context_menu.html.erb to include all options from design: Edit, Move..., Copy..., New list from group, Archive group, Delete group, Insert a to-do — using wa-dropdown + wa-dropdown-item per constitution rules
-- [x] T011 [P] [US2] Read and update app/views/todo_lists/_item_context_menu.html.erb to include all options from design: Edit, Move..., Copy..., Archive, Delete — using wa-dropdown + wa-dropdown-item, with variant="danger" for Delete per constitution rules
-- [x] T012 [US2] Ensure destructive context menu actions (Delete group, Delete item) show a confirmation dialog before executing (use turbo_confirm or wa-dialog)
+- [x] T010 [P] [US2] Read and update app/views/todo_lists/_section_context_menu.html.erb to include all options from design: Edit, Move..., Copy..., New list from group, Archive group, Delete group, Insert a to-do — using standard dropdown markup per constitution rules
+- [x] T011 [P] [US2] Read and update app/views/todo_lists/_item_context_menu.html.erb to include all options from design: Edit, Move..., Copy..., Archive, Delete — using standard dropdown markup, with danger styling for Delete per constitution rules
+- [x] T012 [US2] Ensure destructive context menu actions (Delete group, Delete item) show a confirmation dialog before executing (use turbo_confirm or a confirmation dialog)
 - [x] T013 [US2] Ensure "Archive group" on section context menu archives the section and all its items (existing controller action — verify wiring)
 - [x] T014 [US2] Verify all context menu actions are properly connected to existing controller routes (edit, move, copy, archive, delete for items; same for sections)
 - [x] T014a [US2] Implement Move/Copy destination picker for items — when "Move..." or "Copy..." is clicked, show an inline dropdown or modal listing the sections in the current list (plus "No section") as destination options. On selection, submit to the existing move/copy controller actions with target_section_id and target_position params
@@ -95,7 +95,7 @@
 
 ### User Story 5 — Due Date Calendar
 
-- [x] T021 [P] [US5] Read and update app/views/todo_items/_due_date_card.html.erb to ensure the date picker works — use native `<input type="date">` or wa-input type="date" for calendar overlay, pre-populate with existing due date, and include a clear date option
+- [x] T021 [P] [US5] Read and update app/views/todo_items/_due_date_card.html.erb to ensure the date picker works — use native `<input type="date">` for calendar overlay, pre-populate with existing due date, and include a clear date option
 - [x] T022 [US5] Verify the date selection saves via PATCH to the todo_item update action and the card display updates with the formatted date (e.g., "March 10, 2026")
 - [x] T023 [US5] Read app/javascript/controllers/date_picker_controller.js (if exists) and verify it handles date selection, form submission, and display update
 
@@ -172,6 +172,6 @@
 - This is a **view-layer only** feature — no models, migrations, or new routes
 - All partials already exist — modifications only
 - Always compare against the .pen design screenshots after changes
-- Use `wa-dropdown` + `wa-dropdown-item` for all menus per constitution
-- Use plain `<input>` elements for form fields (not `wa-input`) per constitution lesson from feature 005
+- Use standard dropdown markup for all menus per constitution
+- Use plain `<input>` elements for form fields per constitution lesson from feature 005
 - File type icons and colors already exist as model methods: `TodoItem#file_type_icon`, `TodoItem#file_type_color`

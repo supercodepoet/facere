@@ -1,6 +1,6 @@
 Using our existing Ruby on Rails application, we need to implement our TODO List screen flows.
-We want to use our existing Font Awesome Pro kits for our icons and Web Awesome Pro kits to serve the
-Web Components we want to use to build out HTML. Stimulus needs to be able to control any client
+We want to use our existing Font Awesome Pro kits for our icons, with standard `<i>` tags and Font Awesome classes.
+Stimulus needs to be able to control any client
 to server interactions. Look to use Turbo and Stimulus to provide client side interactions.
 
 Use the initial-screens.pen file for the visual reference and source of truth of the UI/UX.

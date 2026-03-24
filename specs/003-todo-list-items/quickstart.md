@@ -6,7 +6,7 @@
 
 - Ruby 4.0.1 / Rails 8.1.2 (already configured)
 - SQLite (already configured)
-- Web Awesome Pro CDN (already in app layout)
+- Font Awesome Pro CDN (already in app layout)
 - Font Awesome Pro CDN (already in app layout)
 - Feature 002 (TODO Lists) must be complete and merged
 
@@ -102,4 +102,4 @@ mcp__pencil__get_screenshot(filePath: "designs/todo-list-item-screens.pen", node
 - **Model tests**: Validations, scopes, business logic (toggle, archive, due date styling)
 - **Controller tests**: CRUD actions, authorization (scoped to user), parameter injection, Turbo Stream responses
 - **System tests**: Inline creation (Enter/Esc), drag-and-drop, context menus, item detail interactions
-- **Web Awesome helpers**: Use `execute_script` for shadow DOM interactions (wa-input, wa-button, wa-dropdown)
+- **System test helpers**: Standard Capybara interactions for native HTML elements

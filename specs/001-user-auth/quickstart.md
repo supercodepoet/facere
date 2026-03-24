@@ -58,13 +58,12 @@ omniauth:
     private_key: YOUR_APPLE_PRIVATE_KEY
 ```
 
-### 5. Configure Web Awesome Pro and Font Awesome Pro
+### 5. Configure Font Awesome Pro
 
-Add CDN kit script tags to `app/views/layouts/application.html.erb`:
+Add CDN kit script tag to `app/views/layouts/application.html.erb`:
 
 ```html
 <!-- In <head> section -->
-<script src="https://kit.webawesome.com/YOUR_KIT_ID.js"></script>
 <script src="https://kit.fontawesome.com/YOUR_KIT_ID.js"></script>
 ```
 

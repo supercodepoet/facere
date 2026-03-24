@@ -1,7 +1,7 @@
 <aside class="sidebar" data-controller="list-search">
   <div class="sidebar-search">
     <wa-input placeholder="Search lists..." size="small" data-action="input->list-search#filter" data-list-search-target="input">
-      <wa-icon slot="start" name="magnifying-glass" variant="thin"></wa-icon>
+      <i class="fa-light fa-magnifying-glass"></i>
     </wa-input>
   </div>
 
@@ -38,7 +38,7 @@
   <% end %>
 
   <%= link_to new_todo_list_path, class: "sidebar-new-btn" do %>
-    <wa-icon name="plus" variant="thin"></wa-icon>
+    <i class="fa-light fa-plus"></i>
     New List
   <% end %>
 </aside>

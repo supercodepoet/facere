@@ -23,8 +23,8 @@
 
 ### `todo_lists/new.html.erb`
 - Full-page form within content area (no sidebar)
-- Fields: List Name (`wa-input`), Icon picker (grid of `wa-icon` buttons), Color picker (swatches), Description (`wa-textarea`), Template picker (card grid with radio behavior)
-- Actions: Cancel (link back), Create List (`wa-button` brand)
+- Fields: List Name (`<input>`), Icon picker (grid of buttons with `<i>` Font Awesome icons), Color picker (swatches), Description (`<textarea>`), Template picker (card grid with radio behavior)
+- Actions: Cancel (link back), Create List (`<button>` styled primary)
 - Error state: Custom `.form-error-banner` (triangle-exclamation icon, #FEE2E2 bg, 16px radius) at top, field-level error styling (red border, #FEF2F2 bg + error message)
 
 ### `todo_lists/edit.html.erb`
@@ -50,7 +50,7 @@
 - Left sidebar with search input, "MY LISTS" header, list of links with colored dots, "+ New List" button at bottom
 
 ### `todo_lists/_delete_confirmation.html.erb` (partial)
-- `wa-dialog` modal: trash icon, "Delete this list?" heading, warning text, Cancel and Delete buttons
+- Modal dialog: trash icon, "Delete this list?" heading, warning text, Cancel and Delete buttons
 
 ## Stimulus Controllers
 
@@ -59,7 +59,7 @@
 | `color-picker-controller`   | Manages color swatch selection (highlight active, set hidden field) |
 | `icon-picker-controller`    | Manages icon selection (highlight active, set hidden field, allow deselection) |
 | `template-picker-controller`| Manages template card selection (highlight active, set hidden field, prevent deselection) |
-| `delete-confirmation-controller` | Opens/closes `wa-dialog` for delete confirmation     |
+| `delete-confirmation-controller` | Opens/closes modal dialog for delete confirmation     |
 | `list-search-controller`    | Filters sidebar list items by search input                 |
 
 ## Flash Message Patterns

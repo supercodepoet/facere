@@ -1,6 +1,6 @@
 <div class="detail-section" id="comments_section_<%= item.id %>">
   <div class="detail-section-header">
-    <wa-icon name="comment" variant="thin" class="detail-section-icon" style="color: #8B5CF6;"></wa-icon>
+    <i class="fa-light fa-comment detail-section-icon" style="color: #8B5CF6;"></i>
     <span class="detail-section-title">Comments</span>
     <% comment_count = item.comments.size %>
     <% if comment_count > 0 %>
@@ -8,29 +8,33 @@
     <% end %>
   </div>
 
-  <div class="comments-list">
-    <% item.comments.top_level.ordered.each do |comment| %>
-      <%= render "todo_items/comment", comment: comment, item: item, todo_list: todo_list %>
-      <% if comment.replies.any? %>
-        <div class="comment-replies">
-          <% comment.replies.ordered.each do |reply| %>
-            <%= render "todo_items/comment", comment: reply, item: item, todo_list: todo_list %>
-          <% end %>
-        </div>
+  <% if item.comments.any? %>
+    <div class="comments-list">
+      <% item.comments.top_level.ordered.each do |comment| %>
+        <%= render "todo_items/comment", comment: comment, item: item, todo_list: todo_list %>
+        <% if comment.replies.any? %>
+          <div class="comment-replies">
+            <% comment.replies.ordered.each do |reply| %>
+              <%= render "todo_items/comment", comment: reply, item: item, todo_list: todo_list %>
+            <% end %>
+          </div>
+        <% end %>
       <% end %>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 
-  <div class="comment-input-bar">
+  <div class="comment-input-row">
     <div class="comment-avatar" style="background: #8B5CF6;">
       <%= Current.user.initials %>
     </div>
-    <%= form_with(url: todo_list_todo_item_comments_path(todo_list, item), method: :post, class: "comment-form", data: { turbo: false }) do |f| %>
-      <%= f.text_field :body, placeholder: "Write a comment...", class: "comment-input", name: "comment[body]" %>
-      <button type="submit" class="comment-send-btn">
-        <wa-icon name="paper-plane"></wa-icon>
-        Send
-      </button>
+    <%= form_with(model: Comment.new, url: todo_list_todo_item_comments_path(todo_list, item), method: :post, class: "comment-editor-form", data: { turbo: false }) do |f| %>
+      <div class="comment-editor-wrap">
+        <%= f.rich_text_area :rich_body, class: "comment-lexxy-editor", placeholder: "Type your comment..." %>
+        <div class="comment-editor-bottom">
+          <div class="comment-editor-spacer"></div>
+          <button type="submit" class="comment-post-btn">Post</button>
+        </div>
+      </div>
     <% end %>
   </div>
 </div>

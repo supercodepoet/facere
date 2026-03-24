@@ -232,7 +232,7 @@ Collaborators see shared lists in their sidebar and on the "My Lists" overview p
 
 Captured during implementation and code review of feature 005:
 
-- **`wa-input` does not submit in forms**: Shadow DOM prevents `wa-input` name/value from reaching `FormData`. Use plain `<input>` elements for form fields that must submit data. This was discovered when invitation emails were not sending — the email param was nil.
+- **Custom Web Component inputs do not submit in forms**: Shadow DOM can prevent custom element name/value from reaching `FormData`. Use plain `<input>` elements for form fields that must submit data. This was discovered when invitation emails were not sending — the email param was nil.
 - **`deliver_later` requires async adapter in development**: Without `config.active_job.queue_adapter = :async` in `development.rb`, Solid Queue jobs are enqueued but never processed (no worker running). The `:async` adapter processes jobs in a thread pool within the same process.
 - **`broadcast_refresh_to` over `broadcast_replace_to`**: Partials that reference controller helper methods (`list_editor?`, `list_owner?`) cannot render inside model broadcast callbacks (no controller context). `broadcast_refresh_to` triggers Turbo 8 morph-based page refresh, avoiding the partial rendering issue entirely.
 - **Brakeman flags `:role` in `permit()`**: Even though `role` is validated at the model level, Brakeman treats it as a mass assignment risk. Fix by extracting the param and validating against an allowlist before merging into permitted params.

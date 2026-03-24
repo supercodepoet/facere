@@ -46,7 +46,7 @@ export default class extends Controller {
   selectIcon(event) {
     const iconName = event.currentTarget.dataset.icon
     this.iconInputTarget.value = iconName
-    this.iconDisplayTarget.setAttribute("name", iconName)
+    this.iconDisplayTarget.className = this.iconDisplayTarget.className.replace(/fa-[\w-]+$/, 'fa-' + iconName)
 
     // Highlight selected icon in grid
     this.element.querySelectorAll(".icon-picker-grid-btn").forEach(btn => {
@@ -55,7 +55,7 @@ export default class extends Controller {
 
     // Close the dropdown
     if (this.hasIconDropdownTarget) {
-      this.iconDropdownTarget.open = false
+      this.iconDropdownTarget.querySelector('.dropdown-menu').classList.remove('dropdown-menu--open')
     }
   }
 

@@ -25,8 +25,8 @@
 ### Implementation Learnings (2026-03-22)
 
 - **Fizzy is NOT an editor**: "Fizzy" (basecamp/fizzy) is 37signals' Kanban project management tool, not a text editor. The actual rich text editor successor to Trix is "Lexxy" (basecamp/lexxy, currently beta). ActionText with Trix was used instead as a stable, built-in Rails solution.
-- **`wa-dropdown` for context menus**: Web Awesome Pro does NOT have `wa-menu` or `wa-menu-item` components. Use `wa-dropdown` + `wa-dropdown-item` for all menu patterns. `wa-select` event fires on item selection.
-- **Stimulus controller scope and targets**: `data-controller` must be on an ancestor element of ALL targets. When using `wa-dropdown` with hidden form targets, wrap both in a container div with the controller attribute — targets CANNOT be siblings of the controller element.
+- **Context menus**: Custom HTML dropdown menus with Stimulus controllers for all menu patterns.
+- **Stimulus controller scope and targets**: `data-controller` must be on an ancestor element of ALL targets. When using dropdown menus with hidden form targets, wrap both in a container div with the controller attribute — targets CANNOT be siblings of the controller element.
 - **Turbo Stream vs HTML responses on detail pages**: Turbo Stream responses that replace list-row partials will fail on the item detail page (the target DOM elements don't exist). Use `data: { turbo: false }` on detail-page forms to force full HTML redirects.
 - **Turbo Frames and navigation**: Links inside `turbo_frame_tag` are intercepted by Turbo, which tries to find a matching frame in the response. For full-page navigation (e.g., item title → detail page), add `data: { turbo_frame: "_top" }` to the link.
 - **Drag-and-drop with Turbo Frames**: The `draggable` attribute must be on the `turbo-frame` element itself (not an inner div), since the frame is what moves in the DOM. Use `data-item-id` attributes for identification instead of relying on DOM `id` attributes.
@@ -38,7 +38,7 @@
 - **`button_to` with blocks**: When using `button_to` with a block (for icon content), do NOT pass a label string as the first argument. The block provides the content; the first arg must be the URL. Passing both causes `stringify_keys` errors.
 - **`showPicker()` browser compatibility**: `HTMLInputElement#showPicker()` is not supported in all browsers. Always wrap in feature detection and try/catch.
 - **Case-insensitive DB constraints**: Always add database-level unique indexes with `lower(name)` for user-scoped name fields, matching the model validation. Applied to both `todo_lists` and `tags` tables.
-- **System test sign-in with Web Awesome**: Dispatch multiple events (`wa-input`, `wa-change`, `input`, `change`) when setting wa-input values in tests to ensure form data syncs through shadow DOM.
+- **System test sign-in**: Use standard Capybara interactions for native HTML form elements in tests.
 
 ## User Scenarios & Testing *(mandatory)*
 

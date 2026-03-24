@@ -104,7 +104,7 @@ All UI implementation should reference `designs/initial-screens.pen` as source o
 - [x] T022 [P] [US2] Create `color_picker_controller.js` Stimulus controller — manages color swatch selection, highlights active swatch, sets hidden form field value, pre-selects first color on connect in `app/javascript/controllers/color_picker_controller.js`
 - [x] T023 [P] [US2] Create `icon_picker_controller.js` Stimulus controller — manages icon grid selection, highlights active icon, sets hidden form field value, allows deselection (click active icon to clear) in `app/javascript/controllers/icon_picker_controller.js`
 - [x] T024 [P] [US2] Create `template_picker_controller.js` Stimulus controller — manages template card selection, highlights active card, sets hidden form field value, pre-selects "Blank" on connect, prevents deselection in `app/javascript/controllers/template_picker_controller.js`
-- [x] T025 [US2] Create shared `_form.html.erb` partial with List Name (`wa-input`), Icon picker (grid of `wa-icon` buttons with Stimulus), Color picker (swatches with Stimulus), Description (`wa-textarea`, optional label), Template picker (Blank/Project/Weekly/Shopping cards with Stimulus), validation error rendering — accepts `todo_list` object and `editing` boolean to disable template picker — reference .pen screens `nl3Mt` and `Pngey` in `app/views/todo_lists/_form.html.erb`
+- [x] T025 [US2] Create shared `_form.html.erb` partial with List Name (`<input>`), Icon picker (grid of icon buttons with Font Awesome icons and Stimulus), Color picker (swatches with Stimulus), Description (`<textarea>`, optional label), Template picker (Blank/Project/Weekly/Shopping cards with Stimulus), validation error rendering — accepts `todo_list` object and `editing` boolean to disable template picker — reference .pen screens `nl3Mt` and `Pngey` in `app/views/todo_lists/_form.html.erb`
 - [x] T026 [US2] Create `todo_lists/new.html.erb` rendering the form partial inside a centered card with heading "Create a new list", subtitle, Cancel link and "Create List" button — reference .pen screen `nl3Mt` in `app/views/todo_lists/new.html.erb`
 - [x] T027 [US2] Implement `new` and `create` actions in `TodoListsController` — `new` builds blank `TodoList` with default color/template, `create` saves and calls `apply_template!`, redirects to show with flash notice on success, re-renders new with flash alert on failure in `app/controllers/todo_lists_controller.rb`
 - [x] T028 [US2] Add CSS styles for the create/edit form card (centered layout, field spacing), color swatches (circular, active state ring), icon picker grid (square buttons, active state), template cards (bordered, icon, label, active state), validation error styles (red border, error text, top callout) in `app/assets/stylesheets/todo_lists.css`
@@ -126,7 +126,7 @@ All UI implementation should reference `designs/initial-screens.pen` as source o
 ### Implementation for User Story 3
 
 - [x] T030 [P] [US3] Create `list_search_controller.js` Stimulus controller — filters sidebar list items by search input text, shows/hides items based on name match in `app/javascript/controllers/list_search_controller.js`
-- [x] T031 [US3] Create `_sidebar.html.erb` partial with search input (`wa-input`), "MY LISTS" header, list of user's TODO lists as links with colored dots and item counts, active list highlighted, "+ New List" button at bottom — reference .pen screen `YLHU2` sidebar (node `RIqC6`) in `app/views/todo_lists/_sidebar.html.erb`
+- [x] T031 [US3] Create `_sidebar.html.erb` partial with search input, "MY LISTS" header, list of user's TODO lists as links with colored dots and item counts, active list highlighted, "+ New List" button at bottom — reference .pen screen `YLHU2` sidebar (node `RIqC6`) in `app/views/todo_lists/_sidebar.html.erb`
 - [x] T032 [US3] Create `todo_lists/show.html.erb` with two-column layout: sidebar partial on left, main content area on right with list header (back arrow, list name, edit pencil icon), and conditional rendering — empty state ("Your list is ready!" illustration, "Add First Item" and "Add Section" buttons) or sections/items display — reference .pen screens `9oNUs` and `YLHU2` in `app/views/todo_lists/show.html.erb`
 - [x] T033 [US3] Implement `show` action in `TodoListsController` — find list by id scoped to current user, load sections with items for display, set sidebar lists in `app/controllers/todo_lists_controller.rb`
 - [x] T034 [US3] Add CSS styles for sidebar (fixed width, scrollable list, active highlight, colored dots, search input), show view two-column layout (sidebar + main content), list header (back arrow, title, edit icon), and empty list blank slate (illustration, buttons) in `app/assets/stylesheets/todo_lists.css`
@@ -167,8 +167,8 @@ All UI implementation should reference `designs/initial-screens.pen` as source o
 
 ### Implementation for User Story 5
 
-- [x] T040 [P] [US5] Create `delete_confirmation_controller.js` Stimulus controller — opens `wa-dialog` on trigger click, closes on cancel button click, manages modal visibility in `app/javascript/controllers/delete_confirmation_controller.js`
-- [x] T041 [US5] Create `_delete_confirmation.html.erb` partial with `wa-dialog` containing trash icon in pink circle, "Delete this list?" heading, warning text, Cancel button and red Delete button (`button_to` with `method: :delete`) — reference .pen screen `FGDgb` in `app/views/todo_lists/_delete_confirmation.html.erb`
+- [x] T040 [P] [US5] Create `delete_confirmation_controller.js` Stimulus controller — opens modal dialog on trigger click, closes on cancel button click, manages modal visibility in `app/javascript/controllers/delete_confirmation_controller.js`
+- [x] T041 [US5] Create `_delete_confirmation.html.erb` partial with modal dialog containing trash icon in pink circle, "Delete this list?" heading, warning text, Cancel button and red Delete button (`button_to` with `method: :delete`) — reference .pen screen `FGDgb` in `app/views/todo_lists/_delete_confirmation.html.erb`
 - [x] T042 [US5] Implement `destroy` action in `TodoListsController` — find list, destroy (cascades to sections/items), redirect to index with flash notice in `app/controllers/todo_lists_controller.rb`
 - [x] T043 [US5] Add delete trigger button and render delete confirmation partial in the list show view in `app/views/todo_lists/show.html.erb`
 - [x] T044 [US5] Add CSS styles for delete confirmation modal (centered overlay, card styling, icon circle, button row, red delete button) in `app/assets/stylesheets/todo_lists.css`
@@ -196,7 +196,7 @@ All UI implementation should reference `designs/initial-screens.pen` as source o
 
 ## Phase 9: Design Review & Security Hardening
 
-**Purpose**: Validate implementation against `.pen` visual reference, fix design gaps, use correct Web Awesome component APIs, and add comprehensive security test coverage.
+**Purpose**: Validate implementation against `.pen` visual reference, fix design gaps, and add comprehensive security test coverage.
 
 ### Design Review — List Cards (US1)
 
@@ -209,18 +209,18 @@ All UI implementation should reference `designs/initial-screens.pen` as source o
 
 ### Design Review — Create/Edit Form (US2, US4)
 
-- [x] T061 [US2] Replace `wa-callout` with custom error banner matching .pen design: #FEE2E2 bg, 16px radius, 14px 18px padding, triangle-exclamation icon, #991B1B text, close button in `app/views/todo_lists/new.html.erb` and `edit.html.erb`
+- [x] T061 [US2] Create custom error banner matching .pen design: #FEE2E2 bg, 16px radius, 14px 18px padding, triangle-exclamation icon (`<i class="fa-thin fa-triangle-exclamation"></i>`), #991B1B text, close button in `app/views/todo_lists/new.html.erb` and `edit.html.erb`
 - [x] T062 [US2] Fix input error state: label turns red (#EF4444), input background #FEF2F2 with 2px red border, error text gap 6px with 14px icon in `app/assets/stylesheets/todo_lists.css`
 - [x] T063 [US2] Fix form element corner radii: input 16px (via `pill` attribute), textarea 16px, form buttons 16px in CSS
 - [x] T064 [US2] Fix form button styling: Cancel (1.5px border zinc-300, 15px font), Create (purple gradient, sparkles icon, box-shadow) in CSS
 
-### Web Awesome Component Corrections
+### Component Corrections
 
-- [x] T065 Replace all `wa-icon-button` with `wa-button` containing `wa-icon` (no `wa-icon-button` component exists) in `_form.html.erb`, `new.html.erb`, `edit.html.erb`
-- [x] T066 Fix all `slot="prefix"` to `slot="start"` and `outline` to `appearance="outlined"` per Web Awesome docs in all view files
-- [x] T067 Add `pill` attribute to `wa-input` for rounded corners; remove `::part(base)` padding override that clips placeholder text; use CSS custom properties for sizing in `app/assets/stylesheets/todo_lists.css`
-- [x] T068 Convert action buttons (Cancel, Create List, Save Changes) to `wa-button` with proper variant/appearance attributes in `new.html.erb` and `edit.html.erb`
-- [x] T069 Convert icon picker buttons to `wa-button` (icon-only, 40x40), template picker buttons to `wa-button size="small"` in `_form.html.erb`
+- [x] T065 Ensure all icon-only buttons use `<button>` with `<i>` Font Awesome icon tags in `_form.html.erb`, `new.html.erb`, `edit.html.erb`
+- [x] T066 Verify all button and form element attributes are correct across all view files
+- [x] T067 Add rounded corner styling to inputs; use CSS custom properties for sizing in `app/assets/stylesheets/todo_lists.css`
+- [x] T068 Style action buttons (Cancel, Create List, Save Changes) with proper CSS classes in `new.html.erb` and `edit.html.erb`
+- [x] T069 Style icon picker buttons (icon-only, 40x40) and template picker buttons in `_form.html.erb`
 
 ### Design Review — Sizing & Spacing
 
@@ -259,7 +259,7 @@ All UI implementation should reference `designs/initial-screens.pen` as source o
 
 ### Stimulus Event Binding
 
-- [x] T085 Add explicit `click->` prefix to all Stimulus actions on `wa-button` (icon picker, template picker) and native buttons (color swatch, delete trigger) in `_form.html.erb` and `show.html.erb`
+- [x] T085 Add explicit `click->` prefix to all Stimulus actions on buttons (icon picker, template picker, color swatch, delete trigger) in `_form.html.erb` and `show.html.erb`
 - [x] T086 Fix delete confirmation cancel button: replace broken Stimulus action (controller on different element) with inline `onclick` in `_delete_confirmation.html.erb`
 
 ### Data Integrity
@@ -268,9 +268,9 @@ All UI implementation should reference `designs/initial-screens.pen` as source o
 - [x] T088 Add case-insensitive unique index migration `lower(name)` scoped by `user_id` in `db/migrate/20260321180000_add_case_insensitive_unique_index_to_todo_lists.rb`
 - [x] T089 Add model test verifying DB-level case-insensitive constraint (bypasses model validation) in `test/models/todo_list_test.rb`
 
-### Web Awesome Slot Fix
+### Slot Fix
 
-- [x] T090 Fix sidebar search icon `slot="prefix"` → `slot="start"` in `_sidebar.html.erb`
+- [x] T090 Fix sidebar search icon placement in `_sidebar.html.erb`
 
 ### System Test Reliability
 
@@ -285,7 +285,7 @@ All UI implementation should reference `designs/initial-screens.pen` as source o
 
 ### Documentation
 
-- [x] T096 Update UI contracts: `wa-callout` → custom `.form-error-banner` in `specs/002-todo-lists/contracts/ui-contracts.md`
+- [x] T096 Update UI contracts: custom `.form-error-banner` in `specs/002-todo-lists/contracts/ui-contracts.md`
 - [x] T097 Fix typos: "expierence"→"experience", "Fill free"→"Feel free", "refence"→"reference" in `prompts/specs/002/plan.md`
 - [x] T098 Fix grammar: "screens to managing"→"screens for managing", "all out TODO"→"all our TODO" in `prompts/specs/002/spec.md`
 
@@ -400,7 +400,7 @@ Task: T028 "Form CSS styles in app/assets/stylesheets/todo_lists.css"
 - [Story] label maps task to specific user story for traceability
 - Each user story should be independently completable and testable
 - All UI implementation references `designs/initial-screens.pen` — use `get_screenshot` to validate against .pen screens
-- Web Awesome Pro components: `wa-input` (with `pill`), `wa-button` (with `slot="start"`, `appearance="outlined"`), `wa-icon`, `wa-dialog`. Custom error banner replaces `wa-callout`. No `wa-icon-button` exists — use `wa-button` with `wa-icon` in default slot.
+- Standard HTML elements with CSS styling. Font Awesome Pro icons via `<i>` tags (e.g., `<i class="fa-thin fa-icon-name"></i>`). Custom error banner for validation errors.
 - Stimulus controllers handle DOM interaction only — server handles all validation/persistence via Turbo
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently

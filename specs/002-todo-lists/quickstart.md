@@ -83,7 +83,7 @@ resources :todo_lists, path: "lists"
 
 4. **Color rendering**: Use CSS custom properties (`--list-color-{name}`) and a `data-color` attribute on elements to apply the correct color via CSS.
 
-5. **Delete flow**: Use `wa-dialog` for confirmation modal, controlled by `delete-confirmation-controller`. The actual delete is a standard Rails `button_to` with `method: :delete` inside the dialog.
+5. **Delete flow**: Use a custom modal dialog for confirmation, controlled by `delete-confirmation-controller`. The actual delete is a standard Rails `button_to` with `method: :delete` inside the dialog.
 
 6. **Root route**: Update `root` from `sessions#new` to `todo_lists#index` (authenticated users go to lists, unauthenticated redirect to sign in).
 

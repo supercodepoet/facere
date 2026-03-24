@@ -46,29 +46,31 @@ export default class extends Controller {
     editContainer.className = "section-edit-inline"
     editContainer.innerHTML = `
       <div class="section-edit-row">
-        <wa-dropdown placement="bottom-start" class="section-edit-icon-dropdown">
-          <button slot="trigger" type="button" class="section-icon-picker-btn">
-            <wa-icon name="${currentIcon || 'folder'}" variant="thin" class="section-icon-picker-icon section-edit-icon-display"></wa-icon>
-            <wa-icon name="chevron-down" variant="thin" class="section-icon-picker-chevron"></wa-icon>
+        <div class="dropdown-wrap section-edit-icon-dropdown" data-controller="dropdown">
+          <button type="button" class="section-icon-picker-btn" data-action="click->dropdown#toggle">
+            <i class="fa-light fa-${currentIcon || 'folder'} section-icon-picker-icon section-edit-icon-display"></i>
+            <i class="fa-light fa-chevron-down section-icon-picker-chevron"></i>
           </button>
-          <div class="section-icon-dropdown">
-            <span class="section-icon-dropdown-label">Choose an icon</span>
-            <div class="section-icon-grid">
-              ${['cart-shopping','briefcase','house','heart','book-open','code','palette','wrench','star','bolt'].map(icon =>
-                `<button type="button" class="section-icon-grid-btn ${icon === currentIcon ? 'section-icon-grid-btn--selected' : ''}" data-icon="${icon}">
-                  <wa-icon name="${icon}" variant="thin"></wa-icon>
-                </button>`
-              ).join('')}
+          <div class="dropdown-menu dropdown-menu--left" data-dropdown-target="menu">
+            <div class="section-icon-dropdown">
+              <span class="section-icon-dropdown-label">Choose an icon</span>
+              <div class="section-icon-grid">
+                ${['cart-shopping','briefcase','house','heart','book-open','code','palette','wrench','star','bolt'].map(icon =>
+                  `<button type="button" class="section-icon-grid-btn ${icon === currentIcon ? 'section-icon-grid-btn--selected' : ''}" data-icon="${icon}">
+                    <i class="fa-light fa-${icon}"></i>
+                  </button>`
+                ).join('')}
+              </div>
             </div>
           </div>
-        </wa-dropdown>
+        </div>
         <input type="text" class="section-edit-input" value="${currentName}" autofocus>
         <div class="section-edit-actions">
           <button type="button" class="section-edit-save-btn">
-            <wa-icon name="check" variant="thin"></wa-icon>
+            <i class="fa-light fa-check"></i>
           </button>
           <button type="button" class="section-edit-cancel-btn">
-            <wa-icon name="xmark" variant="thin"></wa-icon>
+            <i class="fa-light fa-xmark"></i>
           </button>
         </div>
       </div>
@@ -90,12 +92,12 @@ export default class extends Controller {
     editContainer.querySelectorAll(".section-icon-grid-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         selectedIcon = btn.dataset.icon
-        iconDisplay.setAttribute("name", selectedIcon)
+        iconDisplay.className = iconDisplay.className.replace(/fa-[\w-]+$/, 'fa-' + selectedIcon)
         editContainer.querySelectorAll(".section-icon-grid-btn").forEach(b =>
           b.classList.toggle("section-icon-grid-btn--selected", b.dataset.icon === selectedIcon)
         )
         const dropdown = editContainer.querySelector(".section-edit-icon-dropdown")
-        if (dropdown) dropdown.open = false
+        if (dropdown) dropdown.querySelector('.dropdown-menu').classList.remove('dropdown-menu--open')
       })
     })
 

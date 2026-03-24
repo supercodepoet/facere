@@ -11,7 +11,11 @@
           <span class="comment-edited">(edited)</span>
         <% end %>
       </div>
-      <p class="comment-text"><%= comment.body %></p>
+      <% if comment.rich_body.present? %>
+        <div class="comment-text lexxy-content"><%= comment.rich_body %></div>
+      <% else %>
+        <p class="comment-text"><%= comment.body %></p>
+      <% end %>
       <div class="comment-actions">
         <% current_user_like = comment.comment_likes.loaded? ? comment.comment_likes.find { |l| l.user_id == Current.user.id } : comment.comment_likes.find_by(user: Current.user) %>
         <% liked = current_user_like.present? %>
@@ -19,7 +23,7 @@
               method: liked ? :delete : :post,
               class: "comment-like-btn #{'comment-like-btn--liked' if liked}",
               data: { turbo: false } do %>
-          <wa-icon name="heart" variant="<%= liked ? 'solid' : 'thin' %>"></wa-icon>
+          <i class="<%= liked ? 'fa-solid' : 'fa-light' %> fa-heart"></i>
           <span><%= comment.likes_count %></span>
         <% end %>
         <% if comment.user == Current.user %>

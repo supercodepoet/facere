@@ -3,16 +3,16 @@
 Auto-generated from all feature plans. Last updated: 2026-03-05
 
 ## Active Technologies
-- Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Stimulus), Web Awesome Pro (CDN kit), Font Awesome Pro (CDN kit), bcrypt (existing) (002-todo-lists)
-- Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Turbo Streams + Turbo Frames + Stimulus), Web Awesome Pro (CDN kit), Font Awesome Pro (CDN kit), ActionText (Rails built-in, for notes), Active Storage (Rails built-in, for attachments) (003-todo-list-items)
-- Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Turbo Streams + Turbo Frames + Stimulus), Web Awesome Pro (CDN), Font Awesome Pro (CDN), Lexxy (~> 0.1.26.beta, new), ActionText (Rails built-in), Active Storage (Rails built-in) (004-todo-item-detail)
-- Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), ActionCable (already configured — connection + auth in place, no channels yet), Action Mailer (existing mailers for email verification and password reset), Web Awesome Pro (CDN), Font Awesome Pro (CDN), Lexxy, Active Storage, ActionText (005-list-collaboration)
+- Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Stimulus), Font Awesome Pro (CDN kit), bcrypt (existing) (002-todo-lists)
+- Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Turbo Streams + Turbo Frames + Stimulus), Font Awesome Pro (CDN kit), ActionText (Rails built-in, for notes), Active Storage (Rails built-in, for attachments) (003-todo-list-items)
+- Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Turbo Streams + Turbo Frames + Stimulus), Font Awesome Pro (CDN kit), Lexxy (~> 0.1.26.beta, new), ActionText (Rails built-in), Active Storage (Rails built-in) (004-todo-item-detail)
+- Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), ActionCable (already configured — connection + auth in place, no channels yet), Action Mailer (existing mailers for email verification and password reset), Font Awesome Pro (CDN kit), Lexxy, Active Storage, ActionText (005-list-collaboration)
 - SQLite (all environments), Solid Cable (production ActionCable adapter) (005-list-collaboration)
-- Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), Web Awesome Pro (CDN), Font Awesome Pro (CDN), Lexxy (rich text), Active Storage (file uploads), ActionTex (006-detail-screen-polish)
+- Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), Font Awesome Pro (CDN kit), Lexxy (rich text), Active Storage (file uploads), ActionTex (006-detail-screen-polish)
 
 - Ruby 4.0.1 / Rails 8.1.2 (001-user-auth)
 - Hotwire: Turbo Drive, Turbo Frames, Turbo Streams, Stimulus
-- UI: Web Awesome Pro (CDN kit), Font Awesome Pro (CDN kit)
+- UI: Font Awesome Pro (CDN kit)
 - Auth: bcrypt, OmniAuth (google-oauth2, facebook, apple), rotp, rqrcode
 - Database: SQLite (all environments)
 - Asset Pipeline: Propshaft + Importmap
@@ -25,7 +25,7 @@ Auto-generated from all feature plans. Last updated: 2026-03-05
 app/
 ├── controllers/     # Rails controllers (thin, orchestration only)
 ├── models/          # Active Record models (business logic here)
-├── views/           # ERB templates with Web Awesome components
+├── views/           # ERB templates
 ├── mailers/         # Action Mailer classes
 ├── javascript/
 │   └── controllers/ # Stimulus controllers (DOM interaction only)
@@ -57,9 +57,9 @@ bin/rails credentials:edit # Edit encrypted credentials
 - Stimulus controllers for DOM only; server logic via Turbo
 
 ## Recent Changes
-- 006-detail-screen-polish: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), Web Awesome Pro (CDN), Font Awesome Pro (CDN), Lexxy (rich text), Active Storage (file uploads), ActionTex
-- 005-list-collaboration: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), ActionCable (already configured — connection + auth in place, no channels yet), Action Mailer (existing mailers for email verification and password reset), Web Awesome Pro (CDN), Font Awesome Pro (CDN), Lexxy, Active Storage, ActionTex
-- 004-todo-item-detail: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Turbo Streams + Turbo Frames + Stimulus), Web Awesome Pro (CDN), Font Awesome Pro (CDN), Lexxy (~> 0.1.26.beta, new), ActionText (Rails built-in), Active Storage (Rails built-in)
+- 006-detail-screen-polish: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), Font Awesome Pro (CDN kit), Lexxy (rich text), Active Storage (file uploads), ActionTex
+- 005-list-collaboration: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), ActionCable (already configured — connection + auth in place, no channels yet), Action Mailer (existing mailers for email verification and password reset), Font Awesome Pro (CDN kit), Lexxy, Active Storage, ActionTex
+- 004-todo-item-detail: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Turbo Streams + Turbo Frames + Stimulus), Font Awesome Pro (CDN kit), Lexxy (~> 0.1.26.beta, new), ActionText (Rails built-in), Active Storage (Rails built-in)
 
   reset, OAuth, 2FA, email verification)
 

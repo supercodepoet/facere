@@ -14,17 +14,17 @@
 
 ## 2. Context Menu Implementation Pattern
 
-**Decision**: Use existing `wa-dropdown` + `wa-dropdown-item` pattern per constitution rules. Both section and item context menus already exist as partials — they need content additions to match the design.
+**Decision**: Use existing standard dropdown markup pattern per constitution rules. Both section and item context menus already exist as partials — they need content additions to match the design.
 
-**Rationale**: The constitution explicitly states `wa-dropdown` is the menu component. The section context menu needs "New list from group" and "Insert a to-do" items added. The item context menu needs "Edit" for inline title editing.
+**Rationale**: The constitution mandates standard dropdown components for menus. The section context menu needs "New list from group" and "Insert a to-do" items added. The item context menu needs "Edit" for inline title editing.
 
 **Alternatives considered**:
-- Custom dropdown: Violates constitution (wa-dropdown is mandated).
+- Custom dropdown: Violates constitution (standard dropdown markup is mandated).
 - Right-click native context menu: Not portable, doesn't match design.
 
 ## 3. Due Date Picker Component
 
-**Decision**: Use the native HTML `<input type="date">` or Web Awesome's date input for the calendar picker. The design shows a calendar overlay — verify if `wa-input` with type="date" provides this or if a Stimulus controller with a custom calendar is needed.
+**Decision**: Use the native HTML `<input type="date">` for the calendar picker. The design shows a calendar overlay — the native date input provides this on all modern browsers, or a Stimulus controller with a custom calendar can be used if needed.
 
 **Rationale**: The simplest approach is the native date input which provides a calendar picker on all modern browsers. If the design requires a custom-styled calendar, a Stimulus controller wrapping a lightweight date picker can be used.
 

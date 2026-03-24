@@ -3,7 +3,7 @@
   <% if item.due_date.present? %>
     <div class="due-date-value">
       <div class="due-date-icon-wrap" style="background: #FEF3C7;">
-        <wa-icon name="calendar-clock" style="color: #F59E0B;"></wa-icon>
+        <i class="fa-solid fa-calendar-clock" style="color: #F59E0B;"></i>
       </div>
       <div class="due-date-text">
         <span class="due-date-day"><%= item.due_date_display %></span>
@@ -12,12 +12,12 @@
         </span>
       </div>
       <button type="button" class="detail-card-icon-btn" data-action="click->date-picker#openPicker">
-        <wa-icon name="pen" variant="thin" style="color: #A1A1AA;"></wa-icon>
+        <i class="fa-light fa-pen" style="color: #A1A1AA;"></i>
       </button>
     </div>
   <% else %>
     <button type="button" class="detail-card-empty-btn" data-action="click->date-picker#openPicker">
-      <wa-icon name="calendar" variant="thin" style="color: #A1A1AA; margin-right: 6px;"></wa-icon>
+      <i class="fa-light fa-calendar" style="color: #A1A1AA; margin-right: 6px;"></i>
       No due date set — click to add
     </button>
   <% end %>

@@ -13,7 +13,7 @@
           <span class="assignee-name"><%= np.user.name %></span>
           <% if list_editor? %>
             <%= button_to todo_list_todo_item_notify_person_path(todo_list, item, np), method: :delete, class: "detail-card-icon-btn" do %>
-              <wa-icon name="xmark" style="color: #A1A1AA;"></wa-icon>
+              <i class="fa-solid fa-xmark" style="color: #A1A1AA;"></i>
             <% end %>
           <% end %>
         </div>
@@ -35,7 +35,7 @@
                 <%= member.initials %>
               </div>
               <span><%= member.name %></span>
-              <wa-icon name="bell-plus" variant="thin" style="color: #8B5CF6; margin-left: auto;"></wa-icon>
+              <i class="fa-light fa-bell-plus" style="color: #8B5CF6; margin-left: auto;"></i>
             </button>
           <% end %>
         <% end %>

@@ -1,6 +1,6 @@
 <div class="detail-section">
   <div class="detail-section-header">
-    <wa-icon name="paperclip" variant="thin" class="detail-section-icon" style="color: #8B5CF6;"></wa-icon>
+    <i class="fa-light fa-paperclip detail-section-icon" style="color: #8B5CF6;"></i>
     <span class="detail-section-title">Attachments</span>
     <% if item.files.attached? %>
       <span class="attach-count-badge"><%= item.files.size %></span>
@@ -8,7 +8,7 @@
     <div class="detail-section-spacer"></div>
     <% if list_editor? %>
       <label class="detail-section-add-btn" for="attachment-upload-<%= item.id %>">
-        <wa-icon name="upload" variant="thin"></wa-icon>
+        <i class="fa-light fa-upload"></i>
         Upload
       </label>
     <% end %>
@@ -23,7 +23,7 @@
       <% item.files.each do |file| %>
         <div class="file-card">
           <div class="file-card-icon" style="background: <%= item.file_type_color(file) %>20;">
-            <wa-icon name="<%= item.file_type_icon(file) %>" style="color: <%= item.file_type_color(file) %>; font-size: 28px;"></wa-icon>
+            <i class="fa-solid fa-<%= item.file_type_icon(file) %>" style="color: <%= item.file_type_color(file) %>; font-size: 28px;"></i>
           </div>
           <div class="file-card-info">
             <%= link_to file.filename, rails_blob_path(file, disposition: "attachment"), class: "file-card-name" %>
@@ -31,7 +31,7 @@
           </div>
           <% if list_editor? %>
             <%= button_to todo_list_todo_item_attachment_path(todo_list, item, file), method: :delete, class: "file-card-delete" do %>
-              <wa-icon name="xmark" variant="thin"></wa-icon>
+              <i class="fa-light fa-xmark"></i>
             <% end %>
           <% end %>
         </div>

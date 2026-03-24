@@ -141,29 +141,25 @@ end
   Rails 8's built-in rate limiting covers the primary use case
 - **Custom Rack middleware**: Unnecessary complexity
 
-## R7: Web Awesome Pro Integration
+## R7: Font Awesome Pro Integration
 
-**Decision**: Load Web Awesome Pro via CDN kit script tag in the
-application layout. Use Web Awesome web components (`<wa-input>`,
-`<wa-button>`, `<wa-checkbox>`, `<wa-callout>`, `<wa-card>`,
-`<wa-dialog>`, etc.) for all UI elements.
+**Decision**: Load Font Awesome Pro via CDN kit script tag in the
+application layout. Use standard HTML elements styled with CSS for
+all UI, with Font Awesome Pro icons via `<i>` tags.
 
-**Rationale**: Web Awesome Pro provides a comprehensive web component
-library with built-in theming, animations, and responsive design.
-Components are standard Web Components that emit native DOM events,
-making them compatible with Stimulus controllers.
+**Rationale**: Font Awesome Pro provides a comprehensive icon library
+with multiple styles (solid, regular, light, thin, duotone). Icons
+are rendered via standard `<i>` tags with Font Awesome classes (e.g.,
+`<i class="fa-thin fa-eye"></i>`), making them compatible with
+Stimulus controllers and standard DOM events.
 
 Key integration points:
-- Web Awesome components use standard form participation (they work
-  with `<form>` elements natively via `FormData`)
-- Events like `wa-input`, `wa-change`, `wa-submit` can be listened
-  to via Stimulus `data-action` attributes
+- Standard HTML form elements work natively with `<form>` and `FormData`
+- Standard DOM events (`click`, `input`, `change`, `submit`) work
+  with Stimulus `data-action` attributes
 - Theming via CSS custom properties allows global theme control
-- Components are responsive by default
-
-**Font Awesome Pro**: Loaded via CDN kit script tag alongside Web
-Awesome Pro. Used for all iconography via `<i class="fa-solid fa-*">`
-or the `<wa-icon>` web component.
+- Font Awesome Pro icons available in all styles (solid, regular,
+  light, thin, duotone, sharp)
 
 ## R8: Stimulus Controllers for Authentication
 

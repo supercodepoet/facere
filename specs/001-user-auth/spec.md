@@ -23,11 +23,10 @@
 
 Learnings captured during implementation and testing:
 
-- **Web Awesome Pro components**: The correct component for alerts/notifications is `<wa-callout>`, NOT `<wa-alert>`. `<wa-alert>` does not exist in Web Awesome Pro. Use `<wa-callout variant="success|danger|warning|primary">` with `open`, `closable`, and `duration` attributes.
-- **Web Awesome Pro icons**: Use `<wa-icon name="..." variant="thin">` component instead of bare `<i>` tags with Font Awesome classes. The `variant="thin"` style matches the design system.
-- **Turbo Frame tab switching**: The segmented Sign In / Sign Up toggle uses Turbo Frames (`<turbo-frame id="auth_form">`) rather than `<wa-tab-group>`. This provides seamless tab switching without full page reload while keeping each form as its own route/controller action. A fixed `min-height: 720px` on the turbo-frame wrapper prevents layout shift during tab switching.
+- **Icons**: Use `<i>` tags with Font Awesome classes (e.g., `<i class="fa-thin fa-eye"></i>`). The thin style matches the design system.
+- **Turbo Frame tab switching**: The segmented Sign In / Sign Up toggle uses Turbo Frames (`<turbo-frame id="auth_form">`). This provides seamless tab switching without full page reload while keeping each form as its own route/controller action. A fixed `min-height: 720px` on the turbo-frame wrapper prevents layout shift during tab switching.
 - **OAuth providers shipped**: Google and Apple are rendered as active OAuth buttons. Facebook is configured in OmniAuth but not shown in the UI buttons partial.
-- **Password validation UX**: The `form_validation_controller` Stimulus controller provides real-time password requirement checking with visual indicators. Requirements are displayed via a `<wa-tooltip>` attached to a hint icon next to the password label, with individual requirements getting a `met` CSS class as they're satisfied.
+- **Password validation UX**: The `form_validation_controller` Stimulus controller provides real-time password requirement checking with visual indicators. Requirements are displayed via a tooltip attached to a hint icon next to the password label, with individual requirements getting a `met` CSS class as they're satisfied.
 - **2FA auto-submit**: The `two_factor_controller` Stimulus controller auto-submits the verification form when 6 digits are entered, and toggles between TOTP code and recovery code input modes.
 - **Session cookies**: Authentication uses permanent signed cookies (`cookies.signed.permanent[:session_id]`) with `httponly: true` and `same_site: :lax` settings.
 - **Lockout escalation**: The exponential backoff formula is `LOCKOUT_DURATION * LOCKOUT_ESCALATION_FACTOR^lockout_count` (15min * 2^n), providing escalating lockout durations across repeated lockout events.

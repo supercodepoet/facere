@@ -14,9 +14,8 @@ you can look at the Rails Guides (https://guides.rubyonrails.org) to determine w
 available and how to use them. We want to use all the Hotwire tools as well to manage front-end
 interaction.
 
-For the HTML, CSS, and JS of the application we want to leverage Web Awesome Pro (https://webawesome.com)
-for all the components, theming, and our design system. We want to make sure all the hooks play
-nicely with Stimulus. For our iconography we want to use Font Awesome Pro (https://fontawesome.com).
+For our iconography we use Font Awesome Pro (https://fontawesome.com) via CDN kit. Icons use
+standard `<i>` tags with Font Awesome classes (e.g. `<i class="fa-thin fa-icon-name"></i>`).
 
 For a refernce application on how to build a modern, vanilla Ruby on Rails application you can
 refer to the Fizzy codebase by 37signals found at https://github.com/basecamp/fizzy. Use all modern

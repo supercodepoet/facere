@@ -66,7 +66,7 @@
 - [x] T022 [US1] Add invitation and acceptance routes to config/routes.rb (nested under todo_lists: resources :invitations controller list_invitations only [:create, :destroy]; top-level: get "invitations/:token/accept" to list_invitations#accept)
 - [x] T023 [US1] Create ListInvitationsController in app/controllers/list_invitations_controller.rb (create: owner sends invitation, validates email, checks limit of 25, creates ListInvitation, sends CollaborationMailer.invitation_email via deliver_later; accept: resolves token, creates ListCollaborator, redirects to list; destroy: owner cancels pending invitation; handle unregistered users by storing token in session)
 - [x] T024 [US1] Update RegistrationsController in app/controllers/registrations_controller.rb (after successful registration, check session for pending invitation token; if present, auto-accept the invitation)
-- [x] T025 [US1] Create collaboration panel partial in app/views/todo_lists/_collaboration_panel.html.erb (shows current collaborators with roles and avatars, pending invitations with cancel option, invite form with email input and role picker using wa-select; only visible to owner)
+- [x] T025 [US1] Create collaboration panel partial in app/views/todo_lists/_collaboration_panel.html.erb (shows current collaborators with roles and avatars, pending invitations with cancel option, invite form with email input and role picker using a standard `<select>` element; only visible to owner)
 - [x] T026 [US1] Create collaboration Stimulus controller in app/javascript/controllers/collaboration_controller.js (toggle panel visibility, handle invite form submission via Turbo, display validation errors inline)
 - [x] T027 [US1] Add collaboration panel trigger button to list header in app/views/todo_lists/show.html.erb (share/people icon button next to existing action buttons; opens collaboration panel; only render for owner)
 - [x] T028 [US1] Create collaboration panel styles in app/assets/stylesheets/collaboration.css (panel layout, collaborator list items, invite form, pending invitation items, role badges)
@@ -195,7 +195,7 @@
 
 - [x] T061 [US7] Create ListCollaboratorsController in app/controllers/list_collaborators_controller.rb (include ListAuthorization; authorize_owner! for index/update/destroy; index: render collaboration panel; update: change role; destroy: remove collaborator; leave: collaborator removes themselves — authorize_list_access! only)
 - [x] T062 [US7] Add collaborator management routes to config/routes.rb (nested under todo_lists: resources :collaborators controller list_collaborators only [:index, :update, :destroy]; delete "leave" action)
-- [x] T063 [US7] Update collaboration panel partial in app/views/todo_lists/_collaboration_panel.html.erb (add role change dropdown per collaborator — wa-select with editor/viewer options; add remove button per collaborator; add "Leave list" button visible only to non-owner collaborators)
+- [x] T063 [US7] Update collaboration panel partial in app/views/todo_lists/_collaboration_panel.html.erb (add role change dropdown per collaborator — standard `<select>` with editor/viewer options; add remove button per collaborator; add "Leave list" button visible only to non-owner collaborators)
 - [x] T064 [US7] Add Turbo Stream responses for collaborator management in ListCollaboratorsController (update: broadcast role change; destroy: broadcast collaborator removal, redirect removed user away from list)
 - [x] T065 [US7] Verify historical data preservation — confirm comments and item_assignees records from removed users are retained with correct user attribution (comments.user_id FK does not cascade delete; item_assignees cleaned up only via dependent :destroy on list_collaborator removal is NOT cascaded to item_assignees — verify this)
 
@@ -361,7 +361,7 @@ Stream C (P2 — Communication):
 
 ### Issues Found During Implementation
 
-1. `wa-input` shadow DOM doesn't submit form values → replaced with plain `<input>`
+1. Custom web component inputs' shadow DOM doesn't submit form values → replaced with plain `<input>`
 2. `deliver_later` needs `:async` adapter in dev → added to `development.rb`
 3. `broadcast_replace_to` fails when partials use controller helpers → switched to `broadcast_refresh_to`
 4. Duplicate Stimulus controller on panel → removed from partial, kept on parent

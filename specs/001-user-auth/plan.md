@@ -12,7 +12,7 @@ built-in authentication generator as the foundation, extended with email
 verification (24-hour grace period), account lockout (5 attempts /
 15-minute escalating), OAuth via OmniAuth (Google, Facebook, Apple),
 and optional TOTP-based two-factor authentication. All UI built with
-Web Awesome Pro components and Font Awesome Pro icons, interactive via
+Font Awesome Pro icons and standard HTML elements, interactive via
 Hotwire (Turbo + Stimulus). Visual reference: `designs/initial-screens.pen`.
 
 ## Technical Context
@@ -20,7 +20,7 @@ Hotwire (Turbo + Stimulus). Visual reference: `designs/initial-screens.pen`.
 **Language/Version**: Ruby 4.0.1 / Rails 8.1.2
 **Primary Dependencies**: Hotwire (Turbo + Stimulus), bcrypt,
 OmniAuth (google-oauth2, facebook, apple), rotp, rqrcode,
-Web Awesome Pro (CDN kit), Font Awesome Pro (CDN kit)
+Font Awesome Pro (CDN kit)
 **Storage**: SQLite (development/test/production via Solid adapters)
 **Testing**: Minitest + Capybara + Selenium (system tests)
 **Target Platform**: Web (responsive: mobile, tablet, desktop)
@@ -37,7 +37,7 @@ Web Awesome Pro (CDN kit), Font Awesome Pro (CDN kit)
 |-----------|--------|-------|
 | I. Vanilla Rails First | PASS | Using Rails auth generator, Hotwire, Propshaft, Importmap |
 | II. Library-First | PASS | OmniAuth for OAuth, rotp for TOTP, bcrypt for passwords |
-| III. Joyful UX | PASS | Web Awesome Pro + Font Awesome Pro + micro-interactions |
+| III. Joyful UX | PASS | Font Awesome Pro + micro-interactions |
 | IV. Clean Architecture & DDD | PASS | Domain-specific naming, model-encapsulated logic |
 | V. Code Quality | PASS | Methods < 50 lines, files < 200 lines, early returns |
 | VI. Separation of Concerns | PASS | Stimulus for DOM, Turbo for server, models for logic |
@@ -158,22 +158,15 @@ Stimulus.
 
 ## Technical Implementation Notes
 
-### Web Awesome Pro Component Usage (Actual)
+### UI Component Approach (Actual)
 
-Components used in production code:
-- `<wa-input>` — Form inputs with `::part(base)` and `::part(form-control-label)` styling
-- `<wa-button>` — Primary and social buttons with `variant="brand"` and `variant="neutral"`
-- `<wa-checkbox>` — Terms acceptance
-- `<wa-callout>` — Flash messages and inline alerts (NOT `<wa-alert>`, which does not exist)
-- `<wa-icon>` — Icons with `variant="thin"` style throughout
-- `<wa-tooltip>` — Password requirements hint display
-
-Components NOT used (originally considered):
-- `<wa-tab-group>` — Replaced by custom CSS segmented control with Turbo Frames for tab switching
-- `<wa-card>` — Not needed; custom CSS for card-like elements
-- `<wa-dialog>` — Not needed in auth flows
-- `<wa-divider>` — Replaced by custom CSS divider with "or" text
-- `<wa-alert>` — Does not exist in Web Awesome Pro; use `<wa-callout>` instead
+Standard HTML elements styled with CSS, with Font Awesome Pro icons via `<i>` tags:
+- `<input>` — Form inputs with custom CSS styling
+- `<button>` — Primary and social buttons with custom CSS styling
+- `<input type="checkbox">` — Terms acceptance
+- Styled callout `<div>` elements — Flash messages and inline alerts
+- `<i class="fa-thin fa-icon-name">` — Icons with thin style throughout
+- Tooltip elements — Password requirements hint display
 
 ### Turbo Frame Architecture
 

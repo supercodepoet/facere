@@ -5,20 +5,20 @@
 
 ## Summary
 
-Implement full TODO item and section management within the existing Rails 8.1 application. Users can create items and sections inline (optimized for speed with Enter-to-save flow), reorder via drag-and-drop, toggle completion, view/edit rich item details (notes, checklist, due date, priority, tags, attachments), and manage items/sections via context menus (edit, move, copy, archive, delete). The UI follows `todo-list-item-screens.pen` using Web Awesome Pro components (`wa-dropdown`, `wa-dialog`, `wa-tooltip`, `wa-button`, `wa-icon`, `wa-input`), Font Awesome Pro icons, and Hotwire (Turbo Streams + Stimulus) for all interactivity. ActionText with Trix provides rich text editing for item notes.
+Implement full TODO item and section management within the existing Rails 8.1 application. Users can create items and sections inline (optimized for speed with Enter-to-save flow), reorder via drag-and-drop, toggle completion, view/edit rich item details (notes, checklist, due date, priority, tags, attachments), and manage items/sections via context menus (edit, move, copy, archive, delete). The UI follows `todo-list-item-screens.pen` using standard HTML elements styled with CSS, Font Awesome Pro icons (via `<i>` tags), and Hotwire (Turbo Streams + Stimulus) for all interactivity. ActionText with Trix provides rich text editing for item notes.
 
 **Test coverage**: 223 tests, 556 assertions — all passing. Includes model validations/scopes/business logic, controller auth/authz/CRUD, and system tests for list creation/editing/deletion.
 
 ## Technical Context
 
 **Language/Version**: Ruby 4.0.1 / Rails 8.1.2
-**Primary Dependencies**: Hotwire (Turbo Drive + Turbo Streams + Turbo Frames + Stimulus), Web Awesome Pro (CDN kit), Font Awesome Pro (CDN kit), ActionText (Rails built-in, for notes), Active Storage (Rails built-in, for attachments)
+**Primary Dependencies**: Hotwire (Turbo Drive + Turbo Streams + Turbo Frames + Stimulus), Font Awesome Pro (CDN kit), ActionText (Rails built-in, for notes), Active Storage (Rails built-in, for attachments)
 **Storage**: SQLite (all environments)
 **Testing**: Minitest + Capybara + Selenium
 **Target Platform**: Web (responsive — desktop + mobile)
 **Project Type**: Web application
 **Performance Goals**: Standard web app — inline creation <200ms, drag-and-drop reorder <300ms, page transitions <1s
-**Constraints**: Server-rendered HTML via Turbo, no SPA frameworks, Web Awesome Pro for all components, Font Awesome Pro for all icons
+**Constraints**: Server-rendered HTML via Turbo, no SPA frameworks, Font Awesome Pro for all icons
 **Scale/Scope**: 5 key screens (Adding First Item, Adding Section, List With Items & Sections, TODO List Detail, TODO Item Detail), 2 context menus, 1 drag-to-reorder interaction, 4 database migrations, 2 new controllers, ~10 Stimulus controllers, ~15 new/updated view partials
 
 ## Constitution Check
@@ -30,7 +30,7 @@ Implement full TODO item and section management within the existing Rails 8.1 ap
 | Principle | Status | Notes |
 |-----------|--------|-------|
 | I. Vanilla Rails First | PASS | Standard Rails MVC + nested resourceful routes + Turbo Streams for real-time updates + Stimulus for DOM. No external JS frameworks. |
-| II. Library-First | PASS | Web Awesome Pro for dropdowns/dialogs/tooltips, Font Awesome Pro for icons, ActionText for rich text, Active Storage for file attachments. No custom UI primitives where WA components exist. |
+| II. Library-First | PASS | Font Awesome Pro for icons, ActionText for rich text, Active Storage for file attachments. Standard HTML elements with CSS styling. |
 | III. Joyful User Experience | PASS | Inline creation for speed, drag-and-drop with animations, context menus, micro-interactions (checkbox toggle animation, drag lift effect). Following .pen visual reference. |
 | IV. Clean Architecture & DDD | PASS | Domain-specific naming (TodoItem, TodoSection, ChecklistItem). Business logic in models. Controllers orchestrate. Scoped queries via Current.user. |
 | V. Code Quality & Readability | PASS | Focused controllers (<50 lines/action), isolated Stimulus controllers, CSS organized in feature file. |
@@ -42,7 +42,7 @@ Implement full TODO item and section management within the existing Rails 8.1 ap
 | Principle | Status | Notes |
 |-----------|--------|-------|
 | I. Vanilla Rails First | PASS | Nested `resources` routing, standard CRUD controllers, Turbo Streams for inline updates, Turbo Frames for partial page updates. ActionText for rich text. |
-| II. Library-First | PASS | `wa-dropdown` + `wa-dropdown-item` for context menus, `wa-dialog` for confirmations, `wa-tooltip` for drag hints, `wa-input` for inline creation, `wa-button`/`wa-icon` for all buttons/icons. ActionText/Trix for notes. Active Storage for attachments. |
+| II. Library-First | PASS | Custom HTML dropdown menus for context menus, modal dialogs for confirmations, tooltips for drag hints, standard `<input>` for inline creation, `<button>` with `<i>` Font Awesome icons for all buttons/icons. ActionText/Trix for notes. Active Storage for attachments. |
 | III. Joyful User Experience | PASS | Inline creation with Enter-to-continue flow, smooth drag animations with purple border + rotation + shadow, context menus with hover states, completion checkbox animation, section collapse transitions. |
 | IV. Clean Architecture & DDD | PASS | `TodoItem` encapsulates status/priority/due-date logic. `ChecklistItem` for sub-tasks. Scoped queries via `Current.user.todo_lists`. Eager loading for N+1 prevention. |
 | V. Code Quality & Readability | PASS | Controllers focused on CRUD. Stimulus controllers isolated by concern (one per interaction pattern). CSS organized in single feature file extension. |
@@ -86,8 +86,8 @@ app/
 │   │   ├── _todo_item_completed.html.erb  # NEW: completed item variant
 │   │   ├── _inline_item_input.html.erb    # NEW: inline creation input row
 │   │   ├── _inline_section_input.html.erb # NEW: inline section creation
-│   │   ├── _item_context_menu.html.erb    # NEW: wa-dropdown for item actions
-│   │   ├── _section_context_menu.html.erb # NEW: wa-dropdown for section actions
+│   │   ├── _item_context_menu.html.erb    # NEW: dropdown menu for item actions
+│   │   ├── _section_context_menu.html.erb # NEW: dropdown menu for section actions
 │   │   ├── _quick_actions.html.erb        # NEW: assign/due/priority buttons
 │   │   ├── _empty_section.html.erb        # NEW: empty section hint
 │   │   └── _sidebar.html.erb             # Updated: item counts
@@ -101,7 +101,7 @@ app/
 ├── javascript/controllers/
 │   ├── inline_item_controller.js      # NEW: inline item creation (Enter/Esc)
 │   ├── inline_section_controller.js   # NEW: inline section creation + icon picker
-│   ├── context_menu_controller.js     # NEW: wa-dropdown trigger positioning
+│   ├── context_menu_controller.js     # NEW: dropdown menu trigger positioning
 │   ├── drag_reorder_controller.js     # NEW: drag-and-drop with animations
 │   ├── section_collapse_controller.js # NEW: expand/collapse sections
 │   ├── item_checkbox_controller.js    # NEW: toggle completion via Turbo
@@ -142,19 +142,19 @@ test/
 
 The user referenced "Fizzy" as a rich text editor. Research found that Fizzy (`basecamp/fizzy`) is 37signals' Kanban project management tool, NOT an editor. The actual rich text editor successor to Trix is **Lexxy** (`basecamp/lexxy`), currently in beta (v0.9.0.beta). Given Lexxy's beta status and the user's instruction to "use standard Rails tools like ActionText," this plan uses **ActionText with Trix** (built into Rails 8.1). When Lexxy reaches stable release, it can replace Trix as a drop-in via `gem "lexxy"` + `bin/rails lexxy:install`.
 
-### D2: Web Awesome Component Usage for Context Menus
+### D2: UI Component Approach for Context Menus
 
-Context menus use `wa-dropdown` + `wa-dropdown-item` (Web Awesome Pro). There is no `wa-menu` or `wa-menu-item` component. Key patterns:
+Context menus use custom HTML dropdown menus with Stimulus controllers. Key patterns:
 
-| Component | Usage | Notes |
-|-----------|-------|-------|
-| `wa-dropdown` | Context menus for items and sections | Triggered by ellipsis button click. Uses `wa-select` event for action dispatch. |
-| `wa-dropdown-item` | Menu actions (Edit, Move, Copy, Delete, etc.) | `variant="danger"` for destructive actions (Delete, Delete group). |
-| `wa-dialog` | Delete confirmation, move/copy destination picker | Controlled via Stimulus. `light-dismiss` for overlay close. |
-| `wa-tooltip` | Drag hint ("Click & hold to reorder") | Appears on hover over grip handle. |
-| `wa-input` | Inline item/section name input | `pill` attribute for rounded corners. Keyboard hints below. |
-| `wa-button` | All action buttons (Add Item, Add Section, Mark Complete) | `slot="start"` for icons. No `wa-icon-button`. |
-| `wa-icon` | All icons throughout | Font Awesome names. `variant="thin"` for list items. |
+| Element | Usage | Notes |
+|---------|-------|-------|
+| Custom dropdown | Context menus for items and sections | Triggered by ellipsis button click. Uses click events for action dispatch. |
+| Dropdown items | Menu actions (Edit, Move, Copy, Delete, etc.) | CSS danger class for destructive actions (Delete, Delete group). |
+| Modal dialog | Delete confirmation, move/copy destination picker | Controlled via Stimulus. Click-outside to close. |
+| Tooltip | Drag hint ("Click & hold to reorder") | Appears on hover over grip handle. |
+| `<input>` | Inline item/section name input | CSS rounded corners. Keyboard hints below. |
+| `<button>` | All action buttons (Add Item, Add Section, Mark Complete) | `<i>` Font Awesome icons inside. |
+| `<i class="fa-thin fa-*">` | All icons throughout | Font Awesome thin style for list items. |
 
 ### D3: Inline Creation Architecture
 
@@ -164,12 +164,12 @@ Inline item creation uses a Stimulus controller (`inline_item_controller`) that:
 3. Listens for Esc (removes the input row, no server call)
 4. On successful save, the server responds with a Turbo Stream that replaces the input with the saved item AND appends a new empty input (Enter-to-continue flow)
 
-Section creation follows the same pattern with an additional icon picker dropdown (`wa-dropdown` with icon grid).
+Section creation follows the same pattern with an additional icon picker dropdown (custom dropdown with icon grid).
 
 ### D4: Drag-and-Drop Reordering
 
 Drag-and-drop uses a Stimulus controller (`drag_reorder_controller`) with native HTML5 Drag and Drop API:
-- `dragstart`: Adds purple border, rotation (-1deg), shadow to the dragged element. Shows `wa-tooltip` hint.
+- `dragstart`: Adds purple border, rotation (-1deg), shadow to the dragged element. Shows tooltip hint.
 - `dragover`: Highlights drop zones with an insertion indicator line.
 - `drop`: Sends PATCH request to reorder endpoint with new position and optional new section_id.
 - `dragend`: Removes all visual effects.
@@ -262,7 +262,7 @@ Per the user's request for "fun little animations, movements, niceties":
 - **Item completion**: Checkbox fills with a teal pulse, opacity transitions smoothly
 - **Drag lift**: Item elevates with shadow + rotation, move cursor changes to grab
 - **Drop**: Item settles into place with a spring-like ease
-- **Context menu**: `wa-dropdown` appears with built-in Web Awesome transition
+- **Context menu**: Dropdown appears with CSS transition
 - **Section collapse**: Items slide up/down with height transition
 - **Delete**: Item fades out before removal
 - **Inline input focus**: Purple glow shadow appears around the active input
@@ -312,7 +312,7 @@ Calculated in a model helper method `TodoItem#due_date_style` returning the CSS 
 
 ### D18: Stimulus Controller Scope — Targets Must Be Descendants
 
-Copilot code review revealed that `data-controller` was placed on `<wa-dropdown>` while form targets (`archiveForm`, `deleteForm`) were in sibling `<div>` elements. Stimulus requires all targets to be descendants of the controller element. Fix: wrap both the dropdown and hidden forms in a single container `<div>` with `data-controller`.
+Copilot code review revealed that `data-controller` was placed on a dropdown element while form targets (`archiveForm`, `deleteForm`) were in sibling `<div>` elements. Stimulus requires all targets to be descendants of the controller element. Fix: wrap both the dropdown and hidden forms in a single container `<div>` with `data-controller`.
 
 ### D19: Turbo Stream vs HTML on Detail Page
 

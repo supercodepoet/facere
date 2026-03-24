@@ -134,12 +134,12 @@ section-group (Turbo Frame: "section_#{section.id}")
 │   ├── section-name (bold text)
 │   ├── section-count (badge with item count)
 │   ├── add-item-btn ("+ Add item")
-│   └── section-more (ellipsis → wa-dropdown context menu)
+│   └── section-more (ellipsis → dropdown context menu)
 ├── section-items (collapsible container)
 │   ├── _todo_item (for each active item)
 │   ├── _todo_item_completed (for each completed item)
 │   └── _empty_section (when no items)
-└── _section_context_menu (wa-dropdown)
+└── _section_context_menu (dropdown menu)
 ```
 
 **Stimulus**: `data-controller="section-collapse drag-reorder context-menu"`
@@ -151,7 +151,7 @@ Active input row for inline item creation.
 ```
 active-input-row (purple border, shadow)
 ├── checkbox-placeholder (empty circle)
-├── wa-input (text field, autofocus)
+├── input (text field, autofocus)
 ├── input-hints
 │   ├── "Enter" badge + "to save"
 │   └── "Esc" badge + "to cancel"
@@ -169,10 +169,10 @@ Active input for section creation with icon picker.
 
 ```
 active-section-input (purple border)
-├── icon-picker-trigger (current icon + chevron → wa-dropdown)
-├── wa-input (section name, autofocus)
+├── icon-picker-trigger (current icon + chevron → dropdown)
+├── input (section name, autofocus)
 ├── input-hints ("Enter to create")
-└── icon-dropdown (wa-dropdown with icon grid)
+└── icon-dropdown (dropdown with icon grid)
 ```
 
 **Stimulus**: `data-controller="inline-section"`
@@ -180,39 +180,43 @@ active-section-input (purple border)
 #### `app/views/todo_lists/_item_context_menu.html.erb`
 
 ```html
-<wa-dropdown placement="bottom-end">
-  <wa-button slot="trigger" size="small" appearance="plain">
-    <wa-icon name="ellipsis-vertical" variant="thin"></wa-icon>
-  </wa-button>
-  <wa-dropdown-item value="edit">Edit</wa-dropdown-item>
-  <wa-dropdown-item value="move">Move...</wa-dropdown-item>
-  <wa-dropdown-item value="copy">Copy...</wa-dropdown-item>
-  <wa-divider></wa-divider>
-  <wa-dropdown-item value="archive">Archive</wa-dropdown-item>
-  <wa-dropdown-item value="delete" variant="danger">Delete</wa-dropdown-item>
-  <wa-divider></wa-divider>
-  <wa-dropdown-item value="insert">Insert a to-do</wa-dropdown-item>
-</wa-dropdown>
+<div class="dropdown" data-controller="context-menu">
+  <button class="btn-plain btn-small" data-action="click->context-menu#toggle">
+    <i class="fa-thin fa-ellipsis-vertical"></i>
+  </button>
+  <div class="dropdown-menu">
+    <button class="dropdown-item" data-value="edit">Edit</button>
+    <button class="dropdown-item" data-value="move">Move...</button>
+    <button class="dropdown-item" data-value="copy">Copy...</button>
+    <hr class="dropdown-divider">
+    <button class="dropdown-item" data-value="archive">Archive</button>
+    <button class="dropdown-item dropdown-item--danger" data-value="delete">Delete</button>
+    <hr class="dropdown-divider">
+    <button class="dropdown-item" data-value="insert">Insert a to-do</button>
+  </div>
+</div>
 ```
 
 #### `app/views/todo_lists/_section_context_menu.html.erb`
 
 ```html
-<wa-dropdown placement="bottom-end">
-  <wa-button slot="trigger" size="small" appearance="plain">
-    <wa-icon name="ellipsis-vertical" variant="thin"></wa-icon>
-  </wa-button>
-  <wa-dropdown-item value="edit">Edit</wa-dropdown-item>
-  <wa-dropdown-item value="move">Move...</wa-dropdown-item>
-  <wa-dropdown-item value="copy">Copy...</wa-dropdown-item>
-  <wa-divider></wa-divider>
-  <wa-dropdown-item value="new_list">New list from group</wa-dropdown-item>
-  <wa-divider></wa-divider>
-  <wa-dropdown-item value="archive">Archive group</wa-dropdown-item>
-  <wa-dropdown-item value="delete" variant="danger">Delete group</wa-dropdown-item>
-  <wa-divider></wa-divider>
-  <wa-dropdown-item value="insert">Insert a to-do</wa-dropdown-item>
-</wa-dropdown>
+<div class="dropdown" data-controller="context-menu">
+  <button class="btn-plain btn-small" data-action="click->context-menu#toggle">
+    <i class="fa-thin fa-ellipsis-vertical"></i>
+  </button>
+  <div class="dropdown-menu">
+    <button class="dropdown-item" data-value="edit">Edit</button>
+    <button class="dropdown-item" data-value="move">Move...</button>
+    <button class="dropdown-item" data-value="copy">Copy...</button>
+    <hr class="dropdown-divider">
+    <button class="dropdown-item" data-value="new_list">New list from group</button>
+    <hr class="dropdown-divider">
+    <button class="dropdown-item" data-value="archive">Archive group</button>
+    <button class="dropdown-item dropdown-item--danger" data-value="delete">Delete group</button>
+    <hr class="dropdown-divider">
+    <button class="dropdown-item" data-value="insert">Insert a to-do</button>
+  </div>
+</div>
 ```
 
 ### New Views — Item Detail
@@ -339,7 +343,7 @@ tags-card
 **Targets**: `dropdown`
 **Values**: `itemId` (Number), `sectionId` (Number), `listId` (Number)
 **Actions**:
-- `wa-select→dispatch`: Route selected action to appropriate handler
+- `click→dispatch`: Route selected action to appropriate handler
 - `edit`: Toggle inline edit mode
 - `move`: Open move dialog
 - `copy`: Open copy dialog
@@ -401,7 +405,7 @@ tags-card
 **Targets**: `container`
 **Actions**:
 - `setDueDate`: Open date picker input
-- `setPriority`: Open priority selector (wa-dropdown)
+- `setPriority`: Open priority selector (dropdown)
 - `assign`: Set self as assignee (single-user stub)
 
 ## CSS Architecture
@@ -428,7 +432,7 @@ All new styles added to `app/assets/stylesheets/todo_lists.css` (extending the e
 .quick-actions-bar { ... }      /* Assign/Due/Priority buttons */
 
 /* ===== Context Menus ===== */
-/* Uses wa-dropdown styling — minimal custom CSS needed */
+/* Custom dropdown styling */
 
 /* ===== Drag and Drop ===== */
 .todo-item--dragging { ... }    /* Lift effect */

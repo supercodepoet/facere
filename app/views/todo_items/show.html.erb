@@ -5,16 +5,45 @@
     <div class="show-header">
       <div class="show-header-left">
         <%= link_to todo_list_path(@todo_list), class: "show-back-btn", aria: { label: "Back to list" } do %>
-          <wa-icon name="arrow-left" variant="thin"></wa-icon>
+          <i class="fa-light fa-arrow-left"></i>
         <% end %>
         <div class="show-title-group">
           <div class="show-list-icon" style="background: #8B5CF6;">
-            <wa-icon name="list-check" style="color: #FFFFFF; font-size: 18px;"></wa-icon>
+            <i class="fa-solid fa-list-check" style="color: #FFFFFF; font-size: 18px;"></i>
           </div>
           <h1 class="show-title"><%= @todo_list.name %></h1>
           <%= link_to edit_todo_list_path(@todo_list), class: "show-edit-btn", aria: { label: "Edit list" } do %>
-            <wa-icon name="pen" variant="thin" style="font-size: 14px;"></wa-icon>
+            <i class="fa-light fa-pen" style="font-size: 14px;"></i>
           <% end %>
+        </div>
+      </div>
+      <div class="show-header-right">
+        <%= button_to toggle_todo_list_todo_item_path(@todo_list, @todo_item), method: :patch, class: "item-topbar-btn item-topbar-btn--complete #{'item-topbar-btn--completed' if @todo_item.completed?}", data: { turbo: false } do %>
+          <i class="fa-solid fa-circle-check"></i>
+          <%= @todo_item.completed? ? "Completed" : "Mark Complete" %>
+        <% end %>
+        <button type="button" class="item-topbar-btn item-topbar-btn--delete" onclick="document.getElementById('delete-item-dialog').classList.add('delete-modal--open')">
+          <i class="fa-light fa-trash-can"></i>
+          Delete
+        </button>
+      </div>
+    </div>
+
+    <div id="delete-item-dialog" class="delete-modal-overlay" data-controller="modal" data-action="click->modal#backdropClose">
+      <div class="delete-modal-panel" data-action="click->modal#stopPropagation">
+        <div class="delete-modal-content">
+          <div class="delete-modal-icon">
+            <i class="fa-light fa-trash"></i>
+          </div>
+          <h2>Delete this item?</h2>
+          <p>This will permanently delete "<%= @todo_item.name %>". You won't be able to undo this action.</p>
+          <div class="delete-modal-actions">
+            <button class="delete-cancel-btn" data-action="click->modal#close">Cancel</button>
+            <%= button_to todo_list_todo_item_path(@todo_list, @todo_item), method: :delete, class: "delete-confirm-btn", data: { turbo: false } do %>
+              <i class="fa-light fa-trash"></i>
+              Delete
+            <% end %>
+          </div>
         </div>
       </div>
     </div>
@@ -30,7 +59,7 @@
             </span>
             <% if @todo_item.priority != "none" %>
               <span class="item-badge" style="background: <%= @todo_item.priority_bg_color %>; color: <%= @todo_item.priority_color %>;">
-                <wa-icon name="flag" style="font-size: 12px;"></wa-icon>
+                <i class="fa-solid fa-flag" style="font-size: 12px;"></i>
                 <%= @todo_item.priority_label %> Priority
               </span>
             <% end %>
@@ -44,12 +73,12 @@
           </div>
           <div class="item-meta-row">
             <span class="item-meta">
-              <wa-icon name="calendar" variant="thin"></wa-icon>
+              <i class="fa-light fa-calendar"></i>
               Created <%= @todo_item.created_at.strftime("%b %-d, %Y") %>
             </span>
             <% if @todo_item.todo_section.present? %>
               <span class="item-meta">
-                <wa-icon name="folder" variant="thin"></wa-icon>
+                <i class="fa-light fa-folder"></i>
                 <%= @todo_item.todo_section.name %>
               </span>
             <% end %>
@@ -104,7 +133,6 @@
           <%= render "todo_items/tags_card", item: @todo_item, todo_list: @todo_list %>
         </turbo-frame>
 
-        <%= render "todo_items/actions_card", item: @todo_item, todo_list: @todo_list %>
       </div>
     </div>
   </div>

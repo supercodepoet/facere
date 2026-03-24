@@ -5,12 +5,17 @@ class Comment < ApplicationRecord
 
   has_many :replies, class_name: "Comment", foreign_key: :parent_id, dependent: :destroy
   has_many :comment_likes, dependent: :destroy
+  has_rich_text :rich_body
 
   after_create_commit -> { broadcast_refresh_to [ todo_item, :updates ] }
   after_update_commit -> { broadcast_refresh_to [ todo_item, :updates ] }
   after_destroy_commit -> { broadcast_refresh_to [ todo_item, :updates ] }
 
-  validates :body, presence: true, length: { maximum: 2000 }
+  validates :body, presence: true, length: { maximum: 2000 }, unless: :rich_body?
+
+  def rich_body?
+    rich_body.present?
+  end
   validate :nesting_depth_limit
   validate :parent_belongs_to_same_item
 

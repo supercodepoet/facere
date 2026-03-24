@@ -5,18 +5,18 @@
 
 ## Summary
 
-Implement full CRUD for TODO Lists within the existing Rails 8.1 application. Users can view their lists (with blank slate for empty state), create new lists with name/color/icon/description/template, edit list details, and delete lists with confirmation. The UI follows the `initial-screens.pen` visual reference using Web Awesome Pro components, Font Awesome Pro icons, and Hotwire (Turbo + Stimulus) for all interactivity. Templates (Blank, Project, Weekly, Shopping) pre-populate lists with named sections and starter items on creation.
+Implement full CRUD for TODO Lists within the existing Rails 8.1 application. Users can view their lists (with blank slate for empty state), create new lists with name/color/icon/description/template, edit list details, and delete lists with confirmation. The UI follows the `initial-screens.pen` visual reference using Font Awesome Pro icons and standard HTML elements styled with CSS, with Hotwire (Turbo + Stimulus) for all interactivity. Templates (Blank, Project, Weekly, Shopping) pre-populate lists with named sections and starter items on creation.
 
 ## Technical Context
 
 **Language/Version**: Ruby 4.0.1 / Rails 8.1.2
-**Primary Dependencies**: Hotwire (Turbo Drive + Stimulus), Web Awesome Pro (CDN kit), Font Awesome Pro (CDN kit), bcrypt (existing)
+**Primary Dependencies**: Hotwire (Turbo Drive + Stimulus), Font Awesome Pro (CDN kit), bcrypt (existing)
 **Storage**: SQLite (all environments)
 **Testing**: Minitest + Capybara + Selenium
 **Target Platform**: Web (responsive — desktop + mobile)
 **Project Type**: Web application
 **Performance Goals**: Standard web app — pages render in <1s, form submissions in <500ms
-**Constraints**: Server-rendered HTML via Turbo, no SPA frameworks, Web Awesome Pro for all components
+**Constraints**: Server-rendered HTML via Turbo, no SPA frameworks
 **Scale/Scope**: 7 screens (4 desktop + 2 mobile + 1 modal), 3 new database tables, 1 controller, 5 Stimulus controllers
 
 ## Constitution Check
@@ -28,7 +28,7 @@ Implement full CRUD for TODO Lists within the existing Rails 8.1 application. Us
 | Principle | Status | Notes |
 |-----------|--------|-------|
 | I. Vanilla Rails First | PASS | Standard Rails MVC + resourceful routes + Hotwire. No external JS frameworks. |
-| II. Library-First | PASS | Web Awesome Pro for components, Font Awesome Pro for icons. No custom UI primitives. |
+| II. Library-First | PASS | Font Awesome Pro for icons. Standard HTML elements with CSS. |
 | III. Joyful User Experience | PASS | Following .pen visual reference with micro-interactions, branded illustrations, polished blank slates. |
 | IV. Clean Architecture & DDD | PASS | Domain-specific naming (TodoList, TodoSection, TodoItem). Business logic in models. |
 | V. Code Quality & Readability | PASS | Standard CRUD controller, focused models, isolated Stimulus controllers. |
@@ -40,7 +40,7 @@ Implement full CRUD for TODO Lists within the existing Rails 8.1 application. Us
 | Principle | Status | Notes |
 |-----------|--------|-------|
 | I. Vanilla Rails First | PASS | `resources :todo_lists` routing, standard controller actions, Turbo Drive navigation. |
-| II. Library-First | PASS | `wa-dialog` for modal, `wa-input` (with `pill`), `wa-button` (with `slot="start"`/`appearance="outlined"`), `wa-icon` for form elements. Custom error banner replaced `wa-callout` to match .pen design exactly. |
+| II. Library-First | PASS | Font Awesome Pro icons via `<i>` tags. Standard HTML form elements with CSS. Custom error banner to match .pen design exactly. |
 | III. Joyful User Experience | PASS | Blank slates with illustrations, success toasts, color-coded list cards, smooth transitions. |
 | IV. Clean Architecture & DDD | PASS | `TodoList#apply_template!` encapsulates seeding logic. Scoped queries via `Current.user.todo_lists`. |
 | V. Code Quality & Readability | PASS | Controller <50 lines per action, models focused, CSS organized in single feature file. |
@@ -130,7 +130,7 @@ Colors are stored as string identifiers ("purple", "blue", etc.) mapped to CSS c
 
 ### D4: Delete Confirmation
 
-Uses `wa-dialog` (Web Awesome Pro's modal component) controlled by a `delete-confirmation-controller` Stimulus controller. The dialog contains a standard Rails `button_to` with `method: :delete` for the actual deletion. This keeps the server interaction in standard Rails while the UI uses Web Awesome Pro's accessible modal pattern.
+Uses a custom modal dialog controlled by a `delete-confirmation-controller` Stimulus controller. The dialog contains a standard Rails `button_to` with `method: :delete` for the actual deletion. This keeps the server interaction in standard Rails while the UI uses an accessible modal pattern.
 
 ### D5: Root Route Update
 
@@ -156,26 +156,20 @@ The following screens from `initial-screens.pen` serve as the source of truth fo
 | Mobile - Create New List | `amjUz` | Mobile create form (added) |
 | Mobile - Delete Confirmation | `qTvHZ` | Mobile delete modal (added) |
 
-### D7: Web Awesome Component Usage
+### D7: UI Component Approach
 
-Through design review and iteration, the following Web Awesome usage patterns were established:
+Standard HTML elements with CSS styling and Font Awesome Pro icons via `<i>` tags:
 
-| Component | Usage | Notes |
-|-----------|-------|-------|
-| `wa-input` | List name field | Use `pill` attribute for rounded corners. Style via CSS custom properties (`--wa-input-height-medium`, `--wa-input-spacing-medium`), NOT `::part(base)` padding overrides which clip placeholder text. |
-| `wa-button` | All buttons (action, icon picker, template picker) | No `wa-icon-button` component exists. For icon-only buttons, place `<wa-icon>` in the default slot. |
-| `wa-icon` | Icons everywhere | In `wa-button`, use `slot="start"` (not `slot="prefix"`). Standalone icons use `variant="thin"`. |
-| `wa-dialog` | Delete confirmation modal | Controlled via Stimulus controller. |
+| Element | Usage | Notes |
+|---------|-------|-------|
+| `<input>` | List name field | Styled with CSS for rounded corners and sizing. |
+| `<button>` | All buttons (action, icon picker, template picker) | For icon-only buttons, place `<i>` tag with Font Awesome class inside. |
+| `<i class="fa-thin fa-*">` | Icons everywhere | Font Awesome thin style for list items, solid for actions. |
+| Custom modal dialog | Delete confirmation modal | Controlled via Stimulus controller. |
 
-**Key API corrections** (from [Web Awesome docs](https://webawesome.com/docs/components/button/)):
-- Slots: `start`, `end` (default slot for label) — NOT `prefix`/`suffix`
-- Appearance: `appearance="outlined"` — NOT boolean `outline` attribute
-- Variants: `neutral`, `brand`, `success`, `warning`, `danger`
-- No `wa-icon-button` component — use `wa-button` with icon in default slot
+### D8: Error Banner (Custom HTML)
 
-### D8: Error Banner (Custom vs wa-callout)
-
-The `.pen` design specifies a custom error banner with exact padding (14px 18px), corner radius (16px), background (#FEE2E2), text color (#991B1B), triangle-alert icon, and X close button. `wa-callout` was initially used but replaced with custom HTML to match the design precisely. The close button uses `wa-button appearance="plain" size="small"`.
+The `.pen` design specifies a custom error banner with exact padding (14px 18px), corner radius (16px), background (#FEE2E2), text color (#991B1B), triangle-alert icon (`<i class="fa-thin fa-triangle-exclamation"></i>`), and X close button. Custom HTML is used to match the design precisely.
 
 ### D9: List Card Design Tokens
 
@@ -220,17 +214,16 @@ Controller actions now eager-load associations to prevent N+1 queries in views:
 
 ### D14: Stimulus Event Binding on Custom Elements
 
-Stimulus only provides default events for native HTML elements (`click` for `<button>`, `submit` for `<form>`, etc.). Custom elements like `wa-button` have NO default event. All Stimulus actions on Web Awesome components MUST use explicit event syntax: `data-action="click->controller#method"`. Omitting the event silently fails — the action never fires.
+All Stimulus actions on buttons should use explicit event syntax: `data-action="click->controller#method"` for consistency and clarity.
 
 ### D15: Case-Insensitive Database Constraint
 
 SQLite's default unique index on `[user_id, name]` is case-sensitive. A separate migration adds `CREATE UNIQUE INDEX ... ON todo_lists(user_id, lower(name))` to prevent race-condition duplicates (e.g., "Groceries" vs "groceries") that bypass model validation.
 
-### D16: System Tests with Web Awesome Shadow DOM
+### D16: System Tests
 
-Web Awesome components (`wa-input`, `wa-button`) use shadow DOM. Capybara cannot interact with elements inside shadow DOM via standard finders (`fill_in`, `click_button`). System test helpers:
-- `set_wa_input(name, value)`: Uses `find()` to wait for element, then `execute_script` to set `.value` and dispatch `wa-change`
-- `click_wa_button(text)`: Finds `wa-button` by text content and clicks via JS
+Standard Capybara interactions work with native HTML elements (`fill_in`, `click_button`). Key testing patterns:
+- Use `find()` to wait for element presence before interacting
 - Never use top-level `await` in `execute_script` — runs as classic script, not ES module
 - Never use `sleep` — use Capybara's built-in waiting (`find`, `assert_text wait:`)
 

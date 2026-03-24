@@ -2,7 +2,7 @@
   <div class="collab-panel-header">
     <h3>Collaboration</h3>
     <button class="collab-panel-close" data-action="click->collaboration#close">
-      <wa-icon name="xmark" variant="thin"></wa-icon>
+      <i class="fa-light fa-xmark"></i>
     </button>
   </div>
 
@@ -14,10 +14,9 @@
           <option value="editor">Editor</option>
           <option value="viewer">Viewer</option>
         </select>
-        <wa-button type="submit" variant="brand" size="small">
-          <wa-icon slot="start" name="paper-plane" variant="thin"></wa-icon>
+        <button type="submit">
           Invite
-        </wa-button>
+        </button>
       <% end %>
     </div>
   <% end %>
@@ -55,7 +54,7 @@
               </select>
             <% end %>
             <%= button_to todo_list_collaborator_path(todo_list, collab), method: :delete, class: "collab-remove-btn", data: { turbo_confirm: "Remove #{collab.user.name} from this list?" } do %>
-              <wa-icon name="xmark" variant="thin"></wa-icon>
+              <i class="fa-light fa-xmark"></i>
             <% end %>
           </div>
         <% end %>
@@ -69,7 +68,7 @@
       <% pending_invitations.each do |invitation| %>
         <div class="collab-member collab-member-pending">
           <div class="collab-member-avatar collab-avatar-pending">
-            <wa-icon name="envelope" variant="thin"></wa-icon>
+            <i class="fa-light fa-envelope"></i>
           </div>
           <div class="collab-member-info">
             <span class="collab-member-name"><%= invitation.email %></span>
@@ -80,12 +79,12 @@
               <input type="hidden" name="invitation[email]" value="<%= invitation.email %>">
               <input type="hidden" name="invitation[role]" value="<%= invitation.role %>">
               <button type="submit" class="collab-resend-btn" title="Resend invitation">
-                <wa-icon name="paper-plane" variant="thin"></wa-icon>
+                <i class="fa-light fa-paper-plane"></i>
                 Resend
               </button>
             <% end %>
             <%= button_to todo_list_invitation_path(todo_list, invitation), method: :delete, class: "collab-remove-btn" do %>
-              <wa-icon name="xmark" variant="thin"></wa-icon>
+              <i class="fa-light fa-xmark"></i>
             <% end %>
           </div>
         </div>
@@ -96,7 +95,7 @@
   <% if !list_owner? %>
     <div class="collab-leave">
       <%= button_to todo_list_leave_path(todo_list), method: :delete, class: "collab-leave-btn", data: { turbo_confirm: "Are you sure you want to leave this list?" } do %>
-        <wa-icon name="right-from-bracket" variant="thin"></wa-icon>
+        <i class="fa-light fa-right-from-bracket"></i>
         Leave this list
       <% end %>
     </div>

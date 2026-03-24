@@ -9,7 +9,6 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <script src="https://kit.webawesome.com/a7eedeb8ff694353.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -18,10 +17,13 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
+    <script src="https://kit.fontawesome.com/0548eb3659.js" crossorigin="anonymous"></script>
+
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "todo_lists", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "lexxy", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "collaboration", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "lexxy", "data-turbo-track": "reload" %>
+
     <%= javascript_importmap_tags %>
   </head>
 
@@ -29,21 +31,21 @@
     <header class="app-nav" role="banner">
       <div class="app-nav-left">
         <%= link_to todo_lists_path, class: "app-logo-link" do %>
-          <wa-icon name="circle-check" variant="thin" class="app-logo-icon"></wa-icon>
+          <i class="fa-light fa-circle-check app-logo-icon"></i>
           <span class="app-logo-text">Facere</span>
         <% end %>
       </div>
 
       <div class="app-nav-center">
         <div class="app-search-bar">
-          <wa-icon name="magnifying-glass" variant="thin" class="app-search-icon"></wa-icon>
+          <i class="fa-light fa-magnifying-glass app-search-icon"></i>
           <input type="text" placeholder="Search lists..." class="app-search-input" aria-label="Search lists">
         </div>
       </div>
 
       <div class="app-nav-right">
         <button class="app-nav-icon-btn" aria-label="Notifications">
-          <wa-icon name="bell" variant="thin"></wa-icon>
+          <i class="fa-light fa-bell"></i>
         </button>
         <div class="app-user-avatar" aria-label="User menu">
           <span><%= Current.user&.initials %></span>

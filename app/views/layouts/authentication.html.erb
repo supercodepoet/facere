@@ -9,7 +9,6 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <script src="https://kit.webawesome.com/a7eedeb8ff694353.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -18,6 +17,7 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
+    <script src="https://kit.fontawesome.com/0548eb3659.js" crossorigin="anonymous"></script>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "authentication", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
@@ -37,7 +37,7 @@
         <div class="brand-content">
           <div class="brand-logo-row">
             <div class="brand-logo-icon">
-              <wa-icon name="circle-check" variant="thin"></wa-icon>
+              <i class="fa-light fa-circle-check"></i>
             </div>
             <span class="brand-logo-text">Facere</span>
           </div>
@@ -48,26 +48,26 @@
         <div class="brand-float-cards">
           <div class="brand-float-card">
             <div class="brand-float-check" style="background: var(--color-teal);">
-              <wa-icon name="check" variant="thin" style="font-size: 12px; color: #fff;"></wa-icon>
+              <i class="fa-light fa-check" style="font-size: 12px; color: #fff;"></i>
             </div>
             <span>Design mockups</span>
           </div>
           <div class="brand-float-card brand-float-card-2">
             <div class="brand-float-check" style="background: var(--color-pink);">
-              <wa-icon name="star" variant="thin" style="font-size: 12px; color: #fff;"></wa-icon>
+              <i class="fa-light fa-star" style="font-size: 12px; color: #fff;"></i>
             </div>
             <span>Ship new features</span>
           </div>
           <div class="brand-float-card brand-float-card-3">
             <div class="brand-float-check" style="background: var(--color-amber);">
-              <wa-icon name="bolt" variant="thin" style="font-size: 12px; color: #fff;"></wa-icon>
+              <i class="fa-light fa-bolt" style="font-size: 12px; color: #fff;"></i>
             </div>
             <span>Stay productive</span>
           </div>
         </div>
 
-        <wa-icon name="sparkles" variant="thin" class="brand-deco-sparkle"></wa-icon>
-        <wa-icon name="heart" variant="thin" class="brand-deco-heart"></wa-icon>
+        <i class="fa-light fa-sparkles brand-deco-sparkle"></i>
+        <i class="fa-light fa-heart brand-deco-heart"></i>
       </div>
 
       <%# Form panel %>

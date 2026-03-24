@@ -6,7 +6,7 @@
         <span class="tag-pill" style="background: <%= tag.color %>20; color: <%= tag.color %>;">
           <%= tag.name %>
           <%= button_to todo_list_todo_item_tag_path(todo_list, item, tag), method: :delete, class: "detail-card-icon-btn", style: "margin-left: 4px;", data: { turbo_frame: "item_tags_#{item.id}" } do %>
-            <wa-icon name="xmark" style="font-size: 10px;"></wa-icon>
+            <i class="fa-solid fa-xmark" style="font-size: 10px;"></i>
           <% end %>
         </span>
       <% else %>
@@ -18,7 +18,7 @@
   </div>
   <%= form_with(url: todo_list_todo_item_tags_path(todo_list, item), method: :post, class: "tag-add-form", data: { turbo_frame: "item_tags_#{item.id}" }) do |f| %>
     <div class="tag-add-link" onclick="this.nextElementSibling.style.display='flex'; this.style.display='none';">
-      <wa-icon name="plus" style="color: #8B5CF6;"></wa-icon>
+      <i class="fa-solid fa-plus" style="color: #8B5CF6;"></i>
       Add tag
     </div>
     <div class="tag-add-input-row" style="display: none;">

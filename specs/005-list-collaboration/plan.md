@@ -10,7 +10,7 @@ Add list-level collaboration to Facere. Users invite collaborators by email (tok
 ## Technical Context
 
 **Language/Version**: Ruby 4.0.1 / Rails 8.1.2
-**Primary Dependencies**: Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), ActionCable (already configured — connection + auth in place, no channels yet), Action Mailer (existing mailers for email verification and password reset), Web Awesome Pro (CDN), Font Awesome Pro (CDN), Lexxy, Active Storage, ActionText
+**Primary Dependencies**: Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), ActionCable (already configured — connection + auth in place, no channels yet), Action Mailer (existing mailers for email verification and password reset), Font Awesome Pro (CDN kit), Lexxy, Active Storage, ActionText
 **Storage**: SQLite (all environments), Solid Cable (production ActionCable adapter)
 **Testing**: Minitest + Capybara + Selenium
 **Target Platform**: Web (responsive — desktop + mobile)
@@ -27,7 +27,7 @@ Add list-level collaboration to Facere. Users invite collaborators by email (tok
 |-----------|--------|-------|
 | I. Vanilla Rails First | **PASS** | ActionCable (built-in) for WebSockets, Turbo Streams for broadcasting, Action Mailer for emails. No external JS frameworks. |
 | II. Library-First | **PASS** | Using all Rails built-ins: ActionCable, Turbo Streams broadcasting, Action Mailer, `generates_token_for`. No new gems needed. |
-| III. Joyful User Experience | **PASS** | Web Awesome Pro components for collaboration panel, role pickers, avatar stacks. Pen file designs will be updated. |
+| III. Joyful User Experience | **PASS** | Font Awesome Pro icons for collaboration panel, role pickers, avatar stacks. Pen file designs will be updated. |
 | IV. Clean Architecture & DDD | **PASS** | New models: ListCollaborator, ListInvitation. Service objects for invitation acceptance. Authorization via concern. Eager loading for collaborator lists. |
 | V. Code Quality & Readability | **PASS** | Authorization concern keeps controllers thin. Models handle role logic. Methods < 50 lines. |
 | VI. Separation of Concerns | **PASS** | Authorization in concern, invitation logic in model/mailer, broadcasting in model callbacks/channels. |

@@ -14,10 +14,10 @@
            end
   %>
   <div class="flash-toast flash-toast-<%= variant %>" role="alert" data-controller="flash-toast" data-flash-toast-duration-value="8000">
-    <wa-icon name="<%= icon %>" variant="solid" class="flash-toast-icon"></wa-icon>
+    <i class="fa-solid fa-<%= icon %> flash-toast-icon"></i>
     <span class="flash-toast-message"><%= message %></span>
     <button type="button" class="flash-toast-close" data-action="flash-toast#dismiss" aria-label="Dismiss">
-      <wa-icon name="xmark" variant="thin"></wa-icon>
+      <i class="fa-light fa-xmark"></i>
     </button>
   </div>
 <% end %>

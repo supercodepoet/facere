@@ -9,7 +9,7 @@
         <span class="priority-dot" style="background: <%= TodoItem::PRIORITY_COLORS[p] %>;"></span>
         <span class="priority-text"><%= TodoItem::PRIORITY_LABELS[p] %></span>
         <% if selected %>
-          <span style="margin-left: auto;"><wa-icon name="check" style="color: <%= TodoItem::PRIORITY_COLORS[p] %>;"></wa-icon></span>
+          <span style="margin-left: auto;"><i class="fa-solid fa-check" style="color: <%= TodoItem::PRIORITY_COLORS[p] %>;"></i></span>
         <% end %>
       <% end %>
     <% end %>

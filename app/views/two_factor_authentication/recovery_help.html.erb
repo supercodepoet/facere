@@ -11,18 +11,16 @@
     </ol>
   </div>
 
-  <wa-button
-    variant="brand"
+  <button
     class="auth-primary-btn"
     onclick="window.location.href='mailto:support@facere.app?subject=Account%20Recovery%20Request'"
   >
-    <wa-icon slot="start" name="envelope" variant="thin"></wa-icon>
     Contact Support
-  </wa-button>
+  </button>
 
   <div class="auth-prompt" style="margin-top: 24px;">
     <%= link_to sign_in_path, style: "color: var(--color-primary); font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;" do %>
-      <wa-icon name="arrow-left" variant="thin" style="font-size: 14px;"></wa-icon>
+      <i class="fa-light fa-arrow-left" style="font-size: 14px;"></i>
       Back to Sign In
     <% end %>
   </div>

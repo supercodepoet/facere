@@ -3,21 +3,20 @@
 **Feature Branch**: `002-todo-lists`
 **Date**: 2026-03-21
 
-## R1: Web Awesome Pro Components for TODO List UI
+## R1: UI Components for TODO List UI
 
-**Decision**: Use native Web Awesome Pro components (`wa-input`, `wa-button`, `wa-icon`, `wa-callout`, `wa-dialog`, `wa-card`, `wa-radio-group`, `wa-radio-button`, `wa-tooltip`) for all UI elements. Use `wa-dialog` for the delete confirmation modal.
+**Decision**: Use standard HTML elements styled with CSS, with Font Awesome Pro icons via `<i>` tags, for all UI elements. Use a custom modal dialog for the delete confirmation.
 
-**Rationale**: The project constitution mandates Web Awesome Pro for all UI components. The existing authentication screens already demonstrate the integration pattern — `wa-input` with pill styling, `wa-button` with brand variant, `wa-callout` for flash messages. The Create New List form's template picker and color swatches can leverage `wa-radio-group`/`wa-radio-button` for accessible selection behavior with custom visual styling.
+**Rationale**: Standard HTML elements (`<input>`, `<button>`, `<textarea>`, etc.) provide native form participation, accessibility, and Stimulus compatibility. The existing authentication screens demonstrate the styling patterns. Font Awesome Pro icons are loaded via CDN kit. The Create New List form's template picker and color swatches use Stimulus controllers for accessible selection behavior with custom visual styling.
 
 **Alternatives considered**:
-- Custom HTML elements with Stimulus: Rejected — violates Library-First and Web Awesome Pro mandates.
-- Stimulus-managed modals: Rejected — `wa-dialog` provides built-in modal behavior with accessibility out of the box.
+- Third-party component libraries: Rejected — standard HTML with CSS is simpler and more maintainable.
 
 ## R2: Turbo Integration for List CRUD Operations
 
 **Decision**: Use Turbo Drive for full-page navigation (index → new → show → edit), Turbo Frames for the delete confirmation modal, and Turbo Streams for flash message delivery after create/update/delete actions.
 
-**Rationale**: The spec calls for separate full-page forms for create/edit, which maps naturally to Turbo Drive navigation. The delete confirmation modal overlays the current page, making it a good candidate for a Turbo Frame or `wa-dialog` controlled by Stimulus. After successful create/update/delete, Turbo Streams can deliver success toasts without full page reloads.
+**Rationale**: The spec calls for separate full-page forms for create/edit, which maps naturally to Turbo Drive navigation. The delete confirmation modal overlays the current page, making it a good candidate for a Turbo Frame or custom modal dialog controlled by Stimulus. After successful create/update/delete, Turbo Streams can deliver success toasts without full page reloads.
 
 **Alternatives considered**:
 - Full Turbo Frame for entire CRUD flow: Rejected — over-engineering for this feature; full pages are simpler and spec-compliant.
@@ -46,9 +45,9 @@
 
 ## R5: Icon Selection Approach
 
-**Decision**: Provide a curated set of Font Awesome Pro icons relevant to TODO list themes (e.g., list, cart, briefcase, book, dumbbell, house, utensils, plane). The icon field stores the Font Awesome icon name string (e.g., "fa-solid fa-cart-shopping"). Display icons using `wa-icon` with Font Awesome name attribute.
+**Decision**: Provide a curated set of Font Awesome Pro icons relevant to TODO list themes (e.g., list, cart, briefcase, book, dumbbell, house, utensils, plane). The icon field stores the Font Awesome icon name string (e.g., "fa-solid fa-cart-shopping"). Display icons using `<i>` tags with Font Awesome classes.
 
-**Rationale**: The design shows ~5 icon options plus an add button in the create form. Font Awesome Pro is already loaded via the Web Awesome CDN kit. Storing icon names as strings is simple and flexible.
+**Rationale**: The design shows ~5 icon options plus an add button in the create form. Font Awesome Pro is loaded via CDN kit. Storing icon names as strings is simple and flexible.
 
 **Alternatives considered**:
 - Icon upload/custom images: Rejected — over-engineering for current requirements.

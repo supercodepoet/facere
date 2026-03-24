@@ -5,7 +5,7 @@
     <wa-input id="todo_list_name" name="todo_list[name]" value="<%= todo_list.name %>" placeholder="e.g., Weekend Project, Grocery Run..." size="medium" pill></wa-input>
     <% if todo_list.errors[:name].any? %>
       <div class="form-error-text">
-        <wa-icon name="circle-exclamation" variant="thin"></wa-icon>
+        <i class="fa-light fa-circle-exclamation"></i>
         <%= todo_list.errors[:name].first %>
       </div>
     <% end %>
@@ -18,24 +18,18 @@
       <div class="icon-picker" data-controller="icon-picker">
         <input type="hidden" name="todo_list[icon]" value="<%= todo_list.icon %>" data-icon-picker-target="input">
         <% TodoList::ICONS.first(5).each do |icon_name| %>
-          <wa-button
-            size="medium"
-            appearance="outlined"
-            variant="neutral"
+          <button
             class="icon-picker-btn <%= 'active' if todo_list.icon == icon_name %>"
             data-action="click->icon-picker#select"
             data-icon="<%= icon_name %>">
-            <wa-icon name="<%= icon_name %>" variant="thin" label="<%= icon_name.humanize %>"></wa-icon>
-          </wa-button>
+            <i class="fa-light fa-<%= icon_name %>" aria-label="<%= icon_name.humanize %>"></i>
+          </button>
         <% end %>
-        <wa-button
-          size="medium"
-          appearance="outlined"
-          variant="neutral"
+        <button
           class="icon-picker-btn"
           data-action="click->icon-picker#toggle">
-          <wa-icon name="plus" variant="thin" label="More icons"></wa-icon>
-        </wa-button>
+          <i class="fa-light fa-plus" aria-label="More icons"></i>
+        </button>
       </div>
     </div>
 
@@ -70,17 +64,14 @@
     <div class="template-picker" data-controller="template-picker">
       <input type="hidden" name="todo_list[template]" value="<%= todo_list.template || 'blank' %>" data-template-picker-target="input">
       <% { blank: "wand-magic-sparkles", project: "table-columns", weekly: "calendar-week", shopping: "cart-shopping" }.each do |tmpl, icon| %>
-        <wa-button
-          variant="neutral"
-          appearance="outlined"
-          size="small"
+        <button
           class="template-card <%= 'active' if (todo_list.template || 'blank') == tmpl.to_s %> <%= 'disabled' if local_assigns[:editing] %>"
           data-action="click->template-picker#select"
           data-template="<%= tmpl %>"
           <%= 'disabled' if local_assigns[:editing] %>>
-          <wa-icon slot="start" name="<%= icon %>" variant="thin"></wa-icon>
+          <i class="fa-light fa-<%= icon %>"></i>
           <%= tmpl.to_s.capitalize %>
-        </wa-button>
+        </button>
       <% end %>
     </div>
   </div>

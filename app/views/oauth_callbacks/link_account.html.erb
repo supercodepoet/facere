@@ -14,30 +14,27 @@
           autocomplete="current-password"
           data-password-visibility-target="input"
         >
-          <wa-icon slot="start" name="lock" variant="thin" style="color: var(--color-zinc-400);"></wa-icon>
-          <wa-icon
-            slot="end"
-            name="eye-slash"
-            variant="thin"
+          <i class="fa-light fa-lock" style="color: var(--color-zinc-400);"></i>
+          <i
+            class="fa-light fa-eye-slash"
             data-action="click->password-visibility#toggle"
             data-password-visibility-target="toggle"
             style="color: var(--color-zinc-400); cursor: pointer; padding: 4px;"
             role="button"
             tabindex="0"
             aria-label="Toggle password visibility"
-          ></wa-icon>
+          ></i>
         </wa-input>
       </div>
     </div>
 
-    <wa-button
-      variant="brand"
+    <button
       class="auth-primary-btn"
       type="submit"
       data-turbo-submits-with="Linking account..."
     >
       Link Account & Sign In
-    </wa-button>
+    </button>
   <% end %>
 
   <div class="auth-prompt" style="margin-top: 24px;">

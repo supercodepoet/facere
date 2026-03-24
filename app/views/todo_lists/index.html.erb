@@ -8,7 +8,7 @@
   <div class="lists-header">
     <h1>My Lists</h1>
     <%= link_to new_todo_list_path, class: "lists-new-btn" do %>
-      <wa-icon name="plus" variant="thin"></wa-icon>
+      <i class="fa-light fa-plus"></i>
       New List
     <% end %>
   </div>
@@ -20,7 +20,7 @@
 
     <%= link_to new_todo_list_path, class: "list-card-create" do %>
       <div class="list-card-create-icon">
-        <wa-icon name="plus" variant="thin"></wa-icon>
+        <i class="fa-light fa-plus"></i>
       </div>
       <span>Create New List</span>
     <% end %>
@@ -42,22 +42,22 @@
 <% if @todo_lists.empty? && @shared_lists.empty? %>
   <div class="blank-slate">
     <div class="blank-slate-illustration">
-      <wa-icon name="clipboard-list" variant="thin"></wa-icon>
+      <i class="fa-light fa-clipboard-list"></i>
     </div>
 
     <h1>Your lists are waiting!</h1>
     <p>Create your first list and start turning chaos into beautifully organized tasks. It only takes a moment!</p>
 
     <%= link_to new_todo_list_path, class: "blank-slate-cta" do %>
-      <wa-icon name="plus" variant="thin"></wa-icon>
+      <i class="fa-light fa-plus"></i>
       Create My First List
-      <wa-icon name="arrow-right" variant="thin"></wa-icon>
+      <i class="fa-light fa-arrow-right"></i>
     <% end %>
 
     <div class="blank-slate-features">
-      <span><wa-icon name="sparkles" variant="thin"></wa-icon> Organize tasks</span>
-      <span><wa-icon name="users" variant="thin"></wa-icon> Collaborate</span>
-      <span><wa-icon name="clock" variant="thin"></wa-icon> Stay on track</span>
+      <span><i class="fa-light fa-sparkles"></i> Organize tasks</span>
+      <span><i class="fa-light fa-users"></i> Collaborate</span>
+      <span><i class="fa-light fa-clock"></i> Stay on track</span>
     </div>
   </div>
 <% end %>

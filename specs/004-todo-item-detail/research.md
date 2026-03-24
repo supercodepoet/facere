@@ -98,11 +98,11 @@
 
 **Rationale**: The existing implementation uses standard multipart form uploads. Direct uploads provide a smoother experience — files upload in the background and appear as cards when complete. Rails 8.1 includes built-in direct upload JavaScript.
 
-## Decision 10: Date Picker — Web Awesome `wa-calendar` or Native Input
+## Decision 10: Date Picker — Native Input
 
 **Decision**: Use native HTML date input with `showPicker()` for the due date, enhanced with quick-pick buttons (Today, Tomorrow, Next Week, No Date) matching the design.
 
-**Rationale**: The design shows a custom date picker popover with quick-pick options. Web Awesome Pro does not include a calendar component. Building a full custom calendar is out of scope per YAGNI. The native date input provides reliable cross-browser date selection. Quick-pick buttons can be implemented as simple Stimulus-controlled buttons that set the date input value.
+**Rationale**: The design shows a custom date picker popover with quick-pick options. Building a full custom calendar is out of scope per YAGNI. The native date input provides reliable cross-browser date selection. Quick-pick buttons can be implemented as simple Stimulus-controlled buttons that set the date input value.
 
 **Alternatives considered**:
 - **Custom calendar component**: Matches design exactly but significant effort for a date picker. Defer to a future enhancement.
