@@ -57,7 +57,20 @@
       "Bash(curl -sL \"http://localhost:3000/sign_in\" -c /tmp/facere_cookies.txt -d \"email_address=test@test.com&password=password\" -X POST)",
       "Bash(curl -sL -b /tmp/facere_cookies.txt \"http://localhost:3000\")",
       "Bash(curl -s \"http://localhost:3000/assets/lexxy-b52178dc.css\")",
-      "Bash(curl -s \"http://localhost:3000/assets/lexxy-768d4330.css\")"
+      "Bash(curl -s \"http://localhost:3000/assets/lexxy-768d4330.css\")",
+      "Bash(.specify/scripts/bash/create-new-feature.sh --json --number 9 --short-name \"tag-management\" \"Tag management for TODO items\")",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T006/- [x] T006/' specs/009-tag-management/tasks.md)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T007/- [x] T007/' specs/009-tag-management/tasks.md)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T008/- [x] T008/' specs/009-tag-management/tasks.md)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T009/- [x] T009/' specs/009-tag-management/tasks.md)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T010/- [x] T010/' specs/009-tag-management/tasks.md)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T024/- [x] T024/' specs/009-tag-management/tasks.md)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T025/- [x] T025/' specs/009-tag-management/tasks.md)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T026/- [x] T026/' specs/009-tag-management/tasks.md)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T027/- [x] T027/' specs/009-tag-management/tasks.md)",
+      "Bash(sed -i '' 's/^- \\\\[ \\\\] T028/- [x] T028/' specs/009-tag-management/tasks.md)",
+      "Bash(bin/rubocop app/controllers/tags_controller.rb)",
+      "Bash(bin/brakeman --no-pager -q)"
     ]
   }
 }

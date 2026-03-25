@@ -1,0 +1,134 @@
+<div class="tag-editor-popover" data-tag-editor-target="popover">
+  <%# ── List View ── %>
+  <div data-tag-editor-target="listView">
+    <div class="tag-editor-search">
+      <i class="fa-light fa-search"></i>
+      <input type="text"
+             placeholder="Search tags..."
+             data-tag-editor-target="searchInput"
+             data-action="input->tag-editor#search"
+             autocomplete="off">
+    </div>
+
+    <div class="tag-editor-list">
+      <% applied_tags, available_tags = tags.partition { |t| applied_tag_ids.include?(t.id) } %>
+
+      <% applied_tags.each do |tag| %>
+        <% soft_bg = tag.color.present? ? "#{tag.color}20" : "#F4F4F520" %>
+        <div class="tag-editor-row tag-editor-row--applied"
+             style="--tag-soft-bg: <%= soft_bg %>;"
+             data-tag-editor-target="tagRow"
+             data-tag-name="<%= tag.name %>">
+
+          <%= link_to todo_list_todo_item_tag_path(todo_list, item, tag),
+                data: { turbo_method: :delete, turbo_frame: "_top" },
+                class: "tag-editor-row-content" do %>
+            <span class="tag-editor-dot" style="background: <%= tag.color.presence || '#A1A1AA' %>;"></span>
+            <span class="tag-editor-name" style="color: <%= tag.color.presence || '#18181B' %>;"><%= tag.name %></span>
+            <span class="tag-editor-spacer"></span>
+            <i class="fa-solid fa-check tag-editor-check" style="color: <%= tag.color.presence || '#8B5CF6' %>;"></i>
+          <% end %>
+
+          <div class="tag-editor-ellipsis-wrap">
+            <button type="button" class="tag-editor-ellipsis" data-action="click->tag-editor#toggleEllipsis">
+              <i class="fa-solid fa-ellipsis"></i>
+            </button>
+            <div class="tag-editor-ellipsis-menu">
+              <button type="button" class="tag-editor-ellipsis-option"
+                      data-action="click->tag-editor#showEdit"
+                      data-tag-id="<%= tag.id %>"
+                      data-tag-name="<%= tag.name %>"
+                      data-tag-color="<%= tag.color %>">
+                <i class="fa-light fa-pen"></i> Edit Tag
+              </button>
+              <button type="button" class="tag-editor-ellipsis-option tag-editor-ellipsis-option--danger"
+                      data-action="click->tag-editor#openDeleteModal"
+                      data-tag-id="<%= tag.id %>"
+                      data-tag-name="<%= tag.name %>"
+                      data-tag-color="<%= tag.color %>">
+                <i class="fa-light fa-trash"></i> Delete Tag
+              </button>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <% if applied_tags.any? && available_tags.any? %>
+        <div class="tag-editor-divider"></div>
+      <% end %>
+
+      <% available_tags.each do |tag| %>
+        <div class="tag-editor-row"
+             data-tag-editor-target="tagRow"
+             data-tag-name="<%= tag.name %>">
+
+          <%= form_with url: todo_list_todo_item_tags_path(todo_list, item), method: :post,
+                data: { turbo_frame: "_top" },
+                class: "tag-editor-row-content" do |f| %>
+            <%= f.hidden_field :id, name: "tag[id]", value: tag.id %>
+            <span class="tag-editor-dot" style="background: <%= tag.color.presence || '#A1A1AA' %>;"></span>
+            <span class="tag-editor-name"><%= tag.name %></span>
+            <span class="tag-editor-spacer"></span>
+            <button type="submit" class="tag-editor-row-submit"></button>
+          <% end %>
+
+          <div class="tag-editor-ellipsis-wrap">
+            <button type="button" class="tag-editor-ellipsis" data-action="click->tag-editor#toggleEllipsis">
+              <i class="fa-solid fa-ellipsis"></i>
+            </button>
+            <div class="tag-editor-ellipsis-menu">
+              <button type="button" class="tag-editor-ellipsis-option"
+                      data-action="click->tag-editor#showEdit"
+                      data-tag-id="<%= tag.id %>"
+                      data-tag-name="<%= tag.name %>"
+                      data-tag-color="<%= tag.color %>">
+                <i class="fa-light fa-pen"></i> Edit Tag
+              </button>
+              <button type="button" class="tag-editor-ellipsis-option tag-editor-ellipsis-option--danger"
+                      data-action="click->tag-editor#openDeleteModal"
+                      data-tag-id="<%= tag.id %>"
+                      data-tag-name="<%= tag.name %>"
+                      data-tag-color="<%= tag.color %>">
+                <i class="fa-light fa-trash"></i> Delete Tag
+              </button>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <% if tags.empty? %>
+        <div style="padding: 14px; text-align: center; color: #A1A1AA; font-size: 13px; font-family: 'Inter', sans-serif;">
+          No tags yet
+        </div>
+      <% end %>
+
+      <div class="tag-editor-divider"></div>
+
+      <button type="button" class="tag-editor-create-link" data-action="click->tag-editor#showCreate">
+        <i class="fa-light fa-plus"></i>
+        <span>Create new tag...</span>
+      </button>
+    </div>
+  </div>
+
+  <%# ── Create View ── %>
+  <div data-tag-editor-target="createView" style="display: none;">
+    <%= render "todo_items/tag_form",
+          tag: Tag.new(color: "#8B5CF6"),
+          mode: :create,
+          todo_list: todo_list,
+          item: item %>
+  </div>
+
+  <%# ── Edit View ── %>
+  <div data-tag-editor-target="editView" style="display: none;">
+    <%= render "todo_items/tag_form",
+          tag: Tag.new(id: 0, color: "#8B5CF6"),
+          mode: :edit,
+          todo_list: todo_list,
+          item: item %>
+  </div>
+
+  <%# ── Delete Confirmation Modal ── %>
+  <%= render "todo_items/tag_delete_confirm", todo_list: todo_list, item: item %>
+</div>

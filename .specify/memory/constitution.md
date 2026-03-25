@@ -266,6 +266,52 @@ Learned through implementation of TODO List Items feature (003):
   use `Preloader.new(records: [@record], associations: [...]).call`
   instead of re-fetching with `includes(...).find()`
 
+### Turbo Frame & Stream Patterns for Inline Editors
+
+Learned through implementation of Tag Management feature (009):
+
+- **Sibling frames, not nested frames**: When a Turbo Stream replaces
+  a frame (e.g., `item_tags_` with updated tag pills), any child
+  turbo-frames inside it are destroyed. If you need a persistent
+  editor alongside replaceable content, make them **sibling** frames
+  under a common parent — not parent-child. Example: `show.html.erb`
+  wraps both `item_tags_` (replaceable) and `tag_editor_` (persistent)
+  in a shared `div` with the Stimulus controller
+- **Turbo Stream replacements MUST preserve Stimulus data attributes**:
+  When a Turbo Stream replaces a turbo-frame element, the replacement
+  HTML MUST include all `data-*-target` and `data-src` attributes
+  that the original element had. Without these, the Stimulus controller
+  loses its targets and throws "Missing target element" errors
+- **Use `data-turbo-frame="_top"` for actions inside editor frames**:
+  Forms and links inside a `turbo-frame` are scoped to that frame by
+  default. If the server responds with Turbo Streams (not a frame
+  response), use `data: { turbo_frame: "_top" }` to make the request
+  a top-level Turbo Drive request. This ensures Turbo Stream responses
+  are processed correctly regardless of frame nesting
+- **Lazy-load turbo frames on demand, not on page load**: For editor
+  popovers that should only appear on click, render the turbo-frame
+  WITHOUT `src` or `loading="lazy"`. Store the URL in `data-src` and
+  set `frame.src = frame.dataset.src` via Stimulus when the user
+  clicks the trigger. Listen for `turbo:frame-load` (once) to show
+  the popover after content arrives
+- **Context menus inside scrollable containers**: Elements with
+  `overflow-y: auto` (e.g., scrollable lists) clip absolutely-
+  positioned children. For context menus (ellipsis dropdowns), use
+  `position: fixed` on the menu and calculate position via
+  `getBoundingClientRect()` in JS. Set `z-index: 99999` to ensure
+  the menu renders above all layers
+- **Single controller for multiple context menus**: When multiple
+  rows each have an ellipsis menu, do NOT use a separate `dropdown`
+  controller per row — they can't coordinate. Instead, manage all
+  menus from the parent Stimulus controller with a `toggleEllipsis`
+  action that calls `closeAllEllipsis()` before opening the clicked
+  menu. This guarantees only one menu is open at a time
+- **Always-active outside-click listener for popovers**: Register
+  the `document` click listener in `connect()` and remove in
+  `disconnect()` — not in open/close methods. If registered only
+  on open, Turbo Stream replacements can disconnect/reconnect the
+  controller and lose the listener, leaving the popover stuck open
+
 ### Custom Dropdown & Modal Patterns
 
 Learned through UI component modernization (007):
@@ -460,4 +506,4 @@ implementation plans MUST verify compliance with these principles.
   (generated from `agent-file-template.md`) for day-to-day development
   reference
 
-**Version**: 1.6.0 | **Ratified**: 2026-03-05 | **Last Amended**: 2026-03-24
+**Version**: 1.7.0 | **Ratified**: 2026-03-05 | **Last Amended**: 2026-03-25

@@ -1,0 +1,500 @@
+/* ============================================================
+   Tag Editor Dropdown
+   ============================================================ */
+.tag-editor-popover {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 280px;
+  margin-bottom: 30px;
+  background: var(--color-white, #FFFFFF);
+  border: 1px solid var(--color-zinc-300, #D4D4D8);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.06);
+  z-index: 9999;
+  display: none;
+}
+
+.tag-editor-popover--open {
+  display: block;
+}
+
+/* Search Input */
+.tag-editor-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--color-zinc-300, #D4D4D8);
+}
+
+.tag-editor-search i {
+  font-size: 14px;
+  color: var(--color-zinc-400, #A1A1AA);
+}
+
+.tag-editor-search input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--color-zinc-900, #18181B);
+  width: 100%;
+}
+
+.tag-editor-search input::placeholder {
+  color: var(--color-zinc-400, #A1A1AA);
+}
+
+/* Tags List */
+.tag-editor-list {
+  padding: 6px 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Tag Row */
+.tag-editor-row {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.tag-editor-row-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.tag-editor-row-content:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Hidden submit button for available tag form rows */
+.tag-editor-row-submit {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  z-index: 0;
+}
+
+.tag-editor-row:hover {
+  background: var(--color-zinc-100, #F4F4F5);
+}
+
+.tag-editor-row--applied {
+  background: var(--tag-soft-bg, #F4F4F5);
+}
+
+.tag-editor-row--applied:hover {
+  background: var(--tag-soft-bg, #F4F4F5);
+}
+
+/* Tag Color Dot */
+.tag-editor-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Tag Name */
+.tag-editor-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-zinc-900, #18181B);
+}
+
+.tag-editor-row:not(.tag-editor-row--applied) .tag-editor-name {
+  color: var(--color-zinc-500, #71717A);
+}
+
+/* Spacer */
+.tag-editor-spacer {
+  flex: 1;
+}
+
+/* Check Icon (applied tags) */
+.tag-editor-check {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* Ellipsis Wrap */
+.tag-editor-ellipsis-wrap {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+/* Ellipsis Button */
+.tag-editor-ellipsis {
+  font-size: 16px;
+  color: var(--color-zinc-400, #A1A1AA);
+  opacity: 0;
+  transition: opacity 0.15s;
+  background: none;
+  border: none;
+  padding: 10px 14px 10px 4px;
+  cursor: pointer;
+}
+
+.tag-editor-row:hover .tag-editor-ellipsis {
+  opacity: 1;
+}
+
+/* Ellipsis Dropdown Menu — fixed position to escape overflow clipping */
+.tag-editor-ellipsis-menu {
+  display: none;
+  position: fixed;
+  width: 160px;
+  background: var(--color-white, #FFFFFF);
+  border: 1px solid var(--color-zinc-300, #D4D4D8);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  z-index: 99999;
+  padding: 4px 0;
+}
+
+.tag-editor-ellipsis-menu--open {
+  display: block;
+}
+
+.tag-editor-ellipsis-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--color-zinc-700, #3F3F46);
+  cursor: pointer;
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+}
+
+.tag-editor-ellipsis-option:hover {
+  background: var(--color-zinc-100, #F4F4F5);
+}
+
+.tag-editor-ellipsis-option--danger {
+  color: var(--color-danger, #EF4444);
+}
+
+.tag-editor-ellipsis-option--danger:hover {
+  background: #FEE2E2;
+}
+
+/* Divider */
+.tag-editor-divider {
+  height: 1px;
+  background: var(--color-zinc-200, #E4E4E7);
+  margin: 0;
+}
+
+/* Create New Tag Link */
+.tag-editor-create-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+}
+
+.tag-editor-create-link:hover {
+  background: var(--color-zinc-100, #F4F4F5);
+}
+
+.tag-editor-create-link i,
+.tag-editor-create-link span {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #8B5CF6;
+}
+
+/* ============================================================
+   Tag Form (Create / Edit)
+   ============================================================ */
+.tag-form {
+  padding: 16px;
+}
+
+.tag-form-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-zinc-900, #18181B);
+  margin: 0 0 12px 0;
+}
+
+.tag-form-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-zinc-400, #A1A1AA);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.tag-form-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--color-zinc-300, #D4D4D8);
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--color-zinc-900, #18181B);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.tag-form-input:focus {
+  border-color: #8B5CF6;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.15);
+}
+
+.tag-form-input.field_with_errors,
+.tag-form-input--error {
+  border-color: #EF4444;
+}
+
+.tag-form-error {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #EF4444;
+  margin-top: 4px;
+}
+
+/* Color Picker */
+.tag-form-colors {
+  margin: 12px 0;
+}
+
+.tag-form-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.tag-form-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+}
+
+.tag-form-swatch--selected {
+  outline: 2px solid;
+  outline-offset: 2px;
+}
+
+.tag-form-custom-color {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tag-form-color-input {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--color-zinc-300, #D4D4D8);
+  padding: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+.tag-form-color-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.tag-form-color-input::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+.tag-form-preview-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.tag-form-preview-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tag-form-preview-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Form Actions */
+.tag-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tag-form-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.tag-form-btn--cancel {
+  background: var(--color-zinc-100, #F4F4F5);
+  color: var(--color-zinc-700, #3F3F46);
+}
+
+.tag-form-btn--cancel:hover {
+  background: var(--color-zinc-200, #E4E4E7);
+}
+
+.tag-form-btn--primary {
+  background: #8B5CF6;
+  color: #FFFFFF;
+}
+
+.tag-form-btn--primary:hover {
+  background: #7C3AED;
+}
+
+.tag-form-btn--danger {
+  background: #EF4444;
+  color: #FFFFFF;
+}
+
+.tag-form-btn--danger:hover {
+  background: #DC2626;
+}
+
+/* Delete Link in Edit Form */
+.tag-form-delete-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #EF4444;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.tag-form-delete-link:hover {
+  text-decoration: underline;
+}
+
+.tag-form-delete-hint {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: var(--color-zinc-400, #A1A1AA);
+  margin-left: auto;
+}
+
+/* ============================================================
+   Delete Confirmation Modal (tag-specific)
+   ============================================================ */
+.tag-delete-modal-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 12px 0;
+}
+
+/* ============================================================
+   Tags Card Trigger (in detail sidebar)
+   ============================================================ */
+.tags-card-wrap {
+  position: relative;
+}
+
+.tags-card-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #8B5CF6;
+}
+
+.tags-card-trigger i {
+  font-size: 12px;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 640px) {
+  .tag-editor-popover {
+    width: 100%;
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 16px 16px 0 0;
+    margin-top: 0;
+    max-height: 80vh;
+  }
+
+  .tag-editor-list {
+    max-height: 50vh;
+  }
+}

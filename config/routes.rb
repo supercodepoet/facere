@@ -54,7 +54,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :tags, only: [ :create, :destroy ]
+      resources :tags, only: [ :index, :create, :update, :destroy ]
       resources :attachments, only: [ :create, :destroy ]
       resources :comments, only: [ :create, :update, :destroy ] do
         resources :likes, only: [ :create, :destroy ], controller: "comment_likes"
