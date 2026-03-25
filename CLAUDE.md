@@ -9,6 +9,7 @@ Auto-generated from all feature plans. Last updated: 2026-03-24
 - Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), ActionCable (already configured — connection + auth in place, no channels yet), Action Mailer (existing mailers for email verification and password reset), Font Awesome Pro (CDN kit), Lexxy, Active Storage, ActionText (005-list-collaboration)
 - SQLite (all environments), Solid Cable (production ActionCable adapter) (005-list-collaboration)
 - Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), Font Awesome Pro (CDN kit), Lexxy (rich text), Active Storage (file uploads), ActionTex (006-detail-screen-polish)
+- SQLite (existing Tag and ItemTag tables — no migrations needed) (009-tag-management)
 
 - Ruby 4.0.1 / Rails 8.1.2 (001-user-auth)
 - Hotwire: Turbo Drive, Turbo Frames, Turbo Streams, Stimulus
@@ -60,10 +61,9 @@ bin/rails credentials:edit # Edit encrypted credentials
 - Stimulus controllers for DOM only; server logic via Turbo
 
 ## Recent Changes
+- 009-tag-management: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), Font Awesome Pro (CDN kit)
 - 007-ui-component-modernization: Removed all Web Awesome components (wa-icon, wa-button, wa-dropdown, wa-dialog). Added Lexxy editor to Notes and Comments. Moved item actions to top bar. Created dropdown and modal Stimulus controllers. Changed icon weight from fa-thin to fa-light.
 - 006-detail-screen-polish: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), Font Awesome Pro (CDN kit), Lexxy (rich text), Active Storage (file uploads), ActionText
-- 005-list-collaboration: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive, Turbo Frames, Turbo Streams, Stimulus), ActionCable (already configured — connection + auth in place, no channels yet), Action Mailer (existing mailers for email verification and password reset), Font Awesome Pro (CDN kit), Lexxy, Active Storage, ActionTex
-- 004-todo-item-detail: Added Ruby 4.0.1 / Rails 8.1.2 + Hotwire (Turbo Drive + Turbo Streams + Turbo Frames + Stimulus), Font Awesome Pro (CDN kit), Lexxy (~> 0.1.26.beta, new), ActionText (Rails built-in), Active Storage (Rails built-in)
 
   reset, OAuth, 2FA, email verification)
 

@@ -1,0 +1,80 @@
+<%
+  preset_colors = %w[#8B5CF6 #EF4444 #F59E0B #2563EB #14B8A6 #6366F1 #F97316]
+  is_edit = (mode == :edit)
+  form_url = is_edit ? todo_list_todo_item_tag_path(todo_list, item, tag) : todo_list_todo_item_tags_path(todo_list, item)
+  form_method = is_edit ? :patch : :post
+%>
+
+<div class="tag-form">
+  <h3 class="tag-form-title"><%= is_edit ? "Edit Tag" : "Create New Tag" %></h3>
+
+  <%= form_with url: form_url, method: form_method,
+        data: { turbo_frame: "_top" } do |f| %>
+
+    <label class="tag-form-label">Tag Name</label>
+    <%= f.text_field :name,
+          name: "tag[name]",
+          value: tag.name,
+          placeholder: "Enter tag name...",
+          class: "tag-form-input #{tag.errors[:name].any? ? 'tag-form-input--error' : ''}",
+          autocomplete: "off",
+          maxlength: 50,
+          data: { action: "input->tag-editor#updatePreview" } %>
+    <% if tag.errors[:name].any? %>
+      <div class="tag-form-error"><%= tag.errors[:name].first %></div>
+    <% end %>
+
+    <div class="tag-form-colors">
+      <label class="tag-form-label">Color</label>
+      <input type="hidden" name="tag[color]" value="<%= tag.color.presence || '#8B5CF6' %>">
+
+      <div class="tag-form-swatches">
+        <% preset_colors.each do |color| %>
+          <button type="button"
+                  class="tag-form-swatch <%= color == (tag.color.presence || '#8B5CF6') ? 'tag-form-swatch--selected' : '' %>"
+                  style="background: <%= color %>; <%= color == (tag.color.presence || '#8B5CF6') ? "outline-color: #{color};" : '' %>"
+                  data-color="<%= color %>"
+                  data-action="click->tag-editor#selectColor">
+          </button>
+        <% end %>
+      </div>
+
+      <div class="tag-form-custom-color">
+        <input type="color"
+               value="<%= tag.color.presence || '#8B5CF6' %>"
+               class="tag-form-color-input"
+               data-action="input->tag-editor#customColorChange">
+        <span style="font-size: 12px; color: #A1A1AA; font-family: 'Inter', sans-serif;">Custom</span>
+      </div>
+    </div>
+
+    <div class="tag-form-preview-pill"
+         style="background: <%= tag.color.presence || '#8B5CF6' %>20; color: <%= tag.color.presence || '#8B5CF6' %>;">
+      <span class="tag-form-preview-dot" style="background: <%= tag.color.presence || '#8B5CF6' %>;"></span>
+      <span class="tag-form-preview-name"><%= tag.name.presence || "Preview" %></span>
+    </div>
+
+    <div class="tag-form-actions">
+      <button type="button" class="tag-form-btn tag-form-btn--cancel" data-action="click->tag-editor#showList">
+        Cancel
+      </button>
+      <button type="submit" class="tag-form-btn tag-form-btn--primary">
+        <%= is_edit ? "Save Changes" : "Create Tag" %>
+      </button>
+    </div>
+  <% end %>
+
+  <% if is_edit %>
+    <div style="display: flex; align-items: center; margin-top: 12px;">
+      <button type="button"
+              class="tag-form-delete-link"
+              data-action="click->tag-editor#openDeleteModal"
+              data-tag-id="<%= tag.id %>"
+              data-tag-name="<%= tag.name %>"
+              data-tag-color="<%= tag.color %>">
+        <i class="fa-light fa-trash"></i> Delete this tag
+      </button>
+      <span class="tag-form-delete-hint">Removes from all items</span>
+    </div>
+  <% end %>
+</div>

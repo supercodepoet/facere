@@ -129,9 +129,19 @@
           <%= render "todo_items/notify_card", item: @todo_item, todo_list: @todo_list %>
         </turbo-frame>
 
-        <turbo-frame id="item_tags_<%= @todo_item.id %>">
-          <%= render "todo_items/tags_card", item: @todo_item, todo_list: @todo_list %>
-        </turbo-frame>
+        <div class="detail-card tags-card-wrap" data-controller="tag-editor">
+          <turbo-frame id="item_tags_<%= @todo_item.id %>">
+            <%= render "todo_items/tags_card", item: @todo_item, todo_list: @todo_list %>
+          </turbo-frame>
+
+          <button type="button" class="tags-card-trigger" data-action="click->tag-editor#toggleEditor">
+            <i class="fa-light fa-plus"></i>
+            Manage tags
+          </button>
+
+          <turbo-frame id="tag_editor_<%= @todo_item.id %>" data-tag-editor-target="editorFrame" data-src="<%= todo_list_todo_item_tags_path(@todo_list, @todo_item) %>">
+          </turbo-frame>
+        </div>
 
       </div>
     </div>

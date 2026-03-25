@@ -1,0 +1,29 @@
+<div class="delete-modal-overlay"
+     data-tag-editor-target="deleteModal"
+     data-action="click->tag-editor#backdropCloseDeleteModal">
+  <div class="delete-modal-panel" data-action="click->tag-editor#stopPropagation">
+    <div class="delete-modal-content">
+      <h2>Delete Tag</h2>
+
+      <div class="tag-delete-modal-tag">
+        <span class="tag-delete-modal-dot tag-editor-dot" style="background: #8B5CF6;"></span>
+        <span class="tag-delete-modal-name">Tag</span>
+      </div>
+
+      <p>Are you sure you want to delete this tag? It will be removed from all items.</p>
+    </div>
+
+    <div class="delete-modal-actions">
+      <button type="button" class="tag-form-btn tag-form-btn--cancel" data-action="click->tag-editor#closeDeleteModal">
+        Cancel
+      </button>
+      <%= form_with url: todo_list_todo_item_tag_path(todo_list, item, 0),
+            method: :delete,
+            data: { turbo_frame: "_top" },
+            style: "margin: 0;" do |f| %>
+        <%= f.hidden_field :permanent, name: "permanent", value: "true" %>
+        <button type="submit" class="tag-form-btn tag-form-btn--danger">Delete Tag</button>
+      <% end %>
+    </div>
+  </div>
+</div>
