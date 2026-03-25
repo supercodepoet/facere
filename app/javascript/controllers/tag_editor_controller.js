@@ -124,6 +124,7 @@ export default class extends Controller {
   }
 
   showEdit(event) {
+    this.closeAllEllipsis()
     const { tagId, tagName, tagColor } = event.currentTarget.dataset
     const color = tagColor || "#8B5CF6"
 
@@ -244,6 +245,7 @@ export default class extends Controller {
   openDeleteModal(event) {
     event.preventDefault()
     event.stopPropagation()
+    this.closeAllEllipsis()
     const { tagId, tagName, tagColor } = event.currentTarget.dataset
 
     if (!this.hasDeleteModalTarget) return
@@ -277,5 +279,9 @@ export default class extends Controller {
     if (event.target === this.deleteModalTarget) {
       this.closeDeleteModal()
     }
+  }
+
+  stopPropagation(event) {
+    event.stopPropagation()
   }
 }

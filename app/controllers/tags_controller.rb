@@ -33,7 +33,7 @@ class TagsController < ApplicationController
       @form_mode = :edit
       load_editor_data
       respond_to do |format|
-        format.turbo_stream { render :create }
+        format.turbo_stream { render :update }
         format.html { redirect_to todo_list_todo_item_path(@todo_list, @todo_item), alert: @tag.errors.full_messages.join(", ") }
       end
     end
@@ -60,23 +60,23 @@ class TagsController < ApplicationController
   end
 
   def create_new_tag
-    @tag = Current.user.tags.find_or_create_by!(name: tag_params[:name]) do |t|
-      t.color = tag_params[:color]
-    end
-    @todo_item.item_tags.find_or_create_by!(tag: @tag)
-    load_editor_data
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to todo_list_todo_item_path(@todo_list, @todo_item) }
-    end
-  rescue ActiveRecord::RecordInvalid => e
-    @form_tag = Current.user.tags.new(tag_params)
-    @form_tag.valid?
-    @form_mode = :create
-    load_editor_data
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to todo_list_todo_item_path(@todo_list, @todo_item), alert: e.message }
+    @tag = Current.user.tags.new(tag_params)
+
+    if @tag.save
+      @todo_item.item_tags.find_or_create_by!(tag: @tag)
+      load_editor_data
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to todo_list_todo_item_path(@todo_list, @todo_item) }
+      end
+    else
+      @form_tag = @tag
+      @form_mode = :create
+      load_editor_data
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to todo_list_todo_item_path(@todo_list, @todo_item), alert: @tag.errors.full_messages.join(", ") }
+      end
     end
   end
 

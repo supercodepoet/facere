@@ -1,3 +1,4 @@
-<%= turbo_frame_tag "tag_editor_#{@todo_item.id}" do %>
+<%= turbo_frame_tag "tag_editor_#{@todo_item.id}",
+                    data: { tag_editor_target: "editorFrame", src: todo_list_todo_item_tags_path(@todo_list, @todo_item) } do %>
   <%= render "todo_items/tag_editor", tags: @tags, applied_tag_ids: @applied_tag_ids, todo_list: @todo_list, item: @todo_item %>
 <% end %>

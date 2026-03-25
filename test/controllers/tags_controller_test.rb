@@ -73,23 +73,24 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @item.reload.tags.pluck(:name), "Design"
   end
 
-  test "create reuses existing tag" do
-    existing = @user.tags.create!(name: "Design", color: "#8B5CF6")
+  test "create rejects duplicate tag name" do
+    @user.tags.create!(name: "Design", color: "#8B5CF6")
     sign_in_as(@user)
     assert_no_difference("Tag.count") do
       post todo_list_todo_item_tags_url(@list, @item), params: { tag: { name: "Design", color: "#8B5CF6" } }
     end
-    assert_equal existing.id, @item.reload.tags.first.id
+    assert_no_difference("ItemTag.count") do
+      post todo_list_todo_item_tags_url(@list, @item), params: { tag: { name: "Design", color: "#8B5CF6" } }
+    end
   end
 
-  test "create prevents duplicate tag on same item" do
+  test "create prevents duplicate tag on same item via toggle" do
     tag = @user.tags.create!(name: "Design", color: "#8B5CF6")
     @item.item_tags.create!(tag: tag)
     sign_in_as(@user)
     assert_no_difference("ItemTag.count") do
-      post todo_list_todo_item_tags_url(@list, @item), params: { tag: { name: "Design", color: "#8B5CF6" } }
+      post todo_list_todo_item_tags_url(@list, @item), params: { tag: { id: tag.id } }
     end
-    assert_response :redirect
   end
 
   test "create with turbo stream responds with turbo stream" do
@@ -189,6 +190,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("ItemTag.count", -1) do
       delete todo_list_todo_item_tag_url(@list, @item, tag)
     end
+    assert_response :redirect
     assert_not_includes @item.reload.tags.pluck(:name), "Design"
     assert Tag.exists?(tag.id), "Tag itself should not be deleted"
   end
@@ -240,6 +242,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     post todo_list_todo_item_tags_url(@list, @item),
       params: { tag: { name: "Injected", color: "#FF0000", user_id: @other_user.id } }
     tag = Tag.find_by(name: "Injected")
-    assert_equal @user.id, tag.user_id if tag
+    assert_not_nil tag, "Tag should have been created"
+    assert_equal @user.id, tag.user_id
   end
 end
