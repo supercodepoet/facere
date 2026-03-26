@@ -38,13 +38,12 @@ class User < ApplicationRecord
   LOCKOUT_ESCALATION_FACTOR = 2
 
   def reorder_lists(lists_data)
-    return if lists_data.empty?
-
-    ids = lists_data.map { |l| l[:id].to_i }
-    whens = lists_data.map { |l| "WHEN #{l[:id].to_i} THEN #{l[:position].to_i}" }.join(" ")
-
-    todo_lists.where(id: ids)
-      .update_all("position = CASE id #{whens} END")
+    TodoList.transaction do
+      lists_data.each do |list_data|
+        todo_lists.where(id: list_data[:id])
+          .update_all(position: list_data[:position])
+      end
+    end
   end
 
   def initials
