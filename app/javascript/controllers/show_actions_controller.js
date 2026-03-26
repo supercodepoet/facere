@@ -17,15 +17,10 @@ export default class extends Controller {
     const template = this.itemTemplateTarget
     const clone = template.content.cloneNode(true)
 
-    // Insert into the unsectioned items area, after the header
-    const unsectioned = document.getElementById("unsectioned-items")
-    if (unsectioned) {
-      const header = unsectioned.querySelector(".unsectioned-header")
-      if (header) {
-        header.after(clone)
-      } else {
-        unsectioned.prepend(clone)
-      }
+    // Insert into the unsectioned items area, before the item list
+    const itemList = document.getElementById("unsectioned-item-list")
+    if (itemList) {
+      itemList.prepend(clone)
     }
   }
 

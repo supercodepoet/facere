@@ -47,8 +47,16 @@
         <button class="app-nav-icon-btn" aria-label="Notifications">
           <i class="fa-light fa-bell"></i>
         </button>
-        <div class="app-user-avatar" aria-label="User menu">
-          <span><%= Current.user&.initials %></span>
+        <div class="dropdown-wrap" data-controller="dropdown">
+          <div class="app-user-avatar" aria-label="User menu" data-action="click->dropdown#toggle">
+            <span><%= Current.user&.initials %></span>
+          </div>
+          <div class="dropdown-menu" data-dropdown-target="menu">
+            <%= button_to sign_out_path, method: :delete, class: "dropdown-item" do %>
+              <i class="fa-light fa-arrow-right-from-bracket"></i>
+              Logout
+            <% end %>
+          </div>
         </div>
       </div>
     </header>

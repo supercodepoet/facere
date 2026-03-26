@@ -52,6 +52,7 @@ class TodoList < ApplicationRecord
   validates :template, presence: true, inclusion: { in: TEMPLATES.keys }
 
   scope :recently_updated, -> { order(updated_at: :desc) }
+  scope :positioned, -> { order(position: :asc, created_at: :asc) }
 
   def apply_template!
     template_data = TEMPLATES[template]

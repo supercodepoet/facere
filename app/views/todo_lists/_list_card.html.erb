@@ -1,4 +1,4 @@
-<div class="list-card list-card--<%= list.color %>">
+<div class="list-card list-card--<%= list.color %>" data-list-id="<%= list.id %>" draggable="true">
   <div class="list-card-header">
     <div class="list-card-left">
       <i class="fa-light fa-grip-dots-vertical list-card-drag"></i>
@@ -7,7 +7,7 @@
           <i class="fa-light fa-<%= list.icon %>"></i>
         <% end %>
       </div>
-      <%= link_to list.name, todo_list_path(list), class: "list-card-title" %>
+      <%= link_to list.name, todo_list_path(list), class: "list-card-title list-card-stretched-link" %>
     </div>
     <button class="list-card-menu" aria-label="List options">
       <i class="fa-light fa-ellipsis"></i>
@@ -15,7 +15,7 @@
   </div>
 
   <% completion_pct = list.completion_percentage %>
-  <%= link_to todo_list_path(list), class: "list-card-body" do %>
+  <div class="list-card-body">
     <div class="list-card-progress-section">
       <div class="list-card-progress">
         <div class="list-card-progress-bar list-card-progress-bar--<%= list.color %>" style="width: <%= completion_pct %>%;"></div>
@@ -31,5 +31,5 @@
         <span class="list-card-updated">Updated <%= time_ago_in_words(list.updated_at) %> ago</span>
       <% end %>
     </div>
-  <% end %>
+  </div>
 </div>

@@ -70,7 +70,16 @@
       "Bash(sed -i '' 's/^- \\\\[ \\\\] T027/- [x] T027/' specs/009-tag-management/tasks.md)",
       "Bash(sed -i '' 's/^- \\\\[ \\\\] T028/- [x] T028/' specs/009-tag-management/tasks.md)",
       "Bash(bin/rubocop app/controllers/tags_controller.rb)",
-      "Bash(bin/brakeman --no-pager -q)"
+      "Bash(bin/brakeman --no-pager -q)",
+      "Bash(grep -E \"\\\\.erb$\")",
+      "Bash(grep -r \"app-user-avatar\\\\|\\\\.dropdown-menu\" /Users/supercodepoet/Development/scratchpad/facere/app/assets/stylesheets --include=*.css -l)",
+      "Bash(grep -E \"\\\\.rb$\")",
+      "Bash(B=~/.claude/skills/gstack/browse/dist/browse)",
+      "Bash($B goto:*)",
+      "Bash($B restart:*)",
+      "Bash($B stop:*)",
+      "Bash(pkill -f \"browse\")",
+      "Bash(rm -f /tmp/browse-server-*)"
     ]
   }
 }

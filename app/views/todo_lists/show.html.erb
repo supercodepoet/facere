@@ -76,13 +76,15 @@
         <div class="unsectioned-header">
           <span>Items without section</span>
         </div>
-        <% @unsectioned_items.each do |item| %>
-          <% if item.completed? %>
-            <%= render "todo_lists/todo_item_completed", item: item, todo_list: @todo_list %>
-          <% else %>
-            <%= render "todo_lists/todo_item", item: item, todo_list: @todo_list %>
+        <div id="unsectioned-item-list">
+          <% @unsectioned_items.each do |item| %>
+            <% if item.completed? %>
+              <%= render "todo_lists/todo_item_completed", item: item, todo_list: @todo_list %>
+            <% else %>
+              <%= render "todo_lists/todo_item", item: item, todo_list: @todo_list %>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
 
       <% @sections.each do |section| %>

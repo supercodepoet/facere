@@ -8,12 +8,25 @@ class TodoListsController < ApplicationController
   before_action :authorize_owner!, only: %i[edit update destroy]
 
   def index
-    @todo_lists = Current.user.todo_lists.includes(:todo_items).recently_updated
+    @todo_lists = Current.user.todo_lists.includes(:todo_items).positioned
     @shared_lists = Current.user.shared_lists.includes(:user, :list_collaborators, :todo_items).recently_updated
   end
 
+  def reorder
+    lists_data = params.require(:lists).map { |l| l.permit(:id, :position) }
+
+    TodoList.transaction do
+      lists_data.each do |list_data|
+        Current.user.todo_lists.where(id: list_data[:id])
+          .update_all(position: list_data[:position])
+      end
+    end
+
+    head :ok
+  end
+
   def show
-    @sidebar_lists = Current.user.todo_lists.includes(:todo_items).recently_updated
+    @sidebar_lists = Current.user.todo_lists.includes(:todo_items).positioned
     @shared_sidebar_lists = Current.user.shared_lists.includes(:user, :todo_items).recently_updated
     @sections = @todo_list.todo_sections.active.includes(todo_items: { item_assignees: :user })
     @unsectioned_items = @todo_list.todo_items.active.includes(item_assignees: :user).where(todo_section_id: nil)
@@ -25,6 +38,7 @@ class TodoListsController < ApplicationController
 
   def create
     @todo_list = Current.user.todo_lists.build(todo_list_params)
+    @todo_list.position = Current.user.todo_lists.maximum(:position).to_i + 1
 
     if @todo_list.save
       @todo_list.apply_template!

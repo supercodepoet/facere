@@ -454,6 +454,8 @@
   gap: 16px;
   text-decoration: none;
   color: inherit;
+  position: relative;
+  cursor: pointer;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -461,7 +463,24 @@
 
 .list-card:hover {
   transform: translateY(-2px);
+}
+.list-card--purple:hover {
   box-shadow: 0 4px 20px rgba(139, 92, 246, 0.12);
+}
+.list-card--blue:hover {
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.12);
+}
+.list-card--teal:hover {
+  box-shadow: 0 4px 20px rgba(20, 184, 166, 0.12);
+}
+.list-card--green:hover {
+  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.12);
+}
+.list-card--pink:hover {
+  box-shadow: 0 4px 20px rgba(244, 114, 182, 0.12);
+}
+.list-card--orange:hover {
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.12);
 }
 
 /* Card color variants — accent stripe */
@@ -538,8 +557,114 @@
 }
 
 .list-card-drag {
+  position: relative;
+  z-index: 2;
   font-size: 16px;
-  color: var(--color-zinc-400);
+  color: var(--color-zinc-300);
+  cursor: grab;
+  transition: color 0.15s ease;
+}
+
+.list-card-drag:hover {
+  color: var(--color-zinc-600);
+}
+
+.list-card-drag:active {
+  cursor: grabbing;
+}
+
+/* Drag-and-drop reorder states */
+.list-card--dragging {
+  opacity: 0.8;
+  transform: rotate(-1.5deg);
+  box-shadow:
+    0 8px 24px rgba(139, 92, 246, 0.25),
+    0 2px 8px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+  position: relative;
+  border: 2px solid var(--color-primary);
+}
+
+.list-card--drop-before,
+.list-card--drop-after {
+  position: relative;
+  transition: transform 0.15s ease;
+}
+
+.list-card--drop-before {
+  transform: translateX(6px);
+}
+
+.list-card--drop-after {
+  transform: translateX(-6px);
+}
+
+.list-card--drop-before::before,
+.list-card--drop-after::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 3px;
+  animation: drop-indicator-pulse 1s ease-in-out infinite;
+}
+
+.list-card--drop-before::before {
+  left: -8px;
+  background: var(--color-primary);
+}
+
+.list-card--drop-after::after {
+  right: -8px;
+  background: var(--color-primary);
+}
+
+/* Per-color drop indicators */
+.list-card--purple.list-card--drop-before::before,
+.list-card--purple.list-card--drop-after::after {
+  background: var(--list-color-purple);
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+}
+.list-card--blue.list-card--drop-before::before,
+.list-card--blue.list-card--drop-after::after {
+  background: var(--list-color-blue);
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+.list-card--teal.list-card--drop-before::before,
+.list-card--teal.list-card--drop-after::after {
+  background: var(--list-color-teal);
+  box-shadow: 0 0 8px rgba(20, 184, 166, 0.5);
+}
+.list-card--green.list-card--drop-before::before,
+.list-card--green.list-card--drop-after::after {
+  background: var(--list-color-green);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+}
+.list-card--pink.list-card--drop-before::before,
+.list-card--pink.list-card--drop-after::after {
+  background: var(--list-color-pink);
+  box-shadow: 0 0 8px rgba(244, 114, 182, 0.5);
+}
+.list-card--orange.list-card--drop-before::before,
+.list-card--orange.list-card--drop-after::after {
+  background: var(--list-color-orange);
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.5);
+}
+
+@keyframes drop-indicator-pulse {
+  0%, 100% { opacity: 1; transform: scaleY(1); }
+  50% { opacity: 0.6; transform: scaleY(0.92); }
+}
+
+.list-card--just-dropped {
+  animation: card-settle 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes card-settle {
+  0% { transform: scale(0.92) rotate(-1.5deg); opacity: 0.6; }
+  50% { transform: scale(1.03); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
 .list-card-emoji {
@@ -565,8 +690,31 @@
   text-decoration: none;
 }
 
-.list-card-title:hover {
-  color: var(--color-primary);
+.list-card-stretched-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 24px;
+}
+
+.list-card--purple:hover .list-card-title {
+  color: var(--list-color-purple);
+}
+.list-card--blue:hover .list-card-title {
+  color: var(--list-color-blue);
+}
+.list-card--teal:hover .list-card-title {
+  color: var(--list-color-teal);
+}
+.list-card--green:hover .list-card-title {
+  color: var(--list-color-green);
+}
+.list-card--pink:hover .list-card-title {
+  color: var(--list-color-pink);
+}
+.list-card--orange:hover .list-card-title {
+  color: var(--list-color-orange);
 }
 
 .list-card-body {
@@ -585,6 +733,8 @@
   font-size: 16px;
   padding: 4px;
   border-radius: 4px;
+  position: relative;
+  z-index: 2;
   transition: color 0.15s ease;
 }
 

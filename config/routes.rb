@@ -37,6 +37,10 @@ Rails.application.routes.draw do
 
   # TODO Lists
   resources :todo_lists, path: "lists" do
+    collection do
+      patch :reorder
+    end
+
     resources :todo_items, path: "items", except: [ :index ] do
       member do
         patch :toggle

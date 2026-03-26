@@ -13,7 +13,7 @@
     <% end %>
   </div>
 
-  <div class="lists-grid">
+  <div class="lists-grid" data-controller="list-reorder" data-list-reorder-url-value="<%= reorder_todo_lists_path %>">
     <% @todo_lists.each do |list| %>
       <%= render "list_card", list: list %>
     <% end %>
