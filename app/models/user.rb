@@ -37,6 +37,16 @@ class User < ApplicationRecord
   LOCKOUT_DURATION = 15.minutes
   LOCKOUT_ESCALATION_FACTOR = 2
 
+  def reorder_lists(lists_data)
+    return if lists_data.empty?
+
+    ids = lists_data.map { |l| l[:id].to_i }
+    whens = lists_data.map { |l| "WHEN #{l[:id].to_i} THEN #{l[:position].to_i}" }.join(" ")
+
+    todo_lists.where(id: ids)
+      .update_all("position = CASE id #{whens} END")
+  end
+
   def initials
     name.split.map(&:first).join.upcase.first(2)
   end

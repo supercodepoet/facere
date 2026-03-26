@@ -14,6 +14,13 @@
   --list-color-pink: #ec4899;
   --list-color-orange: #f97316;
 
+  --list-rgb-purple: 139, 92, 246;
+  --list-rgb-blue: 59, 130, 246;
+  --list-rgb-teal: 20, 184, 166;
+  --list-rgb-green: 34, 197, 94;
+  --list-rgb-pink: 236, 72, 153;
+  --list-rgb-orange: 249, 115, 22;
+
   /* Shared tokens */
   --color-primary: #8b5cf6;
   --color-primary-hover: #7c3aed;
@@ -464,84 +471,22 @@
 .list-card:hover {
   transform: translateY(-2px);
 }
-.list-card--purple:hover {
-  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.12);
-}
-.list-card--blue:hover {
-  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.12);
-}
-.list-card--teal:hover {
-  box-shadow: 0 4px 20px rgba(20, 184, 166, 0.12);
-}
-.list-card--green:hover {
-  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.12);
-}
-.list-card--pink:hover {
-  box-shadow: 0 4px 20px rgba(244, 114, 182, 0.12);
-}
-.list-card--orange:hover {
-  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.12);
+/* Card color variants — set local custom properties per color */
+.list-card--purple { --card-color: var(--list-color-purple); --card-rgb: var(--list-rgb-purple); }
+.list-card--blue   { --card-color: var(--list-color-blue);   --card-rgb: var(--list-rgb-blue); }
+.list-card--teal   { --card-color: var(--list-color-teal);   --card-rgb: var(--list-rgb-teal); }
+.list-card--green  { --card-color: var(--list-color-green);  --card-rgb: var(--list-rgb-green); }
+.list-card--pink   { --card-color: var(--list-color-pink);   --card-rgb: var(--list-rgb-pink); }
+.list-card--orange { --card-color: var(--list-color-orange); --card-rgb: var(--list-rgb-orange); }
+
+.list-card:hover {
+  box-shadow: 0 4px 20px rgba(var(--card-rgb), 0.12);
 }
 
-/* Card color variants — accent stripe */
-.list-card--purple {
-  border-left-color: var(--list-color-purple);
-}
-.list-card--blue {
-  border-left-color: var(--list-color-blue);
-}
-.list-card--teal {
-  border-left-color: var(--list-color-teal);
-}
-.list-card--green {
-  border-left-color: var(--list-color-green);
-}
-.list-card--pink {
-  border-left-color: var(--list-color-pink);
-}
-.list-card--orange {
-  border-left-color: var(--list-color-orange);
-}
-
-/* Emoji circle color variants */
-.list-card-emoji--purple {
-  background: rgba(139, 92, 246, 0.08);
-}
-.list-card-emoji--blue {
-  background: rgba(59, 130, 246, 0.08);
-}
-.list-card-emoji--teal {
-  background: rgba(20, 184, 166, 0.08);
-}
-.list-card-emoji--green {
-  background: rgba(34, 197, 94, 0.08);
-}
-.list-card-emoji--pink {
-  background: rgba(244, 114, 182, 0.08);
-}
-.list-card-emoji--orange {
-  background: rgba(249, 115, 22, 0.08);
-}
-
-/* Progress bar color variants */
-.list-card-progress-bar--purple {
-  background: var(--list-color-purple);
-}
-.list-card-progress-bar--blue {
-  background: var(--list-color-blue);
-}
-.list-card-progress-bar--teal {
-  background: var(--list-color-teal);
-}
-.list-card-progress-bar--green {
-  background: var(--list-color-green);
-}
-.list-card-progress-bar--pink {
-  background: var(--list-color-pink);
-}
-.list-card-progress-bar--orange {
-  background: var(--list-color-orange);
-}
+/* Accent stripe, emoji, progress bar — all derive from --card-color */
+.list-card { border-left-color: var(--card-color); }
+.list-card-emoji { background: rgba(var(--card-rgb), 0.08); }
+.list-card-progress-bar { background: var(--card-color); }
 
 /* Card header row */
 .list-card-header {
@@ -607,49 +552,17 @@
   bottom: 8px;
   width: 3px;
   border-radius: 3px;
+  background: var(--card-color);
+  box-shadow: 0 0 8px rgba(var(--card-rgb), 0.5);
   animation: drop-indicator-pulse 1s ease-in-out infinite;
 }
 
 .list-card--drop-before::before {
   left: -8px;
-  background: var(--color-primary);
 }
 
 .list-card--drop-after::after {
   right: -8px;
-  background: var(--color-primary);
-}
-
-/* Per-color drop indicators */
-.list-card--purple.list-card--drop-before::before,
-.list-card--purple.list-card--drop-after::after {
-  background: var(--list-color-purple);
-  box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
-}
-.list-card--blue.list-card--drop-before::before,
-.list-card--blue.list-card--drop-after::after {
-  background: var(--list-color-blue);
-  box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
-}
-.list-card--teal.list-card--drop-before::before,
-.list-card--teal.list-card--drop-after::after {
-  background: var(--list-color-teal);
-  box-shadow: 0 0 8px rgba(20, 184, 166, 0.5);
-}
-.list-card--green.list-card--drop-before::before,
-.list-card--green.list-card--drop-after::after {
-  background: var(--list-color-green);
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
-}
-.list-card--pink.list-card--drop-before::before,
-.list-card--pink.list-card--drop-after::after {
-  background: var(--list-color-pink);
-  box-shadow: 0 0 8px rgba(244, 114, 182, 0.5);
-}
-.list-card--orange.list-card--drop-before::before,
-.list-card--orange.list-card--drop-after::after {
-  background: var(--list-color-orange);
-  box-shadow: 0 0 8px rgba(249, 115, 22, 0.5);
 }
 
 @keyframes drop-indicator-pulse {
@@ -698,23 +611,8 @@
   border-radius: 24px;
 }
 
-.list-card--purple:hover .list-card-title {
-  color: var(--list-color-purple);
-}
-.list-card--blue:hover .list-card-title {
-  color: var(--list-color-blue);
-}
-.list-card--teal:hover .list-card-title {
-  color: var(--list-color-teal);
-}
-.list-card--green:hover .list-card-title {
-  color: var(--list-color-green);
-}
-.list-card--pink:hover .list-card-title {
-  color: var(--list-color-pink);
-}
-.list-card--orange:hover .list-card-title {
-  color: var(--list-color-orange);
+.list-card:hover .list-card-title {
+  color: var(--card-color);
 }
 
 .list-card-body {

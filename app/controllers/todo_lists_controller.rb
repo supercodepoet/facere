@@ -14,14 +14,7 @@ class TodoListsController < ApplicationController
 
   def reorder
     lists_data = params.require(:lists).map { |l| l.permit(:id, :position) }
-
-    TodoList.transaction do
-      lists_data.each do |list_data|
-        Current.user.todo_lists.where(id: list_data[:id])
-          .update_all(position: list_data[:position])
-      end
-    end
-
+    Current.user.reorder_lists(lists_data)
     head :ok
   end
 

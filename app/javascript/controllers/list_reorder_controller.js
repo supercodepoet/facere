@@ -5,12 +5,27 @@ export default class extends Controller {
 
   connect() {
     this.draggedEl = null
+    this.dropTarget = null
 
-    this.element.addEventListener("dragstart", this.onDragStart.bind(this))
-    this.element.addEventListener("dragend", this.onDragEnd.bind(this))
-    this.element.addEventListener("dragover", this.onDragOver.bind(this))
-    this.element.addEventListener("dragleave", this.onDragLeave.bind(this))
-    this.element.addEventListener("drop", this.onDrop.bind(this))
+    this.boundDragStart = this.onDragStart.bind(this)
+    this.boundDragEnd = this.onDragEnd.bind(this)
+    this.boundDragOver = this.onDragOver.bind(this)
+    this.boundDragLeave = this.onDragLeave.bind(this)
+    this.boundDrop = this.onDrop.bind(this)
+
+    this.element.addEventListener("dragstart", this.boundDragStart)
+    this.element.addEventListener("dragend", this.boundDragEnd)
+    this.element.addEventListener("dragover", this.boundDragOver)
+    this.element.addEventListener("dragleave", this.boundDragLeave)
+    this.element.addEventListener("drop", this.boundDrop)
+  }
+
+  disconnect() {
+    this.element.removeEventListener("dragstart", this.boundDragStart)
+    this.element.removeEventListener("dragend", this.boundDragEnd)
+    this.element.removeEventListener("dragover", this.boundDragOver)
+    this.element.removeEventListener("dragleave", this.boundDragLeave)
+    this.element.removeEventListener("drop", this.boundDrop)
   }
 
   onDragStart(event) {
@@ -31,7 +46,7 @@ export default class extends Controller {
       this.draggedEl.classList.remove("list-card--dragging")
       this.draggedEl = null
     }
-    this.clearDropIndicators()
+    this.clearDropTarget()
   }
 
   onDragOver(event) {
@@ -39,25 +54,27 @@ export default class extends Controller {
     event.preventDefault()
     event.dataTransfer.dropEffect = "move"
 
-    this.clearDropIndicators()
-
     const target = event.target.closest("[data-list-id]")
-    if (target && target !== this.draggedEl) {
-      const rect = target.getBoundingClientRect()
-      const midpoint = rect.left + rect.width / 2
+    const position = this.dropPosition(event, target)
 
-      if (event.clientX < midpoint) {
-        target.classList.add("list-card--drop-before")
-      } else {
-        target.classList.add("list-card--drop-after")
-      }
+    if (!position) {
+      this.clearDropTarget()
+      return
+    }
+
+    // Only update DOM if drop target or side changed
+    if (this.dropTarget !== target || this.dropSide !== position) {
+      this.clearDropTarget()
+      this.dropTarget = target
+      this.dropSide = position
+      target.classList.add(position === "before" ? "list-card--drop-before" : "list-card--drop-after")
     }
   }
 
   onDragLeave(event) {
     const target = event.target.closest("[data-list-id]")
-    if (target) {
-      target.classList.remove("list-card--drop-before", "list-card--drop-after")
+    if (target === this.dropTarget) {
+      this.clearDropTarget()
     }
   }
 
@@ -66,25 +83,31 @@ export default class extends Controller {
     if (!this.draggedEl) return
 
     const target = event.target.closest("[data-list-id]")
-    if (target && target !== this.draggedEl) {
-      const rect = target.getBoundingClientRect()
-      const midpoint = rect.left + rect.width / 2
+    const position = this.dropPosition(event, target)
 
-      if (event.clientX < midpoint) {
-        target.before(this.draggedEl)
-      } else {
-        target.after(this.draggedEl)
-      }
+    if (position === "before") {
+      target.before(this.draggedEl)
+    } else if (position === "after") {
+      target.after(this.draggedEl)
     }
 
-    this.clearDropIndicators()
+    this.clearDropTarget()
     this.persistOrder()
   }
 
-  clearDropIndicators() {
-    this.element.querySelectorAll(".list-card--drop-before, .list-card--drop-after").forEach(el => {
-      el.classList.remove("list-card--drop-before", "list-card--drop-after")
-    })
+  dropPosition(event, target) {
+    if (!target || target === this.draggedEl) return null
+
+    const rect = target.getBoundingClientRect()
+    return event.clientX < rect.left + rect.width / 2 ? "before" : "after"
+  }
+
+  clearDropTarget() {
+    if (this.dropTarget) {
+      this.dropTarget.classList.remove("list-card--drop-before", "list-card--drop-after")
+      this.dropTarget = null
+      this.dropSide = null
+    }
   }
 
   persistOrder() {
