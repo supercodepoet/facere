@@ -91,13 +91,45 @@ class TodoListsControllerTest < ActionDispatch::IntegrationTest
     assert_no_match "Secret List", response.body
   end
 
-  test "index orders by most recently updated" do
+  test "index orders by position" do
     sign_in_as(@user)
-    older = @user.todo_lists.create!(name: "Older", color: "blue", template: "blank")
-    @list.touch
+    @list.update!(position: 1)
+    second = @user.todo_lists.create!(name: "Second List", color: "blue", template: "blank", position: 0)
     get todo_lists_url
     assert_response :success
-    assert response.body.index("Test List") < response.body.index("Older")
+    assert response.body.index("Second List") < response.body.index("Test List")
+  end
+
+  # --- Reorder ---
+
+  test "reorder requires authentication" do
+    patch reorder_todo_lists_url, params: { lists: [ { id: @list.id, position: 0 } ] }
+    assert_response :redirect
+  end
+
+  test "reorder updates positions" do
+    sign_in_as(@user)
+    list2 = @user.todo_lists.create!(name: "Second", color: "blue", template: "blank", position: 1)
+    patch reorder_todo_lists_url, params: { lists: [ { id: list2.id, position: 0 }, { id: @list.id, position: 1 } ] }, as: :json
+    assert_response :ok
+    assert_equal 1, @list.reload.position
+    assert_equal 0, list2.reload.position
+  end
+
+  test "reorder only affects current user lists" do
+    sign_in_as(@user)
+    other_user = User.create!(
+      name: "Other",
+      email_address: "other_reorder@example.com",
+      password: "Password1!",
+      password_confirmation: "Password1!",
+      terms_accepted_at: Time.current,
+      email_verified_at: Time.current
+    )
+    other_list = other_user.todo_lists.create!(name: "Other", color: "blue", template: "blank", position: 0)
+    patch reorder_todo_lists_url, params: { lists: [ { id: other_list.id, position: 5 } ] }, as: :json
+    assert_response :ok
+    assert_equal 0, other_list.reload.position
   end
 
   # --- Show ---
@@ -166,6 +198,14 @@ class TodoListsControllerTest < ActionDispatch::IntegrationTest
     list = TodoList.find_by(name: "My Project")
     assert_equal 4, list.todo_sections.count
     assert list.todo_items.count > 0
+  end
+
+  test "create assigns next position" do
+    sign_in_as(@user)
+    @list.update!(position: 0)
+    post todo_lists_url, params: { todo_list: { name: "Second List", color: "blue", template: "blank" } }
+    new_list = TodoList.find_by(name: "Second List")
+    assert_equal 1, new_list.position
   end
 
   test "create with missing name re-renders form with errors" do

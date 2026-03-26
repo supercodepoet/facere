@@ -113,6 +113,22 @@ class TodoListTest < ActiveSupport::TestCase
     assert_equal list1, @user.todo_lists.recently_updated.first
   end
 
+  test "positioned scope orders by position ascending" do
+    list1 = @user.todo_lists.create!(name: "Second", color: "purple", template: "blank", position: 1)
+    list2 = @user.todo_lists.create!(name: "First", color: "blue", template: "blank", position: 0)
+    result = @user.todo_lists.positioned.to_a
+    assert_equal list2, result.first
+    assert_equal list1, result.second
+  end
+
+  test "positioned scope falls back to created_at for same position" do
+    list1 = @user.todo_lists.create!(name: "Older", color: "purple", template: "blank", position: 0)
+    list2 = @user.todo_lists.create!(name: "Newer", color: "blue", template: "blank", position: 0)
+    result = @user.todo_lists.positioned.to_a
+    assert_equal list1, result.first
+    assert_equal list2, result.second
+  end
+
   test "completion_percentage returns 0 when no items" do
     list = @user.todo_lists.create!(name: "Empty", color: "purple", template: "blank")
     assert_equal 0, list.completion_percentage
