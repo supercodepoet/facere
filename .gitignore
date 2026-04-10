@@ -34,3 +34,4 @@
 /config/*.key
 
 .gstack/
+.claude/settings.local.json
