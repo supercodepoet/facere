@@ -2695,21 +2695,23 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
 
 /* ===== Status Selector — segmented control with gray pill container ===== */
 .status-selector {
-  display: flex;
+  /* Grid over flex so each column is AT LEAST the widest label (with the
+     bold-active weight), but stretches to an equal share when the container
+     has room. Prevents text from overflowing its pill background. */
+  display: grid;
+  grid-template-columns: repeat(4, minmax(max-content, 1fr));
   gap: 4px;
   background: #e4e4e7;
   border-radius: 12px;
   padding: 4px;
 }
 
-/* button_to forms: invisible wrapper */
+/* button_to forms: invisible wrapper that still participates in grid layout */
 .status-selector form {
   display: contents;
 }
 
 .status-btn {
-  flex: 1;
-  min-width: 0;
   padding: 8px 12px;
   border: none;
   border-radius: 8px;
@@ -2717,7 +2719,10 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
   cursor: pointer;
   font-family: 'Inter', sans-serif;
   font-size: 12px;
-  font-weight: 500;
+  /* Reserve bold-weight width so becoming active doesn't reflow content past
+     the pill. font-variation-settings keeps rendered weight at 500; grid
+     max-content will measure using the layout weight from font-weight. */
+  font-weight: 600;
   color: #a1a1aa;
   transition:
     background 0.15s ease,
@@ -2733,7 +2738,6 @@ turbo-frame.todo-item-frame.todo-item--dragging .todo-item {
 .status-btn--active {
   background: #8b5cf6;
   color: #ffffff;
-  font-weight: 600;
 }
 
 .status-btn--active:hover {
