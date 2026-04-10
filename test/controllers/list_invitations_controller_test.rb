@@ -160,6 +160,26 @@ class ListInvitationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "accepted", invitation.reload.status
   end
 
+  test "accept by user with mismatched email is rejected" do
+    invitation = @list.list_invitations.create!(
+      email: "intended@example.com",
+      role: "editor",
+      invited_by: @owner,
+      status: "pending",
+      expires_at: 30.days.from_now
+    )
+    token = invitation.generate_token_for(:acceptance)
+
+    sign_in_as(@outsider)
+    assert_no_difference("ListCollaborator.count") do
+      get accept_invitation_url(token: token)
+    end
+    assert_response :redirect
+    follow_redirect!
+    assert_match(/different email/i, response.body)
+    assert_equal "pending", invitation.reload.status
+  end
+
   test "accept with invalid token redirects with error" do
     sign_in_as(@outsider)
     get accept_invitation_url(token: "bogus-token")

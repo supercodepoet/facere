@@ -6,12 +6,25 @@ class AttachmentsController < ApplicationController
   before_action :set_todo_item
 
   def create
-    if params[:files].present?
-      params[:files].each do |file|
-        @todo_item.files.attach(file)
+    errors = []
+
+    Array(params[:files]).each do |file|
+      if file.size > TodoItem::MAX_FILE_SIZE
+        errors << "#{file.original_filename} is too large (max #{TodoItem::MAX_FILE_SIZE / 1.megabyte}MB)"
+        next
       end
+      unless TodoItem::ALLOWED_FILE_TYPES.include?(file.content_type)
+        errors << "#{file.original_filename} has an unsupported type (#{file.content_type})"
+        next
+      end
+      @todo_item.files.attach(file)
     end
-    redirect_to todo_list_todo_item_path(@todo_list, @todo_item)
+
+    if errors.any?
+      redirect_to todo_list_todo_item_path(@todo_list, @todo_item), alert: errors.join(", ")
+    else
+      redirect_to todo_list_todo_item_path(@todo_list, @todo_item)
+    end
   end
 
   def destroy

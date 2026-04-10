@@ -47,6 +47,11 @@ class ListInvitationsController < ApplicationController
       return
     end
 
+    unless Current.user.email_address == invitation.email
+      redirect_to root_path, alert: "This invitation was sent to a different email address. Sign in with that account to accept."
+      return
+    end
+
     invitation.accept!(Current.user)
     redirect_to todo_list_path(invitation.todo_list), notice: "You now have access to \"#{invitation.todo_list.name}\"!"
   rescue ActiveRecord::RecordInvalid => e

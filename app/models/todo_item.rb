@@ -36,6 +36,18 @@ class TodoItem < ApplicationRecord
   has_rich_text :notes
   has_many_attached :files
 
+  MAX_FILE_SIZE = 25.megabytes
+  ALLOWED_FILE_TYPES = %w[
+    image/png image/jpeg image/gif image/webp image/heic
+    application/pdf
+    text/plain text/csv text/markdown
+    application/msword
+    application/vnd.openxmlformats-officedocument.wordprocessingml.document
+    application/vnd.ms-excel
+    application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+    application/zip
+  ].freeze
+
   validates :name, presence: true, length: { maximum: 255 }
   validates :position, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :status, presence: true, inclusion: { in: STATUSES }

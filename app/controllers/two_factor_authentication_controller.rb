@@ -2,6 +2,14 @@ class TwoFactorAuthenticationController < ApplicationController
   allow_unauthenticated_access only: %i[ verify confirm recovery_help ]
   layout "authentication"
 
+  # Rate-limit TOTP verification to prevent brute-forcing the 6-digit code.
+  # Rails 8 rate_limit defaults to per-IP via request.remote_ip.
+  rate_limit to: 5, within: 10.minutes, only: :confirm,
+    with: -> { redirect_to verify_two_factor_path, alert: "Too many verification attempts. Try again later." }
+
+  rate_limit to: 5, within: 10.minutes, only: :destroy,
+    with: -> { redirect_to new_two_factor_path, alert: "Too many attempts. Try again later." }
+
   def new
     secret = ROTP::Base32.random
     session[:pending_otp_secret] = secret

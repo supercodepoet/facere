@@ -31,6 +31,7 @@ class RegistrationsController < ApplicationController
 
     invitation = ListInvitation.find_by_token_for(:acceptance, token)
     return unless invitation&.pending?
+    return unless user.email_address == invitation.email
 
     invitation.accept!(user)
     invitation.todo_list

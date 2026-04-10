@@ -19,7 +19,7 @@ class OAuthIdentityTest < ActiveSupport::TestCase
   end
 
   test "allows all supported providers" do
-    %w[google_oauth2 facebook apple].each do |provider|
+    %w[google_oauth2 apple].each do |provider|
       identity = OAuthIdentity.new(user: users(:two), provider: provider, uid: "uid-#{provider}")
       assert identity.valid?, "Expected #{provider} to be valid"
     end
@@ -40,7 +40,7 @@ class OAuthIdentityTest < ActiveSupport::TestCase
 
   test "allows same uid for different providers" do
     existing = oauth_identities(:google_one)
-    identity = OAuthIdentity.new(user: users(:two), provider: "facebook", uid: existing.uid)
+    identity = OAuthIdentity.new(user: users(:two), provider: "apple", uid: existing.uid)
     assert identity.valid?
   end
 

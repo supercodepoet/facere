@@ -17,7 +17,7 @@ Auto-generated from all feature plans. Last updated: 2026-03-24
 - Icons: `fa-light` (default), `fa-solid` (emphasis/active states)
 - Dropdowns: Custom `dropdown_controller.js` Stimulus controller
 - Modals: Custom `modal_controller.js` Stimulus controller
-- Auth: bcrypt, OmniAuth (google-oauth2, facebook, apple), rotp, rqrcode
+- Auth: bcrypt, OmniAuth (google-oauth2, apple), rotp, rqrcode
 - Database: SQLite (all environments)
 - Asset Pipeline: Propshaft + Importmap
 - Deployment: Kamal

@@ -15,7 +15,7 @@ class ListInvitation < ApplicationRecord
   validate :no_existing_collaborator
 
   generates_token_for :acceptance, expires_in: 30.days do
-    status
+    [ status, email ]
   end
 
   scope :active, -> { where(status: "pending").where("expires_at > ?", Time.current) }

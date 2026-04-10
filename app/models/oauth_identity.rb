@@ -1,5 +1,5 @@
 class OAuthIdentity < ApplicationRecord
-  ALLOWED_PROVIDERS = %w[google_oauth2 facebook apple].freeze
+  ALLOWED_PROVIDERS = %w[google_oauth2 apple].freeze
 
   belongs_to :user
 
